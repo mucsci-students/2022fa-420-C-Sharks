@@ -1,0 +1,109 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<!-- Start Toolbar code -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/css/site.css"/>
+
+<div class="icon-bar">
+  <a  id="home" onclick="addClass()"><i class="fa fa-home"></i></a>
+  <a  id="save" onclick="save()"><i class="fa fa-check"></i></a>
+  <a  id="add" onclick="addClass()"><i class="fa fa-plus"></i></a>
+  <a href="#"><i class="fa fa-pencil"></i></a>
+  <a  id="load" onclick="load()"><i class="fa fa-folder-open"></i></a>
+</div>
+
+<h1>@ViewBag.DiagramData.screen[0].type</h1>
+<!-- End Toolbar code -->
+
+<!-- Start Interface code -->
+<div id="myDiagramDiv" style="width:1250px; height:500px; background-color: #DAE4E4;"></div>      
+<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>
+    
+  
+<script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
+
+  <script>
+    const $ = go.GraphObject.make;
+    const myDiagram =
+      $(go.Diagram, "myDiagramDiv",
+        { "undoManager.isEnabled": true });
+
+    myDiagram.nodeTemplate =
+      $(go.Node, "Auto",
+      { resizable: true },
+        $(go.Shape, "Rectangle",
+          {
+            width: 100, height: 100,
+            stroke: null,
+            portId: "",
+            cursor: "pointer",
+            fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+            toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
+          },
+          new go.Binding("fill", "color")),
+        $(go.TextBlock,
+          { margin: 6, font: "18px sans-serif" ,
+          editable: true, 
+          isMultiline: false, 
+           text: "Enter Name"
+          },
+          new go.Binding("text"))
+      );
+
+    myDiagram.linkTemplate =
+      $(go.Link,
+        {
+          // allow the user to reconnnect existing links:
+          relinkableFrom: true, relinkableTo: true,
+          // draw the link path shorter than normal,
+          // so that it does not interfere with the appearance of the arrowhead
+          toShortLength: 2
+        },
+        $(go.Shape,
+          { strokeWidth: 2 }),
+        $(go.Shape,
+          { toArrow: "Standard", stroke: null })
+      );
+
+    myDiagram.model = new go.GraphLinksModel(
+      [
+      ]);
+
+      //Context menu
+        diagram.nodeTemplate.contextMenu =
+          $("ContextMenu",
+            $("ContextMenuButton",
+              $(go.TextBlock, "Shift Left"),
+              { click: function(e, obj) { 
+                  //action on click
+                  alert("hello"); 
+              } }),
+            $("ContextMenuButton",
+              $(go.TextBlock, "Shift Right"),
+              { click: function(e, obj) { 
+                  //action on click
+                  alert("hello"); 
+              } })
+          );
+
+//Add new class
+function addClass() {
+let color = prompt("Please type a color:")
+myDiagram.model.addNodeData({ text: "new node", loc: go.Point.stringify(myDiagram.viewportBounds.center), color: color });
+      
+}
+function save() {
+    let save = myDiagram.model.toJson();
+    document.getElementById("mySavedModel").value = save;
+    @ViewBag.DiagramData = save;
+    myDiagram.isModified = false;
+  }
+function load() {
+    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+    alert(String('@ViewBag.MyVariable'));
+  }
+
+  </script>
+
