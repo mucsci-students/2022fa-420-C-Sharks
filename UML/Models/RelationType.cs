@@ -2,7 +2,7 @@
 {
     public enum RelationType
     {
-        ReferanceTo,
-        ReferanceFrom
+        Source,
+        Destination
     }
 }

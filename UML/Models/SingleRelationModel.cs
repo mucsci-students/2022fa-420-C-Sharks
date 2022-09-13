@@ -3,7 +3,7 @@
     public class SingleRelationModel
     {
         public RelationType type { get; set; }
-        public string start { get; set; }
-        public string end { get; set; }
+        public string to { get; set; }
+        public string from { get; set; }
     }
 }

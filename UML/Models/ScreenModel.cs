@@ -8,8 +8,10 @@ namespace UML.Models
     {
         [BsonId]
         public string name { get; set; }
-        public string[] Attributes { get; set; }
         public ShapeType type { get; set; }
-        public string xy { get; set; }
+        public string Loc { get; set; }
+        public string[] Attributes { get; set; }
+        public SingleRelationModel[] Relations { get; set; }
+
     }
 }
