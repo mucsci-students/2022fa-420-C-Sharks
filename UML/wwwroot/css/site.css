@@ -13,5 +13,7 @@ html {
 	min-height: 100%;
 }
 
-body {
+#toolbar {
+	margin-left: auto;
+	margin-right: auto;
 }
