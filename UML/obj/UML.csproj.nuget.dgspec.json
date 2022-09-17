@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\UML\\UML.csproj": {}
+    "C:\\Users\\bscha\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\UML\\UML.csproj": {
+    "C:\\Users\\bscha\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\UML\\UML.csproj",
+        "projectUniqueName": "C:\\Users\\bscha\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
         "projectName": "UML",
-        "projectPath": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\UML\\UML.csproj",
+        "projectPath": "C:\\Users\\bscha\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
         "packagesPath": "C:\\Users\\bscha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\UML\\obj\\",
+        "outputPath": "C:\\Users\\bscha\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\bscha\\AppData\\Roaming\\NuGet\\NuGet.Config",

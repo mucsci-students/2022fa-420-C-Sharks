@@ -1,10 +1,12 @@
-﻿@{
+﻿@using UML.Models.ViewModels
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <!-- Start Toolbar code -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link rel="stylesheet" href="~/css/site.css"/>
+
 
 <div class="icon-bar">
   <a  id="home" onclick="addClass()"><i class="fa fa-home"></i></a>
@@ -13,15 +15,23 @@
   <a href="#"><i class="fa fa-pencil"></i></a>
   <a  id="load" onclick="load()"><i class="fa fa-folder-open"></i></a>
 </div>
-
-<h1>@ViewBag.DiagramData.screen[0].type</h1>
 <!-- End Toolbar code -->
 
 <!-- Start Interface code -->
-<div id="myDiagramDiv" style="width:1250px; height:500px; background-color: #DAE4E4;"></div>      
-<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>
-    
-  
+<div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>      
+
+
+@model EditorViewModel
+@using (Html.BeginForm())
+{
+    @Html.TextBoxFor(EditorViewModel=>EditorViewModel.mySavedModel, new { id="mySavedModel", style="width:100%;height:300px"})
+
+    <input type="submit" value="saveToServer" />
+}
+
+
+<!--<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>-->
+
 <script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
 
   <script>
@@ -72,7 +82,7 @@
       ]);
 
       //Context menu
-        diagram.nodeTemplate.contextMenu =
+        myDiagram.nodeTemplate.contextMenu =
           $("ContextMenu",
             $("ContextMenuButton",
               $(go.TextBlock, "Shift Left"),
@@ -95,11 +105,39 @@ myDiagram.model.addNodeData({ text: "new node", loc: go.Point.stringify(myDiagra
       
 }
 function save() {
-    let save = myDiagram.model.toJson();
-    document.getElementById("mySavedModel").value = save;
-    @ViewBag.DiagramData = save;
-    myDiagram.isModified = false;
-  }
+
+        let jsonData = myDiagram.model.toJson();
+        
+        document.getElementById("mySavedModel").value = jsonData;
+        //jsonData = JSON.stringify(jsonData);
+    
+    
+    
+    
+    /*let jsonData = myDiagram.model.toJson();
+    document.getElementById("mySavedModel").value = jsonData;
+    alert(jsonData);
+    
+    jQuery.post({
+        type:"POST",
+        url: "http://localhost:5238/Editor/Save",
+        data: jsonData,
+        dataType:"json"
+    })
+    
+    
+    
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:5238/Editor");
+
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
+    xhr.onload = () => console.log(xhr.responseText);
+   
+    xhr.send(jsonData);
+    */
+    }
 function load() {
     myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     alert(String('@ViewBag.MyVariable'));

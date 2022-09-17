@@ -1,31 +1,58 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Build.Framework;
+using MongoDB.Bson;
+using MongoDB.Bson.IO;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Newtonsoft.Json.Linq;
+using NuGet.Protocol;
+using System.Net;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using System.Text.Json.Serialization;
 using UML.Models;
+using UML.Models.ViewModels;
 
 namespace UML.Controllers
 {
 	public class EditorController : Controller
 	{
-		public IActionResult Index(UserModel user)
-		{
-			// here we create a blank Diagram Model to be filled in on the Editor View
-			var DiagramData =
-				new DiagramModel
-				{
-					_id = "",
-					Username = user.username,
-					screen = new ScreenModel[] { new ScreenModel { name = "", type = 0, Loc = "", Attributes = { },
-						Relations = new SingleRelationModel[] { new SingleRelationModel { type = 0, to = "", from = "" } } } }
-				};
 
-			ViewBag.DiagramData = DiagramData;
-			return View(ViewBag);
+		public ActionResult Index()
+		{
+			
+			return View(new EditorViewModel());
 		}
 
 		[HttpPost]
-        public IActionResult Save()
+		public ActionResult Index(EditorViewModel model)
         {
-			string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
+
+            if (model == null)
+			{
+				return View(ViewBag.fail = "No Data Entered");
+			}
+
+			//model.mySavedModel = model.mySavedModel.Replace('\"',' ');
+
+            JObject json = JObject.Parse(model.mySavedModel);
+			var bson = json.ToBson();
+
+            /*
+			char slash = '\\';
+			while (index <= rawData.Length)
+			{
+				if (!rawData[index].Equals(slash))
+				{
+					rawData = rawData.		
+				}
+				index++;
+			}
+			*/
+
+
+            string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
 			string databaseName = "uml_db";
 			string collectionName = "diagrams";
 
@@ -33,11 +60,24 @@ namespace UML.Controllers
 			var db = client.GetDatabase(databaseName);
 			var collection = db.GetCollection<DiagramModel>(collectionName);
 
-			
+			Console.WriteLine("HERE");
 
-			return View();
+			/*var RelationsData = new RelationsModel { };
 
-		}
+            foreach (var item in returnedData.nodeDataArray)
+			{
+				var index = 0;
+				DiagramData.screen[index] = item;
+			}
+			foreach (var item in returnedData.linkDataArray)
+			{
+				var index = 0;
+				RelationsData.singleRelation[index] = item;
+			}
+			*/
+			return View(ViewBag.Success="Success");
+
+        }
 		// Post location?
 	}
 }

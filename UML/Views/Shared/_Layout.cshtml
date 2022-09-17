@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/UML.styles.css" asp-append-version="true" />
+   
+
 </head>
 <body>
     <header>
@@ -23,15 +25,18 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Editor" asp-action="Index">UML Editor</a>
                         </li>
-                        <div class="login-container">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Generate" asp-action="Index">Generate</a>
+                        </li>
+                        <!--<div class="login-container">
                             <form action="/action_page.php">
                                 <input type="text" placeholder="Username" name="username">
                                 <input type="text" placeholder="Password" name="psw">
                                 <button type="submit">Login</button>
                             </form>
-                        </div>
+                        </div>-->
                     </ul>
                 </div>
             </div>
