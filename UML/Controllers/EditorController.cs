@@ -31,7 +31,7 @@ namespace UML.Controllers
 
             if (model == null)
 			{
-				return View(ViewBag.fail = "No Data Entered");
+				return View();
 			}
 
 			//model.mySavedModel = model.mySavedModel.Replace('\"',' ');
@@ -75,7 +75,7 @@ namespace UML.Controllers
 				RelationsData.singleRelation[index] = item;
 			}
 			*/
-			return View(ViewBag.Success="Success");
+			return View();
 
         }
 		// Post location?
