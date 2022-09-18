@@ -5,8 +5,9 @@ namespace UML.Models
     public class DiagramModel
     {
         [BsonId]
-        public string _id { get; set; }
+        public ObjectId id { get; set; }
         public string Username { get; set; }
         public ScreenModel[] screen { get; set; }
+        public SingleRelationsModel[] relations { get; set; } 
     }
 }
