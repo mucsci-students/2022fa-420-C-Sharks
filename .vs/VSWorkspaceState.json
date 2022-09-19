@@ -1,12 +1,6 @@
 {
   "ExpandedNodes": [
-    "",
-    "\\UML",
-    "\\UML\\Controllers",
-    "\\UML\\Views",
-    "\\UML\\Views\\Editor",
-    "\\UML\\Views\\Shared"
+    ""
   ],
-  "SelectedNode": "\\UML\\Controllers\\EditorController.cs",
   "PreviewInSolutionExplorer": false
 }
