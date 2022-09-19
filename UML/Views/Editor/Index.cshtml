@@ -196,7 +196,7 @@
     function save() {
         let save = myDiagram.model.toJson();
         document.getElementById("mySavedModel").value = save;
-       // @ ViewBag.DiagramData = save;
+       // @{}ViewBag.DiagramData = save;
         myDiagram.isModified = false;
         updateClassNames();
     }

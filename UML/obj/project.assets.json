@@ -9328,24 +9328,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Hahng\\.nuget\\packages\\": {},
-    "E:\\Studio SDK\\NuGetPackages": {}
+    "C:\\Users\\bscha\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Hahng\\Source\\Repos\\2022fa-420-C-Sharks\\UML\\UML.csproj",
+      "projectUniqueName": "C:\\Users\\bscha\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
       "projectName": "UML",
-      "projectPath": "C:\\Users\\Hahng\\Source\\Repos\\2022fa-420-C-Sharks\\UML\\UML.csproj",
-      "packagesPath": "C:\\Users\\Hahng\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Hahng\\Source\\Repos\\2022fa-420-C-Sharks\\UML\\obj\\",
+      "projectPath": "C:\\Users\\bscha\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
+      "packagesPath": "C:\\Users\\bscha\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\bscha\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "E:\\Studio SDK\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Hahng\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\bscha\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -9353,7 +9348,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
