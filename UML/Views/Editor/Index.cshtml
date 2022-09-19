@@ -1,179 +1,146 @@
-﻿@{
+@using UML.Models.ViewModels
+@{
     ViewData["Title"] = "Home Page";
 }
 
 <!-- Start Toolbar code -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="toolbar">
-    <!--Toolbar collapse code (when the window is small, toolbar turns into button) -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto" id="toolbar">
-            <!--End of collapse code-->
-            <!--Begin Toolbar buttons-->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a>
-            </li>
-            <!-- Edit function (pencil - not yet ready)
-                <li class="nav-item">
-                <a class="nav-link" href="#" onclick="edit()"><i class="fa fa-pencil"></i></a>
-            </li>
-            -->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a>
-            </li>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="~/css/site.css"/>
 
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="addAttribute()"><i class="fa fa-plus-circle"></i></a>
-            </li>
 
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="removeAttribute()"><i class="fa fa-times-circle"></i></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="helpMenuDropdown()"><i class="fa fa-question"></i></a>
-                <div class="wrapper" id="helpMenu" style="display:none">
-                    <a href="#">How-To Guide</a>
-                    <a href="#">Import</a>
-                    <a href="#">Export</a>
-                </div>
-            </li>
-            <!--End of Toolbar buttons-->
-        </ul>
-    </div>
-</nav>
+<div class="icon-bar">
+  <a  id="home" onclick="addClass()"><i class="fa fa-home"></i></a>
+  <a  id="save" onclick="save()"><i class="fa fa-check"></i></a>
+  <a  id="add" onclick="addClass()"><i class="fa fa-plus"></i></a>
+  <a href="#"><i class="fa fa-pencil"></i></a>
+  <a  id="load" onclick="load()"><i class="fa fa-folder-open"></i></a>
+</div>
 <!-- End Toolbar code -->
 
 <!-- Start Interface code -->
-<div id="myDiagramDiv" style="width:100%; height:550px; background-color: #DAE4E4;"></div>
-<textarea id="mySavedModel" style="width:100%;height:200px">{ "class": "go.GraphLinksModel",</textarea>
+<div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>      
+
+
+@model EditorViewModel
+@using (Html.BeginForm())
+{
+    @Html.TextBoxFor(EditorViewModel=>EditorViewModel.mySavedModel, new { id="mySavedModel", style="width:100%;height:300px"})
+
+    <input type="submit" value="saveToServer" />
+}
+
+
+<!--<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>-->
 
 <script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
 
-<script>
+  <script>
     const $ = go.GraphObject.make;
     const myDiagram =
-        $(go.Diagram, "myDiagramDiv",
-            { "undoManager.isEnabled": true });
+      $(go.Diagram, "myDiagramDiv",
+        { "undoManager.isEnabled": true });
 
     myDiagram.nodeTemplate =
-        $(go.Node, "Auto",
-            {
-                locationSpot: go.Spot.Center,
-                fromSpot: go.Spot.AllSides,
-                toSpot: go.Spot.AllSides
-            },
-            $(go.Shape,
-                {
-                    //Specify ports, this needs to be here for node to be linkable
-                    portId: "",
-                    cursor: "pointer",
-                    fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-                    toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
-                },
-                //bind the 'fill' command with the color stored in the node data. Color is passed from js prompt
-                new go.Binding("fill", "color"),
-                new go.Binding("location", "loc"),
-            ),
-            //places panel inside the above shape
-            $(go.Panel, "Table",
-                {
-                    defaultAlignment: go.Spot.Top, defaultColumnSeparatorStroke: "black"
-                },
-                $(go.Panel, "Table",
-                    { column: 0 },
-                    $(go.TextBlock, "Enter Class Name...",
-                        {
-                            editable: true,
-                            column: 0, margin: new go.Margin(3, 3, 0, 3),
-                            font: "bold 12pt sans-serif"
-                        }
-                    ),
-                    $("PanelExpanderButton", "LIST1",
-                        { column: 1 }),
-                    $(go.Panel, "Vertical",
-                        {
-                            name: "LIST1", row: 1, column: 0, columnSpan: 2
-
-                        },
-                        new go.Binding("itemArray", "list1"))
-                ),
-            )
-        );
+      $(go.Node, "Auto",
+      { resizable: true },
+        $(go.Shape, "Rectangle",
+          {
+            width: 100, height: 100,
+            stroke: null,
+            portId: "",
+            cursor: "pointer",
+            fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+            toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
+          },
+          new go.Binding("fill", "color")),
+        $(go.TextBlock,
+          { margin: 6, font: "18px sans-serif" ,
+          editable: true, 
+          isMultiline: false, 
+           text: "Enter Name"
+          },
+          new go.Binding("text"))
+      );
 
     myDiagram.linkTemplate =
-        $(go.Link,
-            {
-                // allow the user to reconnnect existing links:
-                relinkableFrom: true, relinkableTo: true,
-                // draw the link path shorter than normal,
-                // so that it does not interfere with the appearance of the arrowhead
-                toShortLength: 2
-            },
-            $(go.Shape,
-                { strokeWidth: 2 }),
-            $(go.Shape,
-                { toArrow: "Standard", stroke: null })
-        );
+      $(go.Link,
+        {
+          // allow the user to reconnnect existing links:
+          relinkableFrom: true, relinkableTo: true,
+          // draw the link path shorter than normal,
+          // so that it does not interfere with the appearance of the arrowhead
+          toShortLength: 2
+        },
+        $(go.Shape,
+          { strokeWidth: 2 }),
+        $(go.Shape,
+          { toArrow: "Standard", stroke: null })
+      );
 
-    //add data here if you want nodes to be loaded on default
     myDiagram.model = new go.GraphLinksModel(
-        [
-        ]);
+      [
+      ]);
 
-    //Add new class
-    function addClass() {
-        let color = prompt("Please type a color:");
-        //splits input string into indvidual attributes and stores them in an array
-        var attributes = prompt("Enter your attributes seperated by commas:").split(",");
-        //Work in progress, trying to make offset when node is created
-        var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 30), Math.floor(Math.random() * 30)));
-        //alert(loc);
-        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: color, list1: attributes });
+      //Context menu
+        myDiagram.nodeTemplate.contextMenu =
+          $("ContextMenu",
+            $("ContextMenuButton",
+              $(go.TextBlock, "Shift Left"),
+              { click: function(e, obj) { 
+                  //action on click
+                  alert("hello"); 
+              } }),
+            $("ContextMenuButton",
+              $(go.TextBlock, "Shift Right"),
+              { click: function(e, obj) { 
+                  //action on click
+                  alert("hello"); 
+              } })
+          );
 
+//Add new class
+function addClass() {
+let color = prompt("Please type a color:")
+myDiagram.model.addNodeData({ text: "new node", loc: go.Point.stringify(myDiagram.viewportBounds.center), color: color });
+      
+}
+function save() {
+
+        let jsonData = myDiagram.model.toJson();
+        
+        document.getElementById("mySavedModel").value = jsonData;
+        //jsonData = JSON.stringify(jsonData);
+    
+    
+    
+    
+    /*let jsonData = myDiagram.model.toJson();
+    document.getElementById("mySavedModel").value = jsonData;
+    alert(jsonData);
+    
+    jQuery.post({
+        type:"POST",
+        url: "http://localhost:5238/Editor/Save",
+        data: jsonData,
+        dataType:"json"
+    })
+    
+    
+    
+    let xhr = new XMLHttpRequest();
+    xhr.open("POST", "http://localhost:5238/Editor");
+
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json; charset=UTF-8");
+
+    xhr.onload = () => console.log(xhr.responseText);
+   
+    xhr.send(jsonData);
+    */
     }
+function load() {
+    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+    alert(String('@ViewBag.MyVariable'));
+  }
 
-    function save() {
-        let save = myDiagram.model.toJson();
-        document.getElementById("mySavedModel").value = save;
-        //@ViewBag.DiagramData = save;
-        myDiagram.isModified = false;
-    }
-
-    function load() {
-        myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
-        alert(String('@ViewBag.MyVariable'));
-    }
-
-    function helpMenuDropdown() {
-        var x = document.getElementById("helpMenu");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-    }
-
-    //Add new attribute
-    function addAttribute() {
-        let attribute = prompt("Please enter a new attribute:");
-        myDiagram.model.addNodeData({ list1: attribute });
-    }
-
-    //Remove attribute
-    function removeAttribute() {
-        let attribute = prompt("Please enter the attribute you want to remove:");
-        myDiagram.model.removeNodeData({ list1: attribute });
-    }
-
-</script>
-
+  </script>
