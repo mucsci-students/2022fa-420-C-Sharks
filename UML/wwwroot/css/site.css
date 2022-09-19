@@ -17,18 +17,26 @@ body {
 	margin-bottom: 60px;
 }
 
-.header {
-	position: fixed;
-	top: 0;
-	left: 0;
-	right: 0;
-	z-index: 100;
+.icon-bar {
+	width: 100%; /* Full-width */
+	background-color: #555; /* Dark-grey background */
+	overflow: auto; /* Overflow due to float */
 }
 
-.footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	height: 60px;
-	background-color: #f5f5f5;
+	.icon-bar a {
+		float: left; /* Float links side by side */
+		text-align: center; /* Center-align text */
+		width: 20%; /* Equal width (5 icons with 20% width each = 100%) */
+		padding: 6px 0; /* Some top and bottom padding */
+		transition: all 0.3s ease; /* Add transition for hover effects */
+		color: white; /* White text color */
+		font-size: 18px; /* Increased font size */
+	}
+
+		.icon-bar a:hover {
+			background-color: #000; /* Add a hover color */
+		}
+
+.active {
+	background-color: #04AA6D; /* Add an active/current color */
 }
