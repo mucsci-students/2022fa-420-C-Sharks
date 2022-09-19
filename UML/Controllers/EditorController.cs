@@ -18,30 +18,27 @@ using UML.Models.ViewModels;
 
 namespace UML.Controllers
 {
-	public class EditorController : Controller
-	{
+    public class EditorController : Controller
+    {
 
-		public ActionResult Index()
-		{
-			
-			return View(new EditorViewModel());
-		}
+        public ActionResult Index()
+        {
 
-		[HttpPost]
-		public ActionResult Index(EditorViewModel model)
+            return View(new EditorViewModel());
+        }
+
+        [HttpPost]
+        public ActionResult Index(EditorViewModel model)
         {
 
             if (model == null)
-			{
-				return View();
-			}
+            {
+                return View();
+            }
 
-			//model.mySavedModel = model.mySavedModel.Replace('\"',' ');
+            //model.mySavedModel = model.mySavedModel.Replace('\"',' ');
 
-            
-
-
-			/*
+            /*
 			char slash = '\\';
 			while (index <= rawData.Length)
 			{
@@ -52,12 +49,12 @@ namespace UML.Controllers
 				index++;
 			}
 			*/
-			ConvertNsave(model.mySavedModel);
+            ConvertNsave(model.mySavedModel);
 
-            
-			Console.WriteLine("HERE");
 
-			/*var RelationsData = new RelationsModel { };
+            Console.WriteLine("HERE");
+
+            /*var RelationsData = new RelationsModel { };
 
             foreach (var item in returnedData.nodeDataArray)
 			{
@@ -70,32 +67,32 @@ namespace UML.Controllers
 				RelationsData.singleRelation[index] = item;
 			}
 			*/
-			return View();
+            return View();
 
         }
-		// Post location?
-		public static void ConvertNsave(string input)
-		{
+        // Post location?
+        public static void ConvertNsave(string input)
+        {
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
             string databaseName = "uml_db";
             string collectionName = "diagrams";
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase(databaseName);
             var collection = db.GetCollection<DiagramModel>(collectionName);
-			var json = JObject.Parse(input);
-			var text = json["nodeDataArray"];
+            var json = JObject.Parse(input);
+            var text = json["nodeDataArray"];
             List<ScreenModel> ScreModHLD = new List<ScreenModel> { };
             foreach (JObject item in text)
-			{
-				ScreModHLD.Add(new ScreenModel { text = item.GetValue("text").ToString(), Loc = item.GetValue("loc").ToString(), color = item.GetValue("color").ToString(), key = item.GetValue("key").ToString() }); 
-			}
+            {
+                ScreModHLD.Add(new ScreenModel { text = item.GetValue("text").ToString(), Loc = item.GetValue("loc").ToString(), color = item.GetValue("color").ToString(), key = item.GetValue("key").ToString() });
+            }
             var toFrom = json["linkDataArray"];
-			List <SingleRelationsModel> SingRelHLD = new List<SingleRelationsModel> { };
-			foreach (JObject item in toFrom)
-			{
-				SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString() });
-			}
-			var Diagram = new DiagramModel { Username = "Test", screen = ScreModHLD.ToArray(),relations = SingRelHLD.ToArray()};
+            List<SingleRelationsModel> SingRelHLD = new List<SingleRelationsModel> { };
+            foreach (JObject item in toFrom)
+            {
+                SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString() });
+            }
+            var Diagram = new DiagramModel { Username = "Test", screen = ScreModHLD.ToArray(), relations = SingRelHLD.ToArray() };
             //don't care + didn't ask + ratio + you fell off + cope + seethe + mald + dilate + L + hoes mad + W + cry about it + stay mad + touch grass + pound sand + skill issue + quote tweet + get real + no bitches?
             collection.InsertOne(Diagram);
             //await collection2.InsertOneAsync(relations);

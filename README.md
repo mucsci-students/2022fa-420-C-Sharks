@@ -9,15 +9,17 @@ Team C-Sharks' UML Editor is an application that allows the user to add, delete,
 
 1. In Visual Studio, navigate to File > Clone Repository and enter the link: <br> (https://github.com/mucsci-students/2022fa-420-C-Sharks)
 2. After cloning the repository, open it as a project
-3. Select the dropdown next to the green play/run button ("Select Startup Item") and choose _UML.sln_
+3. Select the green play button to run the program - if the button does not say "UML" select the dropdown ("Select Startup Item") and choose _UML.sln_
 
 **Saving / Loading Files**
+To save a diagram to the database, click the "saveToServer" button below the diagram. The diagram will be saved in the text box, and you can select the load button to bring it back up. <br>
+
 To save or load a diagram, use the Save and Load icons on the toolbar to do so through the web server. Alternatively, if you'd like to save your diagram locally, use the "Export" option in the _Help_ menu, and "Import" option to load a local file.
 
 ## Development Team
 
-[Logan Eller](https://github.com/logan-eller)
-[Trevor Foresta](https://github.com/trevforesta)
-[Galen Hahn](https://github.com/Alfather-Bear)
-[Ben Schaeffer](https://github.com/Tactical12YearOld)
+[Logan Eller](https://github.com/logan-eller) <br>
+[Trevor Foresta](https://github.com/trevforesta) <br>
+[Galen Hahn](https://github.com/Alfather-Bear) <br>
+[Ben Schaeffer](https://github.com/Tactical12YearOld) <br>
 [Jacob Smith](https://github.com/jdsmithmv)
