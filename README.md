@@ -16,8 +16,8 @@ To save or load a diagram, use the Save and Load icons on the toolbar to do so t
 
 ## Development Team
 
-[Logan Eller](https://github.com/logan-eller)
-[Trevor Foresta](https://github.com/trevforesta)
-[Galen Hahn](https://github.com/Alfather-Bear)
-[Ben Schaeffer](https://github.com/Tactical12YearOld)
-[Jacob Smith](https://github.com/jdsmithmv)
+[Logan Eller](https://github.com/logan-eller) <br>
+[Trevor Foresta](https://github.com/trevforesta) <br>
+[Galen Hahn](https://github.com/Alfather-Bear) <br>
+[Ben Schaeffer](https://github.com/Tactical12YearOld) <br>
+[Jacob Smith](https://github.com/jdsmithmv) <br>
