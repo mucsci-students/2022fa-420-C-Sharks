@@ -134,6 +134,53 @@
                 )
             );
 
+    //controls the buttons in the contextmenu and what functions they invoke
+    var linkMenu =
+              $("ContextMenu",
+              $("ContextMenuButton",
+                $(go.TextBlock, "Delete"),
+                {
+                  click: function(e, button) {
+                    e.diagram.commit(function(d) {
+                      d.remove(button.part.adornedPart);
+                    });}
+                }),
+             $("ContextMenuButton",
+             $(go.TextBlock, "Aggregation"),
+                {
+                  click: function(e, obj) {
+                    e.diagram.commit(function(d) {
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
+                    });}
+                }),
+             $("ContextMenuButton",
+             $(go.TextBlock, "Composition"),
+                {
+                  click: function(e, obj) {
+                    e.diagram.commit(function(d) {
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', 'black');
+                    });}
+                }),
+             $("ContextMenuButton",
+             $(go.TextBlock, "Inheritance"),
+                {
+                  click: function(e, obj) {
+                    e.diagram.commit(function(d) {
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'Triangle');
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
+                    });}
+                }),
+                         $("ContextMenuButton",
+             $(go.TextBlock, "Realization"),
+                {
+                  click: function(e, obj) {
+                    e.diagram.commit(function(d) {
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'Triangle');
+                    });}
+                })
+            );
     myDiagram.linkTemplate =
       $(go.Link,
         {
@@ -141,14 +188,19 @@
           relinkableFrom: true, relinkableTo: true,
           // draw the link path shorter than normal,
           // so that it does not interfere with the appearance of the arrowhead
-          toShortLength: 2
+          toShortLength: 2,
+          contextMenu: linkMenu    // define a context menu for each node
+
         },
         $(go.Shape,
-          { strokeWidth: 2 }),
+          { strokeWidth: 3 }),
         $(go.Shape,
-          { toArrow: "Standard", stroke: null })
+          { stroke: 'black',  scale: 2, strokeWidth: 1 },
+           new go.Binding("toArrow", "toArrow").makeTwoWay(),
+           new go.Binding("fill", "fill").makeTwoWay()
+         )
             );
-
+    
     //add data here if you want nodes to be loaded on default
     myDiagram.model = new go.GraphLinksModel(
       [
@@ -159,6 +211,10 @@
         if (evt.isTransactionFinished) updateClassNames();
     });
 
+    myDiagram.addDiagramListener('LinkDrawn', function(e) {
+        var link = e.subject;
+        myDiagram.model.setDataProperty(link.data, 'toArrow', 'triangle');
+    });
     //Context menu
     myDiagram.nodeTemplate.contextMenu =
         $("ContextMenu",
