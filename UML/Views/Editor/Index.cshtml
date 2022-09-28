@@ -54,6 +54,13 @@
 </nav>
     <!--End of Toolbar buttons-->
 
+    <!--Start Color Picker-->
+    <div id = "colorPicker">
+        <label for="color">Select a color:</label>
+        <input type="color" id="color" name="color" value="#ff0000">
+    </div>
+    <!--End Color Picker-->
+
     <!-- Start Interface code -->
     <div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>
     
@@ -84,6 +91,59 @@
         const myDiagram =
             $(go.Diagram, "myDiagramDiv",
                 { "undoManager.isEnabled": true });
+        //Context Menu for Nodes
+        var nodeMenu =
+                  $("ContextMenu",
+                  $("ContextMenuButton",
+                    $(go.TextBlock, "Delete"),
+                    {
+                      click: function(e, button) {
+                        e.diagram.commit(function(d) {
+                          d.remove(button.part.adornedPart);
+                        });}
+                    }),
+                 $("ContextMenuButton",
+                 $(go.TextBlock, "Edit attribute"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
+                        });}
+                    }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Change Color"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let color =  document.getElementById("color").value;
+
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'color', color);
+                        });}
+                    }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Add Field"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let field = prompt("Enter a Field: ");
+                           let fieldList = obj.part.adornedPart.data.fields.push(field);
+                           myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'Fields', fieldList);
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Add Method"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let method = prompt("Enter a Method: ");
+                           let methodList = obj.part.adornedPart.data.methodBinding.push(method);
+                           myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'methods', methodList);
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    })
+                );
 
         myDiagram.nodeTemplate =
             $(go.Node, "Auto",
@@ -110,29 +170,47 @@
                         defaultAlignment: go.Spot.Top, defaultColumnSeparatorStroke: "black"
                     },
                     $(go.Panel, "Table",
-                        { column: 0 },
+                        { row: 1, column: 0 },
                         $(go.TextBlock,
                             {
                                 editable: true,
-                                column: 0, margin: new go.Margin(3, 3, 0, 3),
+                                row: 0, columnSpan: 2, margin: 3, alignment: go.Spot.Center,
                                 font: "bold 12pt sans-serif",
                                 isMultiline: false,  // don't allow embedded newlines
                                 textValidation: checkDuplicates
                             },
                             new go.Binding("text", "className").makeTwoWay())
                     ),
-                    $("PanelExpanderButton", "LIST1",
-                        { column: 1 }),
+                   $(go.TextBlock, "fields",
+                      { row: 3, font: "italic 10pt sans-serif" },
+                      new go.Binding("visible", "visible", v => !v).ofObject("fields")),
+                    $("PanelExpanderButton", "fields",
+                        { row: 3, column: 1 }),
                     $(go.Panel, "Vertical",
                         {
-                            name: "LIST1", row: 1, column: 0, columnSpan: 2
+                            name: "fields", row: 3, column: 0, columnSpan: 2
 
                         },
-                        new go.Binding("itemArray", "list1").makeTwoWay()
+                        new go.Binding("itemArray", "fields").makeTwoWay()
+
+                    ),
+                   $(go.TextBlock, "methods",
+                      { row: 4, font: "italic 10pt sans-serif" },
+                      new go.Binding("visible", "visible", v => !v).ofObject("methods")),
+                    $("PanelExpanderButton", "methods",
+                        { row: 4, column: 1 }),
+                    $(go.Panel, "Vertical",
+                        {
+                            name: "methods", row: 5, column: 0, columnSpan: 2
+
+                        },
+                        new go.Binding("itemArray", "methodBinding").makeTwoWay()
 
                     ),
                 )
             );
+    //Assign context menu for nodes
+    myDiagram.nodeTemplate.contextMenu = nodeMenu;
 
     //controls the buttons in the contextmenu and what functions they invoke
     var linkMenu =
@@ -215,35 +293,21 @@
         var link = e.subject;
         myDiagram.model.setDataProperty(link.data, 'toArrow', 'triangle');
     });
-    //Context menu
-    myDiagram.nodeTemplate.contextMenu =
-        $("ContextMenu",
-        $("ContextMenuButton",
-            $(go.TextBlock, "Shift Left"),
-            { click: function(e, obj) {
-                //action on click
-                alert("hello");
-            } }),
-        $("ContextMenuButton",
-            $(go.TextBlock, "Shift Right"),
-            { click: function(e, obj) {
-                //action on click
-                alert("hello");
-            } })
-            );
+
 
 
     //Add new class
     function addClass() {
         //initial prompt name
         let promptName = "Enter a Class Name...";
-        let color = prompt("Please type a color:");
+        let defaultColor = "white";
         //splits input string into indvidual attributes and stores them in an array
-        var attributes = prompt("Enter your attributes seperated by commas:").split(",");
+        let fields = [];
+        let methods = [];
         //Work in progress, trying to make offset when node is created
         var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 30), Math.floor(Math.random() * 30)));
         //alert(loc);
-        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: color, list1: attributes, className: promptName });
+        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: false });
         classNames.push(string(promptName));
 
     }
