@@ -1,5 +1,4 @@
-
-using Microsoft.Build.Framework;
+﻿using Microsoft.Build.Framework;
 using MongoDB.Bson;
 using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
@@ -14,4 +13,13 @@ using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 using CLI.Models;
-using CLI.Models.ViewModels;
+using CLI.Controllers;
+using System.Web.Mvc;
+
+namespace CLI.Controllers
+{
+    public class CLIController : Controller
+    {
+
+    }
+}

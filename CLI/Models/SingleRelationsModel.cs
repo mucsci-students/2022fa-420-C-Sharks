@@ -1,4 +1,4 @@
-﻿namespace UML.Models
+﻿namespace CLI.Models
 {
     public class SingleRelationsModel
     {

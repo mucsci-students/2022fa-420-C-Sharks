@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace UML.Models.ViewModels
+namespace CLI.Models.ViewModels
 {
     public class EditorViewModel
     {

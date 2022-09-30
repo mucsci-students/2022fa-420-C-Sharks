@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hahng\\source\\repos\\Sprint2\\CLI\\CLI.csproj": {}
+    "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI\\CLI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hahng\\source\\repos\\Sprint2\\CLI\\CLI.csproj": {
+    "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI\\CLI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hahng\\source\\repos\\Sprint2\\CLI\\CLI.csproj",
+        "projectUniqueName": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI\\CLI.csproj",
         "projectName": "CLI",
-        "projectPath": "C:\\Users\\Hahng\\source\\repos\\Sprint2\\CLI\\CLI.csproj",
+        "projectPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI\\CLI.csproj",
         "packagesPath": "C:\\Users\\Hahng\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hahng\\source\\repos\\Sprint2\\CLI\\obj\\",
+        "outputPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Studio SDK\\NuGetPackages"
@@ -44,6 +44,28 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
+          "dependencies": {
+            "Microsoft.AspNet.Mvc": {
+              "target": "Package",
+              "version": "[5.2.9, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Core": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
+            "Microsoft.Build.Framework": {
+              "target": "Package",
+              "version": "[17.3.1, )"
+            },
+            "MongoDB.Driver": {
+              "target": "Package",
+              "version": "[2.17.1, )"
+            },
+            "NuGet.Protocol": {
+              "target": "Package",
+              "version": "[6.3.0, )"
+            }
+          },
           "imports": [
             "net461",
             "net462",
