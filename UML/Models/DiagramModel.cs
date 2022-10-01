@@ -1,6 +1,6 @@
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-namespace UML.Models
+namespace CLI.Models
 {
     public class DiagramModel
     {
