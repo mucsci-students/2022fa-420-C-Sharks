@@ -7,7 +7,7 @@
         add_field,
         add_meth,
         rem_class,
-        rem_attr,
+        rem_field,
         rem_meth,
         relat,
         rem_relat,
