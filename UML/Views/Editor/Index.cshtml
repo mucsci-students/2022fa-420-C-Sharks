@@ -165,7 +165,6 @@
             }))
         );
 
-
         myDiagram.nodeTemplate =
             $(go.Node, "Auto",
                 {
@@ -232,6 +231,7 @@
                     ),
                 )
             );
+
     //Assign context menu for nodes
     myDiagram.nodeTemplate.contextMenu = nodeMenu;
 
@@ -318,7 +318,6 @@
     });
 
 
-
     //Add new class
     function addClass() {
         //initial prompt name
@@ -331,7 +330,8 @@
         var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 30), Math.floor(Math.random() * 30)));
         //alert(loc);
         myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: true });
-        classNames.push(string(promptName));
+
+        classNames.push(String(promptName));
 
     }
 
