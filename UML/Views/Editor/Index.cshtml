@@ -142,7 +142,64 @@
                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'methods', methodList);
                            myDiagram.updateAllTargetBindings();
                         });}
-                    })
+                    }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Change Method Parameter"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let selectedMethod = prompt("Please Type the Method to Change:");
+                           let methodIndex = obj.part.adornedPart.data.methodBinding.findIndex(method => method.methodName === selectedMethod);
+                           if(methodIndex !== -1)
+                           {
+                               let selectedParam = prompt("Please Type the Parameter to Change:");
+                               let paramIndex = obj.part.adornedPart.data.methodBinding[methodIndex].methodParams.findIndex(param => param.name === selectedParam);
+                                if (paramIndex !== -1)
+                                {
+                                    let newType = prompt("Please enter a new type or press ok to skip: ");
+                                    let newName = prompt("Please enter a new name or press ok to skip: ");
+                                    let param = obj.part.adornedPart.data.methodBinding[methodIndex].methodParams[paramIndex];
+
+                                    let updatedBinding = obj.part.adornedPart.data.methodBinding;
+
+                                    if(newType){updatedBinding[methodIndex].methodParams[paramIndex].type = newType;}
+                                    if(newName){updatedBinding[methodIndex].methodParams[paramIndex].name = newName;}
+                                    myDiagram.model.setDataProperty(obj.part.adornedPart.data, obj.part.adornedPart.data.methodBinding, updateClassNames);
+                                }
+                               else{
+                                   alert("Parameter does not exist");
+                               }
+                           }
+                           else{
+                               alert("The method typed does not exist");
+                           }
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    }),
+             $("ContextMenuButton",
+                 $(go.TextBlock, "Add Parameter to Method"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let selectedMethod = prompt("Please Type the Method to Add a Parameter to:");
+                           let methodIndex = obj.part.adornedPart.data.methodBinding.findIndex(method => method.methodName === selectedMethod);
+                           if(methodIndex !== -1)
+                           {
+
+                                    let newType = prompt("Please enter a new type or press ok to skip: ");
+                                    let newName = prompt("Please enter a new name or press ok to skip: ");
+                                    let updatedBinding = obj.part.adornedPart.data.methodBinding;
+
+                                    if(newType && newName){updatedBinding[methodIndex].methodParams.push({name: newName, type: newType});} else{alert("Error: Name or Type was Blank");}
+
+                                    myDiagram.model.setDataProperty(obj.part.adornedPart.data, obj.part.adornedPart.data.methodBinding, updateClassNames);
+                           }
+                           else {
+                               alert("The method typed does not exist");
+                           }
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    }),
                 );
       //Template for methods
       var methodTemplate =
