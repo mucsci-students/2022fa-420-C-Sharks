@@ -137,13 +137,34 @@
                     {
                       click: function(e, obj) {
                         e.diagram.commit(function(d) {
-                           let method = prompt("Enter a Method: ");
+                           let method = createMethod();
                            let methodList = obj.part.adornedPart.data.methodBinding.push(method);
                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'methods', methodList);
                            myDiagram.updateAllTargetBindings();
                         });}
                     })
                 );
+      //Template for methods
+      var methodTemplate =
+        $(go.Panel, "Horizontal",
+          $(go.TextBlock,
+            { isMultiline: false, editable: false, width: 12 }),
+          $(go.TextBlock,
+            { isMultiline: false, editable: true },
+            new go.Binding("text", "methodName").makeTwoWay()),
+          // method parameters
+          $(go.TextBlock, "()",
+            new go.Binding("text", "methodParams", function (par) {
+              var s = "(";
+              for (var i = 0; i < par.length; i++) {
+                var param = par[i];
+                if (i > 0) s += ", ";
+                s += param.name + ": " + param.type;
+              }
+              return s + ")";
+            }))
+        );
+
 
         myDiagram.nodeTemplate =
             $(go.Node, "Auto",
@@ -183,12 +204,13 @@
                     ),
                    $(go.TextBlock, "fields",
                       { row: 3, font: "italic 10pt sans-serif" },
-                      new go.Binding("visible", "visible", v => !v).ofObject("fields")),
+                   new go.Binding("visible", "visible", v => !v).ofObject("fields")
+                   ),
                     $("PanelExpanderButton", "fields",
                         { row: 3, column: 1 }),
                     $(go.Panel, "Vertical",
                         {
-                            name: "fields", row: 3, column: 0, columnSpan: 2
+                            name: "fields", row: 3
 
                         },
                         new go.Binding("itemArray", "fields").makeTwoWay()
@@ -196,12 +218,13 @@
                     ),
                    $(go.TextBlock, "methods",
                       { row: 4, font: "italic 10pt sans-serif" },
-                      new go.Binding("visible", "visible", v => !v).ofObject("methods")),
+                   new go.Binding("visible", "visible", v => !v).ofObject("methods")                   
+                   ),
                     $("PanelExpanderButton", "methods",
                         { row: 4, column: 1 }),
                     $(go.Panel, "Vertical",
                         {
-                            name: "methods", row: 5, column: 0, columnSpan: 2
+                            name: "methods", row: 4, itemTemplate: methodTemplate
 
                         },
                         new go.Binding("itemArray", "methodBinding").makeTwoWay()
@@ -307,7 +330,7 @@
         //Work in progress, trying to make offset when node is created
         var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 30), Math.floor(Math.random() * 30)));
         //alert(loc);
-        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: false });
+        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: true });
         classNames.push(string(promptName));
 
     }
@@ -397,6 +420,27 @@
         }
         var file = document.getElementById('file-selector').files[0];
         reader.readAsText(file);
+    }
+
+    //prompts user for info to create a field
+    function createField(){
+        let fieldName = prompt("Please enter the field name");
+        let fieldType = prompt("Please specify the field type");
+        return {fieldType: fieldType, fieldName: fieldName};
+    }
+
+    //prompts user for info to create a method
+    function createMethod(){
+        methodParams = [];
+        let methodName = prompt("Please enter the method name");
+        let num = prompt("Please specify the number of parameters for " + methodName);
+        for (let i = 0; i < num; i++){
+            let methodParam = prompt("Please type parameter " + String(i+1) +  "'s name");
+            let methodType = prompt("Please type " + methodParam + "'s type");
+            methodParams.push({name: methodParam, type: methodType});
+        }
+
+        return {methodName: methodName, methodParams: methodParams};
     }
 
     </script>
