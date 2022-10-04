@@ -15,6 +15,7 @@
         load,
         import,
         export,
-        help
+        help,
+        print
     }
 }
