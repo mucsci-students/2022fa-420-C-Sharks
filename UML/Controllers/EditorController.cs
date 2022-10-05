@@ -31,7 +31,7 @@ namespace UML.Controllers
             var collection = db.GetCollection<DiagramModel>(collectionName);
             var results = collection.Find(x => x.Username == model._id).ToList();
             ViewBag.id = model._id;
-            return View(new EditorViewModel());
+            return View(new EditorViewModel{ userid = model._id});
 		}
 
 		[HttpPost]
@@ -61,7 +61,8 @@ namespace UML.Controllers
 			return View(model);
 
         }
-
+        // changed ConvertNsave to take in a view model
+        // and added some null checks
 		public static int ConvertNsave(EditorViewModel model)
 		{
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";

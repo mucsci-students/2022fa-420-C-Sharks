@@ -11,10 +11,12 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
+        <!-- to pass messages from controller to user-->
         @if (TempData["Message"] != null)
         {
             <span class="text-danger">@TempData["Message"]</span>
         }
+        <!-- Form for capturing user information to create a new user-->
         <form asp-action="Signup">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">

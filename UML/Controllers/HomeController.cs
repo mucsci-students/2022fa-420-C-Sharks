@@ -23,6 +23,7 @@ namespace UML.Controllers
         {
             return View(new LoginViewModel());
         }
+        // this handles logins of existing users
         [HttpPost]
         public IActionResult Index(LoginViewModel model) 
         {
@@ -31,6 +32,7 @@ namespace UML.Controllers
                 TempData["Message"] = "Model invalid. Please try again.";
                 return View();
             }
+            // connect to db and get a list of users
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
             string databaseName = "uml_db";
             string collectionName = "users";
@@ -43,6 +45,8 @@ namespace UML.Controllers
             // Convert that list to json
             //var json = collection.Find(x => x.Username == model.Username).ToJson();
             var index = userList.Count;
+            // We are guaranteed that we have unique usernames from signup but this ensures
+            // that if a user would have the same name as another that they can still login.
             while (index > 0)
             {
                 if (userList[index-1].Password == model.Password)
@@ -85,13 +89,14 @@ namespace UML.Controllers
             {
                 return RedirectToAction("signup");
             }
-
+            // connects to database and grabs diagrams that match the user ID
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
             var databaseName = "diagrams";
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase(databaseName);
             var collection = db.GetCollection<DiagramModel>("diagrams");
             var results = collection.Find(x => x.Username == model._id).ToList();
+            // give the list of matching Diagrams to the view bag for the view to access
             ViewBag.list = results;
             ViewBag.id = model._id;
             ViewBag.username = model.Username;
@@ -100,7 +105,7 @@ namespace UML.Controllers
         }
 
 
-
+        // Returns a blank user model for the user to fill out
         [HttpGet]
         public ActionResult Signup()
         {
@@ -109,6 +114,7 @@ namespace UML.Controllers
         [HttpPost]
         public ActionResult Signup(UserModel model)
         {
+            // connect to database and searchs for usernames given by the user
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
             string databaseName = "uml_db";
             string collectionName = "users";
@@ -116,6 +122,7 @@ namespace UML.Controllers
             var db = client.GetDatabase(databaseName);
             var collection = db.GetCollection<UserModel>(collectionName);
             var results = collection.Find(x => x.Username == model.Username).ToList();
+            // if no existing usernames exist the user can have that username and creates the user in db
             if (results.Count == 0)
             {
                 collection.InsertOne(model);

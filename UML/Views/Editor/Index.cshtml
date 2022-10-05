@@ -59,14 +59,16 @@
     
     <!--Choose file button-->
     <input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
-    <!-- Input form to capture data to save to server-->
+   
     @model EditorViewModel
+    <!-- To pass messages from controller to the user-->
     @if (TempData["Message"] != null)
     {
         <span>@TempData["Message"]</span>
     }
+    <!-- Input form to capture data to save to server-->
     @using (Html.BeginForm())
-    {   @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { userid = ViewBag.id, type = "hidden"})
+    {   @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { type = "hidden"})
         @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { id = "mySavedModel", style = "width:100%;height:100px" })
 
         <input type="submit" value="saveToServer" />
