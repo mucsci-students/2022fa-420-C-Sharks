@@ -2,8 +2,7 @@
 {
     public class SingleRelationsModel
     {
-        public string source { get; set; }
-        public string destinantion { get; set; }
-        public string type { get; set; }
+        public string from { get; set; }
+        public string to { get; set; }
     }
 }
