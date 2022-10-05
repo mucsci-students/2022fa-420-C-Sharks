@@ -267,7 +267,6 @@ C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\ne
 C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\MessagePack.Annotations.dll
 C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.Bcl.AsyncInterfaces.dll
-C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.Build.Locator.dll
 C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.CodeAnalysis.AnalyzerUtilities.dll
 C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.CodeAnalysis.dll
 C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.CodeAnalysis.CSharp.dll
@@ -763,3 +762,7 @@ C:\Users\Hahng\Source\Repos\2022fa-420-C-Sharks\UML\obj\Debug\net6.0\refint\UML.
 C:\Users\Hahng\Source\Repos\2022fa-420-C-Sharks\UML\obj\Debug\net6.0\UML.pdb
 C:\Users\Hahng\Source\Repos\2022fa-420-C-Sharks\UML\obj\Debug\net6.0\UML.genruntimeconfig.cache
 C:\Users\Hahng\Source\Repos\2022fa-420-C-Sharks\UML\obj\Debug\net6.0\ref\UML.dll
+C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.AspNetCore.Identity.MongoDB.dll
+C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.Build.dll
+C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.Build.Framework.dll
+C:\Users\bscha\Source\Repos\mucsci-students\2022fa-420-C-Sharks\UML\bin\Debug\net6.0\Microsoft.NET.StringTools.dll

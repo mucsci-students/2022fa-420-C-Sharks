@@ -8,7 +8,9 @@ namespace UML.Models
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
         public string _id { get; set; }
-        public string username { get; set; }
+        [BsonRequired]
+        public string Username { get; set; }
+        [BsonRequired]
         public string Password { get; set; }
 
     }

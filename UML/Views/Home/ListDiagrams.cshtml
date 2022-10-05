@@ -1,0 +1,31 @@
+﻿@using UML.Models
+@{
+    ViewData["Title"] = "Saved Diagrams";
+}
+@if (ViewBag.test != null)
+{
+    <span>@ViewBag.test</span>
+}
+<div>
+    <input type="button" value="NEW" onclick="@("window.location.href='" + @Url.Action("index", "Editor", new {_id = ViewBag.id, Username = ViewBag.username, Password = ViewBag.password}) + "'");" />
+</div>
+<div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Diagram Name</th>
+                <th scope="col">Enter Diagram</th>
+            </tr>
+        </thead>
+
+    </table>
+    <!--(at symbal)foreach (var item in ViewBag.list)
+    {
+        <tbody>
+            <tr>
+                <th scope="row">(at symbol)item.Name</th>
+                <td><a asp-controller="Editor" asp-action="index"></a></td> 
+            </tr>
+        </tbody>
+    }-->
+</div>

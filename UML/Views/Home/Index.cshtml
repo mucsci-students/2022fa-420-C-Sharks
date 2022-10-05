@@ -1,8 +1,17 @@
-﻿@{
+﻿@using UML.Models.ViewModels
+@{
     ViewData["Title"] = "Home Page";
 }
-
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<p>Hello and Welcome to CSharks UML Editor. Please Login to continue.</p>
+@if (TempData["Message"] != null)
+{
+    <span>@TempData["Message"]</span>
+}
+@model LoginViewModel
+@using (Html.BeginForm())
+{
+    @Html.TextBoxFor(UserModel=>UserModel.Username, new {placeholder="Username"})
+    @Html.TextBoxFor(UserModel=>UserModel.Password, new {placeholder="Password", type="password"})
+    <input type="Submit" value="Login" />
+}
+<p> If you are new here please create a login <a href="/home/Signup/">Here</a>.</p>
