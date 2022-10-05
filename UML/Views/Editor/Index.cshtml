@@ -102,15 +102,6 @@
                           d.remove(button.part.adornedPart);
                         });}
                     }),
-                 $("ContextMenuButton",
-                 $(go.TextBlock, "Edit attribute"),
-                    {
-                      click: function(e, obj) {
-                        e.diagram.commit(function(d) {
-                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
-                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
-                        });}
-                    }),
                $("ContextMenuButton",
                  $(go.TextBlock, "Change Color"),
                     {
@@ -322,7 +313,7 @@
                     fromSpot: go.Spot.AllSides,
                     toSpot: go.Spot.AllSides
                 },
-                new go.Binding("location", "loc", go.Point.parse).makeTwoWay(),
+                new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
                 $(go.Shape,
                     {
                         //Specify ports, this needs to be here for node to be linkable
