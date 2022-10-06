@@ -102,15 +102,6 @@
                           d.remove(button.part.adornedPart);
                         });}
                     }),
-                 $("ContextMenuButton",
-                 $(go.TextBlock, "Edit attribute"),
-                    {
-                      click: function(e, obj) {
-                        e.diagram.commit(function(d) {
-                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
-                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
-                        });}
-                    }),
                $("ContextMenuButton",
                  $(go.TextBlock, "Change Color"),
                     {
@@ -121,6 +112,198 @@
                             myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'color', color);
                         });}
                     }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Add Field"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let field = createField();
+                           let fieldList = obj.part.adornedPart.data.fields.push(field);
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Add Method"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let method = createMethod();
+                           let methodList = obj.part.adornedPart.data.methodBinding.push(method);
+                           myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'methods', methodList);
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Remove Method"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let selectedMethod = prompt("Please type the name of the method you want to remove: ");
+                           let methodIndex = obj.part.adornedPart.data.methodBinding.findIndex(method => method.methodName === selectedMethod);
+                           if(methodIndex !== -1)
+                           {
+                               let updatedBinding = obj.part.adornedPart.data.methodBinding.splice(methodIndex,1);
+                               myDiagram.model.setDataProperty(obj.part.adornedPart.data, obj.part.adornedPart.data.methodBinding, updateClassNames);
+                           }
+                           else{
+                               alert("Error: Method does not exist");
+                           }
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Change Method Return Type"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let selectedMethod = prompt("Please type the name of the method you want to change: ");
+                           let methodIndex = obj.part.adornedPart.data.methodBinding.findIndex(method => method.methodName === selectedMethod);
+                           if(methodIndex !== -1)
+                           {
+                               let input = prompt("Please enter the new return type: ");
+                               if(input){
+                                   let updatedBinding = obj.part.adornedPart.data.methodBinding;
+                                   updatedBinding[methodIndex].return_type = input; 
+                                   myDiagram.model.setDataProperty(obj.part.adornedPart.data, obj.part.adornedPart.data.methodBinding, updateClassNames);
+                               }
+                               else{
+                                   input = "void";
+                                   let updatedBinding = obj.part.adornedPart.data.methodBinding;
+                                   updatedBinding[methodIndex].return_type = input; 
+                                   myDiagram.model.setDataProperty(obj.part.adornedPart.data, obj.part.adornedPart.data.methodBinding, updateClassNames);
+                               }
+                           }
+                           else{
+                               alert("Error: Method does not exist");
+                           }
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Change Method Parameter"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let selectedMethod = prompt("Please Type the Method to Change:");
+                           let methodIndex = obj.part.adornedPart.data.methodBinding.findIndex(method => method.methodName === selectedMethod);
+                           if(methodIndex !== -1)
+                           {
+                               let selectedParam = prompt("Please Type the Parameter to Change:");
+                               let paramIndex = obj.part.adornedPart.data.methodBinding[methodIndex].methodParams.findIndex(param => param.name === selectedParam);
+                                if (paramIndex !== -1)
+                                {
+                                    let newType = prompt("Please enter a new type or press ok to skip: ");
+                                    let newName = prompt("Please enter a new name or press ok to skip: ");
+                                    let param = obj.part.adornedPart.data.methodBinding[methodIndex].methodParams[paramIndex];
+
+                                    let updatedBinding = obj.part.adornedPart.data.methodBinding;
+
+                                    if(newType){updatedBinding[methodIndex].methodParams[paramIndex].type = newType;}
+                                    if(newName){updatedBinding[methodIndex].methodParams[paramIndex].name = newName;}
+                                    myDiagram.model.setDataProperty(obj.part.adornedPart.data, obj.part.adornedPart.data.methodBinding, updateClassNames);
+                                }
+                               else{
+                                   alert("Parameter does not exist");
+                               }
+                           }
+                           else{
+                               alert("The method typed does not exist");
+                           }
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    }),
+             $("ContextMenuButton",
+                 $(go.TextBlock, "Add Parameter to Method"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let selectedMethod = prompt("Please Type the Method to Add a Parameter to:");
+                           let methodIndex = obj.part.adornedPart.data.methodBinding.findIndex(method => method.methodName === selectedMethod);
+                           if(methodIndex !== -1)
+                           {
+
+                                    let newType = prompt("Please enter the parameter's type:");
+                                    let newName = prompt("Please enter the parameters's name:");
+                                    let updatedBinding = obj.part.adornedPart.data.methodBinding;
+
+                                    if(newType && newName){updatedBinding[methodIndex].methodParams.push({name: newName, type: newType});} else{alert("Error: Name or Type was Blank");}
+
+                                    myDiagram.model.setDataProperty(obj.part.adornedPart.data, obj.part.adornedPart.data.methodBinding, updateClassNames);
+                           }
+                           else {
+                               alert("The method typed does not exist");
+                           }
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    }),
+             $("ContextMenuButton",
+                 $(go.TextBlock, "Remove Parameter from Method"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let selectedMethod = prompt("Please Type the Method to Remove a Parameter From:");
+                           let methodIndex = obj.part.adornedPart.data.methodBinding.findIndex(method => method.methodName === selectedMethod);
+                           if(methodIndex !== -1)
+                           {
+
+                                    let selectedParam = prompt("Please enter the parameter name you want to remove: ");
+                                    let updatedBinding = obj.part.adornedPart.data.methodBinding;
+                                    let paramIndex = obj.part.adornedPart.data.methodBinding[methodIndex].methodParams.findIndex(param => param.name === selectedParam);
+
+                                    if(paramIndex !== -1)
+                                    {
+                                        if(selectedParam){updatedBinding[methodIndex].methodParams.splice(paramIndex, 1)}
+                                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, obj.part.adornedPart.data.methodBinding, updateClassNames);
+                                    }
+                                    else{
+                                        alert("Error: The parameter entered does not exist");
+                                    }
+                                   
+                           }
+                           else {
+                               alert("The method typed does not exist");
+                           }
+                           myDiagram.updateAllTargetBindings();
+                        });}
+                    })
+                );
+      //Template for methods
+      var methodTemplate =
+        $(go.Panel, "Horizontal",
+          $(go.TextBlock,
+            { isMultiline: false, editable: false, width: 12 }),
+          $(go.TextBlock,
+            { isMultiline: false, editable: true },
+            new go.Binding("text", "methodName").makeTwoWay()),
+          // method parameters
+          $(go.TextBlock, "()",
+            new go.Binding("text", "methodParams", function (par) {
+              var s = "(";
+              for (var i = 0; i < par.length; i++) {
+                var param = par[i];
+                if (i > 0) s += ", ";
+                s += param.name + ": " + param.type;
+              }
+              return s + ")";
+            })),
+          $(go.TextBlock, "",
+            new go.Binding("text", "return_type", t => t ? ": " : "")),
+          $(go.TextBlock,
+            { isMultiline: false, editable: true },
+            new go.Binding("text", "return_type").makeTwoWay())
+        );
+        var fieldTemplate =
+                $(go.Panel, "Horizontal",
+                  $(go.TextBlock,
+                    { isMultiline: false, editable: false, width: 12 }),
+                  $(go.TextBlock,
+                    { isMultiline: false, editable: true },
+                    new go.Binding("text", "fieldName").makeTwoWay()),
+                  $(go.TextBlock, "",
+                    new go.Binding("text", "fieldType", t => t ? ": " : "")),
+                  $(go.TextBlock,
+                    { isMultiline: false, editable: true },
+                    new go.Binding("text", "fieldType").makeTwoWay())
                 );
 
         myDiagram.nodeTemplate =
@@ -130,6 +313,7 @@
                     fromSpot: go.Spot.AllSides,
                     toSpot: go.Spot.AllSides
                 },
+                new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
                 $(go.Shape,
                     {
                         //Specify ports, this needs to be here for node to be linkable
@@ -140,7 +324,6 @@
                     },
                     //bind the 'fill' command with the color stored in the node data. Color is passed from js prompt
                     new go.Binding("fill", "color"),
-                    new go.Binding("location", "loc").makeTwoWay(),
                 ),
                 //places panel inside the above shape
                 $(go.Panel, "Table",
@@ -148,25 +331,43 @@
                         defaultAlignment: go.Spot.Top, defaultColumnSeparatorStroke: "black"
                     },
                     $(go.Panel, "Table",
-                        { column: 0 },
+                        { row: 1, column: 0 },
                         $(go.TextBlock,
                             {
                                 editable: true,
-                                column: 0, margin: new go.Margin(3, 3, 0, 3),
+                                row: 0, columnSpan: 2, margin: 3, alignment: go.Spot.Center,
                                 font: "bold 12pt sans-serif",
                                 isMultiline: false,  // don't allow embedded newlines
                                 textValidation: checkDuplicates
                             },
                             new go.Binding("text", "className").makeTwoWay())
                     ),
-                    $("PanelExpanderButton", "LIST1",
-                        { column: 1 }),
+                   $(go.TextBlock, "fields",
+                      { row: 3, font: "italic 10pt sans-serif" },
+                   new go.Binding("visible", "visible", v => !v).ofObject("fields")
+                   ),
+                    $("PanelExpanderButton", "fields",
+                        { row: 3, column: 1 }),
                     $(go.Panel, "Vertical",
                         {
-                            name: "LIST1", row: 1, column: 0, columnSpan: 2
+                            name: "fields", row: 3, itemTemplate: fieldTemplate
 
                         },
-                        new go.Binding("itemArray", "list1").makeTwoWay()
+                        new go.Binding("itemArray", "fields").makeTwoWay()
+
+                    ),
+                   $(go.TextBlock, "methods",
+                      { row: 4, font: "italic 10pt sans-serif" },
+                   new go.Binding("visible", "visible", v => !v).ofObject("methods")                   
+                   ),
+                    $("PanelExpanderButton", "methods",
+                        { row: 4, column: 1 }),
+                    $(go.Panel, "Vertical",
+                        {
+                            name: "methods", row: 4, itemTemplate: methodTemplate
+
+                        },
+                        new go.Binding("itemArray", "methodBinding").makeTwoWay()
 
                     ),
                 )
@@ -264,12 +465,14 @@
         let promptName = "Enter a Class Name...";
         let defaultColor = "white";
         //splits input string into indvidual attributes and stores them in an array
-        var attributes = prompt("Enter your attributes seperated by commas:").split(",");
+        let fields = [];
+        let methods = [];
         //Work in progress, trying to make offset when node is created
-        var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 30), Math.floor(Math.random() * 30)));
+        var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 200), Math.floor(Math.random() * 200)));
         //alert(loc);
-        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, list1: attributes, className: promptName });
-        classNames.push(string(promptName));
+        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: true });
+
+        classNames.push(String(promptName));
 
     }
 
@@ -358,6 +561,30 @@
         }
         var file = document.getElementById('file-selector').files[0];
         reader.readAsText(file);
+    }
+
+    //prompts user for info to create a field
+    function createField(){
+        let fieldName = prompt("Please enter the field name");
+        let fieldType = prompt("Please specify the field type");
+        return {fieldType: fieldType, fieldName: fieldName};
+    }
+
+    //prompts user for info to create a method
+    function createMethod(){
+        methodParams = [];
+        let methodName = prompt("Please enter the method name");
+        let returnType = prompt("Please enter " + methodName + "'s return type or leave blank if void: ")
+        if(!returnType){returnType = "void";}
+
+        let num = prompt("Please specify the number of parameters for " + methodName);
+        for (let i = 0; i < num; i++){
+            let methodParam = prompt("Please type parameter " + String(i+1) +  "'s name");
+            let paramType = prompt("Please type " + methodParam + "'s type");
+            methodParams.push({name: methodParam, type: paramType});
+        }
+
+        return {methodName: methodName, return_type: returnType, methodParams: methodParams};
     }
 
     </script>
