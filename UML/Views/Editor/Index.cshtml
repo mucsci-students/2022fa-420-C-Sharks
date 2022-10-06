@@ -54,14 +54,26 @@
 </nav>
     <!--End of Toolbar buttons-->
 
+    <!--Start Color Picker-->
+    <div id = "colorPicker">
+        <label for="color">Select a color:</label>
+        <input type="color" id="color" name="color" value="#ff0000">
+    </div>
+    <!--End Color Picker-->
+
     <!-- Start Interface code -->
     <div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>
+    
+    <!--Save Text Area-->
     <textarea id="mySavedModel" style="width:100%;height:200px">{ "class": "go.GraphLinksModel",</textarea>
+    
+    <!--Choose file button-->
+    <input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
 
     @model EditorViewModel
     @using (Html.BeginForm())
     {
-        @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { id = "mySavedModel", style = "width:100%;height:300px" })
+        @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { id = "mySavedModel", style = "width:100%;height:100px" })
 
         <input type="submit" value="saveToServer" />
     }
@@ -72,12 +84,44 @@
     <script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
 
     <script>
+
         //keeps track of class names
         var classNames = new Array();
         const $ = go.GraphObject.make;
         const myDiagram =
             $(go.Diagram, "myDiagramDiv",
                 { "undoManager.isEnabled": true });
+        //Context Menu for Nodes
+        var nodeMenu =
+                  $("ContextMenu",
+                  $("ContextMenuButton",
+                    $(go.TextBlock, "Delete"),
+                    {
+                      click: function(e, button) {
+                        e.diagram.commit(function(d) {
+                          d.remove(button.part.adornedPart);
+                        });}
+                    }),
+                 $("ContextMenuButton",
+                 $(go.TextBlock, "Edit attribute"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
+                        });}
+                    }),
+               $("ContextMenuButton",
+                 $(go.TextBlock, "Change Color"),
+                    {
+                      click: function(e, obj) {
+                        e.diagram.commit(function(d) {
+                           let color =  document.getElementById("color").value;
+
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'color', color);
+                        });}
+                    }),
+                );
 
         myDiagram.nodeTemplate =
             $(go.Node, "Auto",
@@ -128,6 +172,56 @@
                 )
             );
 
+    //Assign context menu for nodes
+    myDiagram.nodeTemplate.contextMenu = nodeMenu;
+
+    //controls the buttons in the contextmenu and what functions they invoke
+    var linkMenu =
+              $("ContextMenu",
+              $("ContextMenuButton",
+                $(go.TextBlock, "Delete"),
+                {
+                  click: function(e, button) {
+                    e.diagram.commit(function(d) {
+                      d.remove(button.part.adornedPart);
+                    });}
+                }),
+             $("ContextMenuButton",
+             $(go.TextBlock, "Aggregation"),
+                {
+                  click: function(e, obj) {
+                    e.diagram.commit(function(d) {
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
+                    });}
+                }),
+             $("ContextMenuButton",
+             $(go.TextBlock, "Composition"),
+                {
+                  click: function(e, obj) {
+                    e.diagram.commit(function(d) {
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', 'black');
+                    });}
+                }),
+             $("ContextMenuButton",
+             $(go.TextBlock, "Inheritance"),
+                {
+                  click: function(e, obj) {
+                    e.diagram.commit(function(d) {
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'Triangle');
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
+                    });}
+                }),
+                         $("ContextMenuButton",
+             $(go.TextBlock, "Realization"),
+                {
+                  click: function(e, obj) {
+                    e.diagram.commit(function(d) {
+                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'Triangle');
+                    });}
+                })
+            );
     myDiagram.linkTemplate =
       $(go.Link,
         {
@@ -135,14 +229,19 @@
           relinkableFrom: true, relinkableTo: true,
           // draw the link path shorter than normal,
           // so that it does not interfere with the appearance of the arrowhead
-          toShortLength: 2
+          toShortLength: 2,
+          contextMenu: linkMenu    // define a context menu for each node
+
         },
         $(go.Shape,
-          { strokeWidth: 2 }),
+          { strokeWidth: 3 }),
         $(go.Shape,
-          { toArrow: "Standard", stroke: null })
+          { stroke: 'black',  scale: 2, strokeWidth: 1 },
+           new go.Binding("toArrow", "toArrow").makeTwoWay(),
+           new go.Binding("fill", "fill").makeTwoWay()
+         )
             );
-
+    
     //add data here if you want nodes to be loaded on default
     myDiagram.model = new go.GraphLinksModel(
       [
@@ -153,57 +252,42 @@
         if (evt.isTransactionFinished) updateClassNames();
     });
 
-    //Context menu
-    myDiagram.nodeTemplate.contextMenu =
-        $("ContextMenu",
-        $("ContextMenuButton",
-            $(go.TextBlock, "Shift Left"),
-            { click: function(e, obj) {
-                //action on click
-                alert("hello");
-            } }),
-        $("ContextMenuButton",
-            $(go.TextBlock, "Shift Right"),
-            { click: function(e, obj) {
-                //action on click
-                alert("hello");
-            } })
-            );
+    myDiagram.addDiagramListener('LinkDrawn', function(e) {
+        var link = e.subject;
+        myDiagram.model.setDataProperty(link.data, 'toArrow', 'triangle');
+    });
 
 
-//Add new class
+    //Add new class
     function addClass() {
         //initial prompt name
         let promptName = "Enter a Class Name...";
-        let color = prompt("Please type a color:");
+        let defaultColor = "white";
         //splits input string into indvidual attributes and stores them in an array
         var attributes = prompt("Enter your attributes seperated by commas:").split(",");
         //Work in progress, trying to make offset when node is created
         var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 30), Math.floor(Math.random() * 30)));
         //alert(loc);
-        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: color, list1: attributes, className: promptName });
+        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, list1: attributes, className: promptName });
         classNames.push(string(promptName));
 
     }
 
-    function download() {
-        alert("hi");
-        let save = myDiagram.model.toJson();
-        myDiagram.isModified = false;
-        createFile("save.txt", save);
+    function downloadFile() {
+        download();
     }
+
 
     function save() {
         let save = myDiagram.model.toJson();
         document.getElementById("mySavedModel").value = save;
-        //@ViewBag.DiagramData = save;
+       // @{}ViewBag.DiagramData = save;
         myDiagram.isModified = false;
         updateClassNames();
     }
 
     function load() {
         myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
-        alert(String('@ViewBag.MyVariable'));
     }
 
     function helpMenuDropdown() {
@@ -259,7 +343,21 @@
           document.body.removeChild(element);
     }
 
+    function download() {
+        let save = myDiagram.model.toJson();
+        myDiagram.isModified = false;
+        createFile("save.json", save);
+    }
 
-
+    //grabs the first file uploaded to the 'file' html element and once succesfully uploaded, the callback function onload is invoked
+    // storing the result in the mySavedModel textarea
+    function openFromFile(){
+        reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('mySavedModel').value = reader.result;
+        }
+        var file = document.getElementById('file-selector').files[0];
+        reader.readAsText(file);
+    }
 
     </script>
