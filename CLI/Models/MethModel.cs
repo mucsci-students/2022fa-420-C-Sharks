@@ -6,6 +6,6 @@ namespace UML.Models
     {
         public string name { get; set; }
         public string return_type { get; set; }
-        public Fields[] parameters { get; set; }
+        public Fields[] @params { get; set; }
     }
 }

@@ -10,6 +10,8 @@ using System;
 using System.Net;
 using System.Collections.Generic;
 using System.Numerics;
+using System.IO;
+using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
@@ -95,11 +97,11 @@ namespace CLI.Controllers
             }
             else if (input == Commands.import)
             {
-
+                importJson();
             }
             else if (input == Commands.export)
             {
-
+                exportJson();
             }
             else if (input == Commands.print)
             {
@@ -205,7 +207,7 @@ namespace CLI.Controllers
             Console.WriteLine("Enter type of relation:");
             string InputRR = Console.ReadLine();
             Console.WriteLine("Relation added:");
-            OverRelations.Add(new SingleRelationsModel { source = InputRF, destinantion = InputRT, type = InputRR });
+            OverRelations.Add(new SingleRelationsModel { source = InputRF, destination = InputRT, type = InputRR });
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -334,9 +336,9 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Enter method name:");
             string InputM = Console.ReadLine();
-            if (OverScreen[Hold].fields != null)
+            if (OverScreen[Hold].methods != null)
             {
-                for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                 {
                     if (OverScreen[Hold].methods[CNT].Equals(InputM))
                     {
@@ -386,15 +388,15 @@ namespace CLI.Controllers
             }
             Console.WriteLine("meth added:");
             //static List<ScreenModel> OverScreen = new List<ScreenModel> { };
-            if (OverScreen[Hold].fields == null)
+            if (OverScreen[Hold].methods == null)
             {
-                tempM.Add(new Methods { name = InputM, return_type = InputR, parameters = tempF.ToArray() });
+                tempM.Add(new Methods { name = InputM, return_type = InputR, @params = tempF.ToArray() });
                 OverScreen[Hold].methods = tempM.ToArray();
             }
             else
             {
                 tempM = OverScreen[Hold].methods.ToList();
-                tempM.Add(new Methods { name = InputM, return_type = InputR, parameters = tempF.ToArray() });
+                tempM.Add(new Methods { name = InputM, return_type = InputR, @params = tempF.ToArray() });
                 OverScreen[Hold].methods = tempM.ToArray();
             }
         }
@@ -525,7 +527,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverRelations.Count; CNT++)
             {
-                if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destinantion.Equals(InputT)) && (OverRelations[CNT].destinantion.Equals(InputT)))
+                if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -542,7 +544,7 @@ namespace CLI.Controllers
                 InputR = Console.ReadLine();
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destinantion.Equals(InputT)) && (OverRelations[CNT].destinantion.Equals(InputT)))
+                    if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -631,7 +633,18 @@ namespace CLI.Controllers
         }
         public static void PrintArray()
         {
-            int CNT;
+            foreach (var item in OverScreen)
+            {
+                Console.WriteLine(item);
+            }
+            foreach (var item in OverRelations)
+            {
+                Console.WriteLine(item);
+            }
+
+
+
+            /*int CNT;
             Console.WriteLine("Objects");
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
@@ -642,8 +655,164 @@ namespace CLI.Controllers
             {
                 Console.WriteLine(OverRelations[CNT].ToString());
             }
-            Console.WriteLine();
+            Console.WriteLine();*/
         }
+
+
+
+        public static void exportJson()
+        {
+            // Specify a name for your top-level folder.
+            string folderName = @"c:\UML-Saves";
+
+            // To create a string that specifies the path to a subfolder under your
+            // top-level folder, add a name for the subfolder to folderName.
+            string pathString = System.IO.Path.Combine(folderName, "C-Sharks-Editor");
+
+            // can extend the depth of your path if you want to.
+            // pathString = System.IO.Path.Combine(pathString, "SubSubFolder");
+
+            // Create subfolder. This structure should be able to be seen in File Explorer after export finalizes
+            // 
+            //    Local Disk (C:)
+            //        UML-Saves
+            //            C-Sharks-Editor
+            System.IO.Directory.CreateDirectory(pathString);
+
+            // Create a file name for the file you want to create.
+            Console.WriteLine("ENTER NAME OF FILE TO BE CREATED, WITHOUT FILE TYPE/EXTENSION");
+            string fileName = Console.ReadLine();
+            fileName += ".json";
+
+            // Combine again adds file name to the path.
+            pathString = System.IO.Path.Combine(pathString, fileName);
+
+            // Verify path that was constructed, also informs user of export location.
+            Console.WriteLine("PATH TO MY FILE: {0}\n", pathString);
+
+            // Check that the file doesn't already exist. If it doesn't exist, create
+            // the file and write the classes array, and the relationships array.
+            // System.IO.File.Create will overwrite  file if it exists.
+            // could happen with random file names, although unlikely.
+            if (!System.IO.File.Exists(pathString))
+            {
+                using (System.IO.FileStream fs = System.IO.File.Create(pathString))
+                {
+                    var Exp = new ExportModel { classes = OverScreen.ToArray(), relationships = OverRelations.ToArray() };
+                    JsonSerializer.SerializeAsync(fs, Exp);
+                }
+            }
+            else
+            {
+                Console.WriteLine("File \"{0}\" already exists.", fileName);
+                return;
+            }
+        }
+
+
+
+
+        public static void importJson()
+        {
+            string filename;
+            string folderName = @"c:\UML-Saves";
+            folderName = System.IO.Path.Combine(folderName, "C-Sharks-Editor");
+            Console.WriteLine("PLEASE ENTER VALID FILE NAME IN ( C:/UML-Saves/C-Sharks-Editor/ ) TO IMPORT");
+            filename = Console.ReadLine();
+            filename = System.IO.Path.Combine(folderName, filename);
+            //combine the folder used for saving with the given filename and make 
+            List<Fields> fieldList = new List<Fields> { };
+            if (System.IO.File.Exists(filename))
+            {
+                //if the file exists, make a new list of screenmodels 
+                List<ScreenModel> ScreenList = new List<ScreenModel> { };
+                //get the file input
+                string jsonString = System.IO.File.ReadAllText(filename);
+                //parse it IDK thats what galen said
+                var json = JObject.Parse(jsonString);
+                var jclasses = json["classes"];
+                var jrelations = json["relationships"];
+                foreach (JObject obj in jclasses)
+                {
+                    //for every class there is, it will need a custom method list and field list 
+                    List<Methods> MethList = new List<Methods> { };
+                    List<Fields> FieldList = new List<Fields> { };
+                    var jmethods = obj["methods"];
+                    //save the name of the class
+                    var nameHoldClass = obj.GetValue("name").ToString();
+
+
+                    //check each field in class
+                    var jfield = obj["fields"];
+                    foreach (JObject field in jfield)
+                    {
+                        FieldList.Add(new Fields
+                        {
+                            name = field.GetValue("name").ToString(),
+                            type = field.GetValue("type").ToString()
+                        });
+                    }
+
+                    //then check every method of a given class
+                    foreach (JObject meth in jmethods)
+                    {
+                        //save the name and return type for the given method
+                        List<Fields> parameters = new List<Fields> { };
+                        var nameHoldMeth = meth.GetValue("name").ToString();
+                        var retHold = meth.GetValue("return_type").ToString();
+                        var paramets = meth["params"];
+
+
+                        //then save a list of params 
+                        foreach (JObject param in paramets)
+                        {
+                            parameters.Add(new Fields
+                            {
+                                name = param.GetValue("name").ToString(),
+                                type = param.GetValue("type").ToString()
+                            });
+                        }
+                        //and add a new method to the list using saved values and the parameterlist.toArray
+                        MethList.Add(new Methods
+                        {
+                            name = nameHoldMeth,
+                            return_type = retHold,
+                            @params = parameters.ToArray()
+                        });
+                    }
+
+                    //Ayo idk what to put in LOC and KEY
+                    ScreenList.Add(new ScreenModel
+                    {
+                        name = nameHoldClass,
+                        methods = MethList.ToArray(),
+                        fields = FieldList.ToArray(),
+                    });
+                }
+                List<SingleRelationsModel> relations = new List<SingleRelationsModel> { };
+                foreach (JObject rel in jrelations)
+                {
+                    relations.Add(new SingleRelationsModel
+                    {
+                        source = rel.GetValue("source").ToString(),
+                        destination = rel.GetValue("destination").ToString(),
+                        type = rel.GetValue("type").ToString()
+                    });
+                }
+                OverScreen = ScreenList;
+                OverRelations = relations;
+            }
+
+            else
+            {
+                Console.WriteLine("FILE \"{0}\" DOES NOT EXIST, TRY AGAIN, OR ENTER 'HELP'", filename);
+                importJson();
+            }
+        }
+
+
+
+
     }
 }
     
