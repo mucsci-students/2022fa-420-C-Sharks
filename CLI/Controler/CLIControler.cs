@@ -698,7 +698,18 @@ namespace CLI.Controllers
             {
                 using (System.IO.FileStream fs = System.IO.File.Create(pathString))
                 {
-                    var Exp = new ExportModel { classes = OverScreen.ToArray(), relationships = OverRelations.ToArray() };
+                    List<ExportScreenModel> ExpSM = new List<ExportScreenModel>();
+                    for (int Cnt = 0; Cnt < OverScreen.Count(); Cnt++)
+                    {
+                        ExpSM.Add(new ExportScreenModel
+                        {
+                            name = OverScreen[Cnt].name,
+                            fields = OverScreen[Cnt].fields,
+                            methods = OverScreen[Cnt].methods
+                        });
+
+                    }
+                    var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = OverRelations.ToArray() };
                     JsonSerializer.SerializeAsync(fs, Exp);
                 }
             }

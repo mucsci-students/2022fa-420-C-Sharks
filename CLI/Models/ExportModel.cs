@@ -2,7 +2,7 @@
 {
     internal class ExportModel
     {
-        public ScreenModel[] classes { get; set; }
+        public ExportScreenModel[] classes { get; set; }
         public SingleRelationsModel[] relationships { get; set; }
     }
 }
