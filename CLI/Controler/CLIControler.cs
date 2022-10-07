@@ -111,6 +111,18 @@ namespace CLI.Controllers
             {
 
             }
+            else if (input == Commands.list_class)
+            {
+                ListClass();
+            }
+            else if (input == Commands.list_classes)
+            {
+                ListClasses();
+            }
+            else if (input == Commands.list_relat)
+            {
+                ListRelat();
+            }
             else if (input == Commands.import)
             {
                 importJson();
@@ -678,6 +690,96 @@ namespace CLI.Controllers
                 Console.WriteLine(OverRelations[CNT].ToString());
             }
             Console.WriteLine();*/
+        }
+
+        public static void ListClasses()
+        {
+
+            Console.WriteLine("CLASSES: \n");
+            for (int Cnt = 0; Cnt < OverScreen.Count(); Cnt++)
+            {
+                Console.WriteLine("{0}", OverScreen[Cnt].name);
+
+            }
+            Console.WriteLine("");
+
+        }
+
+        public static void ListRelat()
+        {
+
+            Console.WriteLine("RELATIONS \n");
+            List<SingleRelationsModel> display = new List<SingleRelationsModel>();
+            for (int Cnt = 0; Cnt < OverRelations.Count(); Cnt++)
+            {
+                display.Add(new SingleRelationsModel
+                {
+                    source = OverRelations[Cnt].source,
+                    destination = OverRelations[Cnt].destination,
+                    type = OverRelations[Cnt].type
+                });
+
+            }
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(display, Formatting.Indented);
+            Console.WriteLine(json);
+            Console.WriteLine("");
+
+        }
+
+        public static void ListClass()
+        {
+            if (OverScreen.Count() > 0){
+                bool Err = false;
+                Console.WriteLine("Enter Name of class:");
+                string Input = Console.ReadLine();
+                int CNT;
+                int Hold = 0;
+                for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                {
+                    if (OverScreen[CNT].name.Equals(Input))
+                    {
+                        Err = true;
+                        Hold = CNT;
+                    }
+                }
+                while (!Err)
+                {
+                    Console.WriteLine("ERROR");
+                    Console.WriteLine("Enter a unique class name:");
+                    Input = Console.ReadLine();
+                    for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                    {
+                        if (OverScreen[CNT].name.Equals(Input))
+                        {
+                            Err = true;
+                            Hold = CNT;
+                        }
+                        else
+                        {
+                            Err = false;
+                        }
+                    }
+                }
+                Err = false;
+                Console.WriteLine("");
+                List<ExportScreenModel> ExpSM = new List<ExportScreenModel>();
+                ExpSM.Add(new ExportScreenModel
+                {
+                    name = OverScreen[Hold].name,
+                    fields = OverScreen[Hold].fields,
+                    methods = OverScreen[Hold].methods
+                });
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(ExpSM, Formatting.Indented);
+                Console.WriteLine(json);
+                Console.WriteLine("");
+            }
+            else
+            {
+                Console.WriteLine("ERROR");
+                Console.WriteLine("Must add a class first or type 'import'");
+                Console.WriteLine("");
+            }
+
         }
 
 
