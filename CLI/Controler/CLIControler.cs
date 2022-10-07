@@ -4,6 +4,7 @@ using MongoDB.Bson.IO;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NuGet.Protocol;
 using System;
@@ -24,6 +25,7 @@ using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
 using UML.Models;
 using System.Drawing.Printing;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace CLI.Controllers
 {
@@ -37,23 +39,37 @@ namespace CLI.Controllers
             if (input == Commands.help)
             {
                 Console.WriteLine("List of Commands:");
+                Console.WriteLine(" ");
                 Console.WriteLine("Help: Displays a list of commands with brief explanations.");
-                Console.WriteLine("Add_Class: Creates a new class if name is valid. Input an name after the promt.");
-                Console.WriteLine("Add_field: Add a field to a class. Input the class name after the promt, the input name.");
-                Console.WriteLine("Add type after the promt for each.");
-                Console.WriteLine("Add_Meth: Add a method to a class. Input the class name after the promt, the input name,");
-                Console.WriteLine("return type, and enter parameters, after the promt for each.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Add_Class: Creates a new class if name is valid. Input an name after the prompt.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Add_field: Add a field to a class. Input the class name after the prompt, the input name.");
+                Console.WriteLine("And type after the prompt for each.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Add_Meth: Add a method to a class. Input the class name after the prompt, the input name,");
+                Console.WriteLine("return type, and enter parameters, after the prompt for each.");
                 Console.WriteLine("when you have no parameters or none are left enter N.");
-                Console.WriteLine("Rem_Class: Remove a class. Input an name after the promt.");
-                Console.WriteLine("Rem_field: Remove a field from a class. Input the class name and field name after their promt.");
-                Console.WriteLine("Rem_Meth: Remove a method from a class. Input the class name and method name after their promt.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Rem_Class: Remove a class. Input an name after the prompt.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Rem_field: Remove a field from a class. Input the class name and field name after their prompt.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Rem_Meth: Remove a method from a class. Input the class name and method name after their prompt.");
+                Console.WriteLine(" ");
                 Console.WriteLine("relat: Add a relation beween classes. Input the to class name, from class name, and the relation");
-                Console.WriteLine("type after their promt.");
-                Console.WriteLine("Rem_relat: Remove a relation between classes. Input the to class name, and from class name after their promt.");
+                Console.WriteLine("type after their prompt.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Rem_relat: Remove a relation between classes. Input the to class name, and from class name after their prompt.");
+                Console.WriteLine(" ");
                 Console.WriteLine("save: Saves the UML model to the database");
+                Console.WriteLine(" ");
                 Console.WriteLine("load: Loads a UML model from the database");
+                Console.WriteLine(" ");
                 Console.WriteLine("import: Load a UML model from a JSON file");
+                Console.WriteLine(" ");
                 Console.WriteLine("export: Saves a UML as a JSON file locally");
+                Console.WriteLine(" ");
             }
             else if (input == Commands.add_class)
             {
@@ -377,7 +393,7 @@ namespace CLI.Controllers
             string InputT;
             while (InputN != "N")
             {
-                Console.WriteLine("Enter field name:");
+                Console.WriteLine("Enter Parameter name, or 'N' if none or no more:");
                 InputN = Console.ReadLine();
                 if (InputN != "N")
                 {
@@ -385,6 +401,7 @@ namespace CLI.Controllers
                     InputT = Console.ReadLine();
                     tempF.Add(new Fields { name = InputN, type = InputT });
                 }
+                Console.WriteLine(" ");
             }
             Console.WriteLine("meth added:");
             //static List<ScreenModel> OverScreen = new List<ScreenModel> { };
@@ -633,16 +650,21 @@ namespace CLI.Controllers
         }
         public static void PrintArray()
         {
-            foreach (var item in OverScreen)
-            {
-                Console.WriteLine(item);
-            }
-            foreach (var item in OverRelations)
-            {
-                Console.WriteLine(item);
-            }
 
+            List<ExportScreenModel> ExpSM = new List<ExportScreenModel>();
+            for (int Cnt = 0; Cnt < OverScreen.Count(); Cnt++)
+            {
+                ExpSM.Add(new ExportScreenModel
+                {
+                    name = OverScreen[Cnt].name,
+                    fields = OverScreen[Cnt].fields,
+                    methods = OverScreen[Cnt].methods
+                });
 
+            }
+            var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = OverRelations.ToArray() };
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
+            Console.WriteLine(json);
 
             /*int CNT;
             Console.WriteLine("Objects");
@@ -698,6 +720,8 @@ namespace CLI.Controllers
             {
                 using (System.IO.FileStream fs = System.IO.File.Create(pathString))
                 {
+
+
                     List<ExportScreenModel> ExpSM = new List<ExportScreenModel>();
                     for (int Cnt = 0; Cnt < OverScreen.Count(); Cnt++)
                     {
@@ -710,12 +734,13 @@ namespace CLI.Controllers
 
                     }
                     var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = OverRelations.ToArray() };
+                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
                     JsonSerializer.SerializeAsync(fs, Exp);
                 }
             }
             else
             {
-                Console.WriteLine("File \"{0}\" already exists.", fileName);
+                Console.WriteLine("FILE \"{0}\" ALREADY EXISTS.", fileName);
                 return;
             }
         }
@@ -728,7 +753,7 @@ namespace CLI.Controllers
             string filename;
             string folderName = @"c:\UML-Saves";
             folderName = System.IO.Path.Combine(folderName, "C-Sharks-Editor");
-            Console.WriteLine("PLEASE ENTER VALID FILE NAME IN ( C:/UML-Saves/C-Sharks-Editor/ ) TO IMPORT");
+            Console.WriteLine("PLEASE ENTER VALID FILE NAME IN ( C:/UML-Saves/C-Sharks-Editor/ ) TO IMPORT SUCH AS 'MySavedFile.json'");
             filename = Console.ReadLine();
             filename = System.IO.Path.Combine(folderName, filename);
             //combine the folder used for saving with the given filename and make 
@@ -811,13 +836,16 @@ namespace CLI.Controllers
                     });
                 }
                 OverScreen = ScreenList;
+                Console.WriteLine(" ");
+                Console.WriteLine("{0} CLASSES IMPORTED", ScreenList.Count());
+                Console.WriteLine("{0} RELATIONSHIPS IMPORTED", relations.Count());
                 OverRelations = relations;
             }
 
             else
             {
-                Console.WriteLine("FILE \"{0}\" DOES NOT EXIST, TRY AGAIN, OR ENTER 'HELP'", filename);
-                importJson();
+                Console.WriteLine("FILE \"{0}\" DOES NOT EXIST, ENTER 'IMPORT' AND TRY AGAIN, OR ENTER 'HELP'", filename);
+                return;
             }
         }
 
