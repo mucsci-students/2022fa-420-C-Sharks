@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Trevor\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj": {}
+    "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Trevor\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj": {
+    "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Trevor\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
+        "projectUniqueName": "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
         "projectName": "UML",
-        "projectPath": "C:\\Users\\Trevor\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
+        "projectPath": "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
         "packagesPath": "C:\\Users\\Trevor\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Trevor\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\obj\\",
+        "outputPath": "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Trevor\\AppData\\Roaming\\NuGet\\NuGet.Config",

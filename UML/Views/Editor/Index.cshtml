@@ -15,195 +15,198 @@
             <!--End of collapse code-->
             <!--Begin Toolbar buttons-->
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a>
+                <span title="Home">
+                    <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a>
+                </span>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a>
+                <span title="Add New Class">
+                    <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a>
+                </span>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="downloadFile()"><i class="fa fa-arrow-down"></i></a>
+                <span title="Save Diagram">
+                    <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a>
+                </span>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a>
+                <span title="Download Diagram">
+                    <a class="nav-link" href="#" onclick="download()"><i class="fa fa-arrow-down"></i></a>
+                </span>
             </li>
-            <!-- Edit function (pencil - not yet ready)
+
             <li class="nav-item">
-                 <a class="nav-link" href="#" onclick="edit()"><i class="fa fa-pencil"></i></a>
-            </li>
-            -->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a>
-            </li>
-            <!-- Attribute functions (not yet ready)
-            <li class="nav-item">
-            <a class="nav-link" href="#" onclick="addAttribute()"><i class="fa fa-plus-circle"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="removeAttribute()"><i class="fa fa-times-circle"></i></a>
-            </li>
-                -->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="helpMenuDropdown()"><i class="fa fa-question"></i></a>
-                <div class="wrapper" id="helpMenu" style="display:none">
-                    <a href="#" onclick="">Import</a>
-                    <a href="#">Export</a>
-                </div>
+                <span title="Upload Diagram">
+                    <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a>
+                </span>
             </li>
         </ul>
     </div>
 </nav>
-    <!--End of Toolbar buttons-->
+<!--End of Toolbar buttons-->
+<!-- Start Interface code -->
+<div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>
 
-    <!-- Start Interface code -->
-    <div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>
-    
-    <!--Save Text Area-->
-    <textarea id="mySavedModel" style="width:100%;height:200px">{ "class": "go.GraphLinksModel",</textarea>
-    
-    <!--Choose file button-->
-    <input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
+<!--Save Text Area-->
+<textarea id="mySavedModel" style="width:100%;height:200px">{ "class": "go.GraphLinksModel",</textarea>
 
-    @model EditorViewModel
-    @using (Html.BeginForm())
-    {
-        @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { id = "mySavedModel", style = "width:100%;height:100px" })
+<!--Choose file button-->
+<input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
 
-        <input type="submit" value="saveToServer" />
-    }
+@model EditorViewModel
+@using (Html.BeginForm())
+{
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { id = "mySavedModel", style = "width:100%;height:100px" })
 
+    <input type="submit" value="saveToServer" />
+}
 
-    <!--<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>-->
+<!--<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>-->
 
-    <script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
+<script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
 
-    <script>
+<script>
 
-        //keeps track of class names
-        var classNames = new Array();
-        const $ = go.GraphObject.make;
-        const myDiagram =
-            $(go.Diagram, "myDiagramDiv",
-                { "undoManager.isEnabled": true });
+    //keeps track of class names
+    var classNames = new Array();
+    const $ = go.GraphObject.make;
+    //create diagram
+    const myDiagram =
+        $(go.Diagram, "myDiagramDiv",
+            { "undoManager.isEnabled": true });
 
-        myDiagram.nodeTemplate =
-            $(go.Node, "Auto",
+    // define a simple Node template
+    myDiagram.nodeTemplate =
+        $(go.Node, "Auto",
+            {
+                // define the node's outer shape, which will surround the TextBlock
+                fromSpot: go.Spot.AllSides,
+                toSpot: go.Spot.AllSides
+            },
+            $(go.Shape,
                 {
-
-                    fromSpot: go.Spot.AllSides,
-                    toSpot: go.Spot.AllSides
+                    //Specify ports, this needs to be here for node to be linkable
+                    portId: "",
+                    cursor: "pointer",
+                    fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
+                    toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
                 },
-                $(go.Shape,
-                    {
-                        //Specify ports, this needs to be here for node to be linkable
-                        portId: "",
-                        cursor: "pointer",
-                        fromLinkable: true, fromLinkableSelfNode: true, fromLinkableDuplicates: true,
-                        toLinkable: true, toLinkableSelfNode: true, toLinkableDuplicates: true
-                    },
-                    //bind the 'fill' command with the color stored in the node data. Color is passed from js prompt
-                    new go.Binding("fill", "color"),
-                    new go.Binding("location", "loc").makeTwoWay(),
-                ),
-                //places panel inside the above shape
+                //bind the 'fill' command with the color stored in the node data. Color is passed from js prompt
+                new go.Binding("fill", "color"),
+                new go.Binding("location", "loc").makeTwoWay(),
+            ),
+            //places panel inside the above shape
+            $(go.Panel, "Table",
+                {
+                    defaultAlignment: go.Spot.Top, defaultColumnSeparatorStroke: "black"
+                },
+
                 $(go.Panel, "Table",
-                    {
-                        defaultAlignment: go.Spot.Top, defaultColumnSeparatorStroke: "black"
-                    },
-                    $(go.Panel, "Table",
-                        { column: 0 },
-                        $(go.TextBlock,
-                            {
-                                editable: true,
-                                column: 0, margin: new go.Margin(3, 3, 0, 3),
-                                font: "bold 12pt sans-serif",
-                                isMultiline: false,  // don't allow embedded newlines
-                                textValidation: checkDuplicates
-                            },
-                            new go.Binding("text", "className").makeTwoWay())
-                    ),
-                    $("PanelExpanderButton", "LIST1",
-                        { column: 1 }),
-                    $(go.Panel, "Vertical",
+                    { column: 0 },
+                    $(go.TextBlock,
                         {
-                            name: "LIST1", row: 1, column: 0, columnSpan: 2
-
+                            editable: true,
+                            column: 0, margin: new go.Margin(3, 3, 0, 3),
+                            font: "bold 12pt sans-serif",
+                            isMultiline: false,  // don't allow embedded newlines
+                            textValidation: checkDuplicates
                         },
-                        new go.Binding("itemArray", "list1").makeTwoWay()
+                        //bind the text to the name stored in the node data
+                        new go.Binding("text", "className").makeTwoWay())
+                ),
+                //add a row to the table for each item in the itemArray; each item is a string
+                $("PanelExpanderButton", "LIST1",
+                    { column: 1 }),
 
-                    ),
-                )
-            );
+                //this is the panel that holds the list of attributes
+                $(go.Panel, "Vertical",
+                    {
+                        name: "LIST1", row: 1, column: 0, columnSpan: 2
+
+                    },
+                    //bind the 'itemArray' command with the array of strings stored in the node data.
+                    //Array is passed from js prompt
+                    new go.Binding("itemArray", "list1").makeTwoWay()
+
+                ),
+            )
+        );
 
     //controls the buttons in the contextmenu and what functions they invoke
     var linkMenu =
-              $("ContextMenu",
-              $("ContextMenuButton",
+        $("ContextMenu",
+            $("ContextMenuButton",
                 $(go.TextBlock, "Delete"),
                 {
-                  click: function(e, button) {
-                    e.diagram.commit(function(d) {
-                      d.remove(button.part.adornedPart);
-                    });}
+                    click: function (e, button) {
+                        e.diagram.commit(function (d) {
+                            d.remove(button.part.adornedPart);
+                        });
+                    }
                 }),
-             $("ContextMenuButton",
-             $(go.TextBlock, "Aggregation"),
+            $("ContextMenuButton",
+                $(go.TextBlock, "Aggregation"),
                 {
-                  click: function(e, obj) {
-                    e.diagram.commit(function(d) {
-                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
-                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
-                    });}
+                    click: function (e, obj) {
+                        e.diagram.commit(function (d) {
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
+                        });
+                    }
                 }),
-             $("ContextMenuButton",
-             $(go.TextBlock, "Composition"),
+            $("ContextMenuButton",
+                $(go.TextBlock, "Composition"),
                 {
-                  click: function(e, obj) {
-                    e.diagram.commit(function(d) {
-                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
-                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', 'black');
-                    });}
+                    click: function (e, obj) {
+                        e.diagram.commit(function (d) {
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'StretchedDiamond');
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', 'black');
+                        });
+                    }
                 }),
-             $("ContextMenuButton",
-             $(go.TextBlock, "Inheritance"),
+            $("ContextMenuButton",
+                $(go.TextBlock, "Inheritance"),
                 {
-                  click: function(e, obj) {
-                    e.diagram.commit(function(d) {
-                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'Triangle');
-                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
-                    });}
+                    click: function (e, obj) {
+                        e.diagram.commit(function (d) {
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'Triangle');
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', '#DAE4E4');
+                        });
+                    }
                 }),
-                         $("ContextMenuButton",
-             $(go.TextBlock, "Realization"),
+            $("ContextMenuButton",
+                $(go.TextBlock, "Realization"),
                 {
-                  click: function(e, obj) {
-                    e.diagram.commit(function(d) {
-                        myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'Triangle');
-                    });}
+                    click: function (e, obj) {
+                        e.diagram.commit(function (d) {
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'Triangle');
+                        });
+                    }
                 })
-            );
+        );
     myDiagram.linkTemplate =
-      $(go.Link,
-        {
-          // allow the user to reconnnect existing links:
-          relinkableFrom: true, relinkableTo: true,
-          // draw the link path shorter than normal,
-          // so that it does not interfere with the appearance of the arrowhead
-          toShortLength: 2,
-          contextMenu: linkMenu    // define a context menu for each node
+        $(go.Link,
+            {
+                // allow the user to reconnnect existing links:
+                relinkableFrom: true, relinkableTo: true,
+                // draw the link path shorter than normal,
+                // so that it does not interfere with the appearance of the arrowhead
+                toShortLength: 2,
+                contextMenu: linkMenu    // define a context menu for each node
 
-        },
-        $(go.Shape,
-          { strokeWidth: 3 }),
-        $(go.Shape,
-          { stroke: 'black',  scale: 2, strokeWidth: 1 },
-           new go.Binding("toArrow", "toArrow").makeTwoWay(),
-           new go.Binding("fill", "fill").makeTwoWay()
-         )
-            );
-    
+            },
+            $(go.Shape,
+                { strokeWidth: 3 }),
+            $(go.Shape,
+                { stroke: 'black', scale: 2, strokeWidth: 1 },
+                new go.Binding("toArrow", "toArrow").makeTwoWay(),
+                new go.Binding("fill", "fill").makeTwoWay()
+            )
+        );
+
     //add data here if you want nodes to be loaded on default
     myDiagram.model = new go.GraphLinksModel(
-      [
+        [
         ]);
 
     //checks to see when anything is changed and updates the classnmaes list when something does
@@ -211,26 +214,31 @@
         if (evt.isTransactionFinished) updateClassNames();
     });
 
-    myDiagram.addDiagramListener('LinkDrawn', function(e) {
+    //updates the diagram when relationship is made
+    myDiagram.addDiagramListener('LinkDrawn', function (e) {
         var link = e.subject;
         myDiagram.model.setDataProperty(link.data, 'toArrow', 'triangle');
     });
     //Context menu
     myDiagram.nodeTemplate.contextMenu =
         $("ContextMenu",
-        $("ContextMenuButton",
-            $(go.TextBlock, "Shift Left"),
-            { click: function(e, obj) {
-                //action on click
-                alert("hello");
-            } }),
-        $("ContextMenuButton",
-            $(go.TextBlock, "Shift Right"),
-            { click: function(e, obj) {
-                //action on click
-                alert("hello");
-            } })
-            );
+            $("ContextMenuButton",
+                $(go.TextBlock, "Shift Left"),
+                {
+                    click: function (e, obj) {
+                        //action on click
+                        alert("hello");
+                    }
+                }),
+            $("ContextMenuButton",
+                $(go.TextBlock, "Shift Right"),
+                {
+                    click: function (e, obj) {
+                        //action on click
+                        alert("hello");
+                    }
+                })
+        );
 
 
     //Add new class
@@ -248,57 +256,31 @@
 
     }
 
-    function downloadFile() {
-        download();
-    }
-
-
+    //save diagram in editor, json format
     function save() {
         let save = myDiagram.model.toJson();
         document.getElementById("mySavedModel").value = save;
-       // @{}ViewBag.DiagramData = save;
+        // @{
+    }ViewBag.DiagramData = save;
         myDiagram.isModified = false;
         updateClassNames();
     }
 
+    //load diagram from editor, json format
     function load() {
         myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     }
 
-    function helpMenuDropdown() {
-        var x = document.getElementById("helpMenu");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-    }
-    /* Attribute functions (not ready yet) 
-    //Add new attribute
-    function addAttribute() {
-        let attribute = prompt("Please enter a new attribute:");
-        myDiagram.model.addNodeData({ list1: attribute });
-    }
-
-    //Remove attribute
-    function removeAttribute() {
-        let attribute = prompt("Please enter the attribute you want to remove:");
-        myDiagram.model.removeNodeData({ list1: attribute });
-    }
-    */
-
     //Iterates through nodes and adds their classNames data to an array
-    function updateClassNames()
-        {
-            classNames = [];
-            for (var it = myDiagram.nodes; it.next(); ) {
-                var n = it.value;  // n is now a Node or a Group
-                if(!classNames.includes(n.data.className))
-                    {
-                        classNames.push(n.data.className);
-                    }
-                }
+    function updateClassNames() {
+        classNames = [];
+        for (var it = myDiagram.nodes; it.next();) {
+            var n = it.value;  // n is now a Node or a Group
+            if (!classNames.includes(n.data.className)) {
+                classNames.push(n.data.className);
+            }
         }
+    }
 
     //checks to see if given string is already an existing class name
     function checkDuplicates(textblock, oldstr, newstr) {
@@ -309,15 +291,16 @@
 
     //allows for save to be downloaded
     function createFile(filename, text) {
-          var element = document.createElement('a');
-          element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
-          element.setAttribute('download', filename);
-          element.style.display = 'none';
-          document.body.appendChild(element);
-          element.click();
-          document.body.removeChild(element);
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
     }
 
+    //saves the diagram locally as a .json file
     function download() {
         let save = myDiagram.model.toJson();
         myDiagram.isModified = false;
@@ -326,13 +309,13 @@
 
     //grabs the first file uploaded to the 'file' html element and once succesfully uploaded, the callback function onload is invoked
     // storing the result in the mySavedModel textarea
-    function openFromFile(){
+    function openFromFile() {
         reader = new FileReader();
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             document.getElementById('mySavedModel').value = reader.result;
         }
         var file = document.getElementById('file-selector').files[0];
         reader.readAsText(file);
     }
 
-    </script>
+</script>

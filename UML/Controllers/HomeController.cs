@@ -13,16 +13,25 @@ namespace UML.Controllers
             _logger = logger;
         }
 
+        //Open Home Page
         public IActionResult Index()
         {
             return View();
         }
 
+        //Open CLI Download Page
+        public IActionResult CLIDownload()
+        {
+            return View();
+        }
+
+        //Open Help Page
         public IActionResult Help()
         {
             return View();
         }
 
+        //Open Privacy Policy Page
         public IActionResult Privacy()
         {
             return View();

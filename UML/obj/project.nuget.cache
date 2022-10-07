@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "f+lByTkIb4VElLQ4fNQcmwcjrRthUHJzeS1WmN4VYPSs7w7BUM19IJJDGZh/gYPaYrgohaJDKCfCrG8/4uZojw==",
+  "dgSpecHash": "zVaolHYmI6box8PVe/ysZ5L4+0CrslMRNr/gZH7kAs/pEeC3F1sM1AC7qpzAYwGkycM5RDVLgHqfW4pKjTHZog==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Trevor\\Source\\Repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
+  "projectFilePath": "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Trevor\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
     "C:\\Users\\Trevor\\.nuget\\packages\\humanizer.core\\2.2.0\\humanizer.core.2.2.0.nupkg.sha512",
