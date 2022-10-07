@@ -245,13 +245,20 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Enter field name:");
             string InputN = Console.ReadLine();
-            for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+            if (OverScreen[Hold].fields != null)
             {
-                if (OverScreen[Hold].fields[CNT].name.Equals(InputN))
+                for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                 {
-                    Err = false;
-                    //Hold = CNT;
+                    if (OverScreen[Hold].fields[CNT].name.Equals(InputN))
+                    {
+                        Err = false;
+                        //Hold = CNT;
+                    }
                 }
+            }
+            else
+            {
+                Err = false;
             }
             while (Err)
             {
@@ -327,13 +334,20 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Enter method name:");
             string InputM = Console.ReadLine();
-            for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+            if (OverScreen[Hold].fields != null)
             {
-                if (OverScreen[Hold].methods[CNT].Equals(InputM))
+                for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                 {
-                    Err = false;
-                    //Hold = CNT;
+                    if (OverScreen[Hold].methods[CNT].Equals(InputM))
+                    {
+                        Err = false;
+                        //Hold = CNT;
+                    }
                 }
+            }
+            else
+            {
+                Err = false;
             }
             while (Err)
             {
@@ -363,9 +377,12 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("Enter field name:");
                 InputN = Console.ReadLine();
-                Console.WriteLine("Enter type name:");
-                InputT = Console.ReadLine();
-                tempF.Add(new Fields { name = InputN, type = InputT });
+                if (InputN != "N")
+                {
+                    Console.WriteLine("Enter type name:");
+                    InputT = Console.ReadLine();
+                    tempF.Add(new Fields { name = InputN, type = InputT });
+                }
             }
             Console.WriteLine("meth added:");
             //static List<ScreenModel> OverScreen = new List<ScreenModel> { };
