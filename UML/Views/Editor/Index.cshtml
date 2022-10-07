@@ -15,40 +15,34 @@
             <!--End of collapse code-->
             <!--Begin Toolbar buttons-->
             <li class="nav-item">
+                <span title="Home"> <!-- title is the text that appears on hover -->
+                    <a class="nav-link" href="~/"> <!-- Link to the page -->
+                        <i class="fas fa-home"></i> <!-- Icon -->
+                    </a>
                 <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a>
+                </span>
             </li>
             <li class="nav-item">
+                <span title="Add Class">
                 <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a>
+                </span>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="downloadFile()"><i class="fa fa-arrow-down"></i></a>
+                <span title="Download Diagram">
+                <a class="nav-link" href="#" onclick="download()"><i class="fa fa-arrow-down"></i></a>
+                </span>
             </li>
             <li class="nav-item">
+                <span title="Save Diagram">
                 <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a>
+                </span>
             </li>
-            <!-- Edit function (pencil - not yet ready)
             <li class="nav-item">
-                 <a class="nav-link" href="#" onclick="edit()"><i class="fa fa-pencil"></i></a>
-            </li>
-            -->
-            <li class="nav-item">
+                <span title="Load Diagram">
                 <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a>
+                </span>
             </li>
-            <!-- Attribute functions (not yet ready)
-            <li class="nav-item">
-            <a class="nav-link" href="#" onclick="addAttribute()"><i class="fa fa-plus-circle"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="removeAttribute()"><i class="fa fa-times-circle"></i></a>
-            </li>
-                -->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="helpMenuDropdown()"><i class="fa fa-question"></i></a>
-                <div class="wrapper" id="helpMenu" style="display:none">
-                    <a href="#" onclick="">Import</a>
-                    <a href="#">Export</a>
-                </div>
-            </li>
+
         </ul>
     </div>
 </nav>
@@ -248,11 +242,6 @@
 
     }
 
-    function downloadFile() {
-        download();
-    }
-
-
     function save() {
         let save = myDiagram.model.toJson();
         document.getElementById("mySavedModel").value = save;
@@ -264,28 +253,6 @@
     function load() {
         myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     }
-
-    function helpMenuDropdown() {
-        var x = document.getElementById("helpMenu");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-    }
-    /* Attribute functions (not ready yet) 
-    //Add new attribute
-    function addAttribute() {
-        let attribute = prompt("Please enter a new attribute:");
-        myDiagram.model.addNodeData({ list1: attribute });
-    }
-
-    //Remove attribute
-    function removeAttribute() {
-        let attribute = prompt("Please enter the attribute you want to remove:");
-        myDiagram.model.removeNodeData({ list1: attribute });
-    }
-    */
 
     //Iterates through nodes and adds their classNames data to an array
     function updateClassNames()
@@ -304,7 +271,6 @@
     function checkDuplicates(textblock, oldstr, newstr) {
         isDuplicate = classNames.includes(newstr);
         return !isDuplicate
-
     }
 
     //allows for save to be downloaded
