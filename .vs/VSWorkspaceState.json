@@ -2,15 +2,10 @@
   "ExpandedNodes": [
     "",
     "\\UML",
+    "\\UML\\Models",
     "\\UML\\Views",
-    "\\UML\\Views\\Editor",
-    "\\UML\\Views\\Home",
-    "\\UML\\Views\\Shared",
-    "\\UML\\wwwroot",
-    "\\UML\\wwwroot\\css",
-    "\\UML\\wwwroot\\js",
-    "\\UML\\wwwroot\\lib"
+    "\\UML\\Views\\Editor"
   ],
-  "SelectedNode": "\\UML\\Views\\Editor\\Index.cshtml",
+  "SelectedNode": "\\UML\\Models\\SingleRelationsModel.cs",
   "PreviewInSolutionExplorer": false
 }
