@@ -26,6 +26,7 @@ using static System.Net.Mime.MediaTypeNames;
 using UML.Models;
 using System.Drawing.Printing;
 using JsonSerializer = System.Text.Json.JsonSerializer;
+using System.Transactions;
 
 namespace CLI.Controllers
 {
@@ -61,6 +62,16 @@ namespace CLI.Controllers
                 Console.WriteLine("Rem_Meth: Remove a method from a class. Input the class name and method name after their prompt.");
                 Console.WriteLine(" ");
                 Console.WriteLine("Rem_relat: Remove a relation between classes. Input the to class name, and from class name after their prompt.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Mod_Class: Modify a class name. Input a new name after the prompt.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Mod_field: modify a field from a class. Input the to class name, input the new field name and new type ");
+                Console.WriteLine("name after their prompt.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Mod_Meth: Remove a method from a class. Input the to class name, input the new method name and return");
+                Console.WriteLine("type name after their prompt.");
+                Console.WriteLine(" ");
+                Console.WriteLine("Mod_relat: Modify a relation between classes. Input the to class name, and the new type.");
                 Console.WriteLine(" ");
                 Console.WriteLine("List_classes: Lists all classes currently added");
                 Console.WriteLine(" ");
@@ -108,6 +119,22 @@ namespace CLI.Controllers
             else if (input == Commands.rem_relat)
             {
                 remRel();
+            }
+            else if (input == Commands.mod_class)
+            {
+                Modclass();
+            }
+            else if (input == Commands.mod_field)
+            {
+                Modfield();
+            }
+            else if (input == Commands.mod_relat)
+            {
+                ModRel();
+            }
+            else if (input == Commands.mod_meth)
+            {
+                ModMeth();
             }
             else if (input == Commands.save)
             {
@@ -268,6 +295,7 @@ namespace CLI.Controllers
                 Input = Console.ReadLine();
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
+                    //Console.WriteLine("ERROR");
                     if (OverScreen[CNT].name.Equals(Input))
                     {
                         Err = false;
@@ -279,6 +307,7 @@ namespace CLI.Controllers
                     }
                 }
             }
+            Err = false;
             Console.WriteLine("Enter field name:");
             string InputN = Console.ReadLine();
             if (OverScreen[Hold].fields != null)
@@ -287,30 +316,26 @@ namespace CLI.Controllers
                 {
                     if (OverScreen[Hold].fields[CNT].name.Equals(InputN))
                     {
-                        Err = false;
+                        Err = true;
                         //Hold = CNT;
                     }
                 }
-            }
-            else
-            {
-                Err = false;
             }
             while (Err)
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid field name:");
-                Input = Console.ReadLine();
+                InputN = Console.ReadLine();
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].fields[CNT].name.Equals(InputN))
                     {
-                        Err = false;
+                        Err = true;
                         //Hold = CNT;
                     }
                     else
                     {
-                        Err = true;
+                        Err = false;
                     }
                 }
             }
@@ -338,7 +363,7 @@ namespace CLI.Controllers
         public static void addmeth()
         {
             bool Err = true;
-            Console.WriteLine("Enter Name of class to add a field to:");
+            Console.WriteLine("Enter Name of class to add a method to:");
             string Input = Console.ReadLine();
             int Hold = 0;
             int CNT;
@@ -368,38 +393,36 @@ namespace CLI.Controllers
                     }
                 }
             }
+            //Err = false;
             Console.WriteLine("Enter method name:");
             string InputM = Console.ReadLine();
             if (OverScreen[Hold].methods != null)
             {
                 for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                 {
-                    if (OverScreen[Hold].methods[CNT].Equals(InputM))
+                    if (OverScreen[Hold].methods[CNT].name.Equals(InputM))
                     {
-                        Err = false;
+                        Err = true;
                         //Hold = CNT;
                     }
                 }
-            }
-            else
-            {
-                Err = false;
             }
             while (Err)
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid method name:");
-                Input = Console.ReadLine();
-                for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                InputM = Console.ReadLine();
+                for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                 {
-                    if (OverScreen[CNT].methods[CNT].name.Equals(InputM))
+                    Console.WriteLine("ERROR");
+                    if (OverScreen[Hold].methods[CNT].name.Equals(InputM))
                     {
-                        Err = false;
+                        Err = true;
                         //Hold = CNT;
                     }
                     else
                     {
-                        Err = true;
+                        Err = false;
                     }
                 }
             }
@@ -456,7 +479,7 @@ namespace CLI.Controllers
             while (!Err)
             {
                 Console.WriteLine("ERROR");
-                Console.WriteLine("Enter a unique class name:");
+                Console.WriteLine("Enter a valid class name:");
                 Input = Console.ReadLine();
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
@@ -596,7 +619,6 @@ namespace CLI.Controllers
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /// </summary>
-        ///
         public static void remMeth()
         {
             bool Err = false;
@@ -634,7 +656,7 @@ namespace CLI.Controllers
             Console.WriteLine("Enter Name of Method:");
             Input = Console.ReadLine();
             int HoldF = 0;
-            for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
             {
                 if (OverScreen[Hold].methods[CNT].name.Equals(Input))
                 {
@@ -647,7 +669,7 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid meth name:");
                 Input = Console.ReadLine();
-                for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                 {
                     if (OverScreen[Hold].methods[CNT].name.Equals(Input))
                     {
@@ -666,6 +688,475 @@ namespace CLI.Controllers
             tempt.RemoveAt(HoldF);
             OverScreen[Hold].methods = tempt.ToArray();
         }
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        public static void Modclass()
+        {
+            bool Err = false;
+            Console.WriteLine("Enter Name of class:");
+            string Input = Console.ReadLine();
+            int CNT;
+            int Hold = 0;
+            for (CNT = 0; CNT < OverScreen.Count; CNT++)
+            {
+                if (OverScreen[CNT].name.Equals(Input))
+                {
+                    bool Err2 = false;
+                    Err = true;
+                    Hold = CNT;
+                    Console.WriteLine("Enter new name of class:");
+                    Input = Console.ReadLine();
+                    //int CNT;
+                    for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                    {
+                        if ((OverScreen[CNT].name.Equals(Input)) && (CNT != Hold))
+                        {
+                            Err2 = true;
+                        }
+                    }
+                    while (Err2)
+                    {
+                        Console.WriteLine("ERROR");
+                        Console.WriteLine("Enter a unique class name:");
+                        Input = Console.ReadLine();
+                        for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                        {
+                            if ((OverScreen[CNT].name.Equals(Input)) && (CNT != Hold))
+                            {
+                                Err2 = true;
+                            }
+                            else
+                            {
+                                Err2 = false;
+                            }
+                        }
+                    }
+                    ///Console.WriteLine(CNT);
+                }
+            }
+            while (!Err)
+            {
+                Console.WriteLine("ERROR");
+                Console.WriteLine("Enter a valid class name:");
+                Input = Console.ReadLine();
+                for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                {
+                    if (OverScreen[CNT].name.Equals(Input))
+                    {
+                        bool Err2 = false;
+                        Err = true;
+                        Hold = CNT;
+                        Console.WriteLine("Enter new name of class:");
+                        Input = Console.ReadLine();
+                        for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                        {
+                            if ((OverScreen[CNT].name.Equals(Input))&&(CNT!=Hold))
+                            {
+                                Err2 = true;
+                            }
+                        }
+                        while (Err2)
+                        {
+                            Console.WriteLine("ERROR");
+                            Console.WriteLine("Enter a unique class name:");
+                            Input = Console.ReadLine();
+                            for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                            {
+                                if ((OverScreen[CNT].name.Equals(Input)) && (CNT != Hold))
+                                {
+                                    Err2 = true;
+                                }
+                                else
+                                {
+                                    Err2 = false;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Err = false;
+                    }
+                }
+            }
+            Console.WriteLine("Class modified:");
+            OverScreen[Hold].name = Input;
+        }
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        public static void Modfield()
+        {
+            bool Err = false;
+            string InputN = "";
+            string InputT = "";
+            Console.WriteLine("Enter Name of class:");
+            string Input = Console.ReadLine();
+            int CNT;
+            int Hold = 0;
+            for (CNT = 0; CNT < OverScreen.Count; CNT++)
+            {
+                if (OverScreen[CNT].name.Equals(Input))
+                {
+                    Err = true;
+                    Hold = CNT;
+                }
+            }
+            while (!Err)
+            {
+                Console.WriteLine("ERROR");
+                Console.WriteLine("Enter a unique class name:");
+                Input = Console.ReadLine();
+                for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                {
+                    if (OverScreen[CNT].name.Equals(Input))
+                    {
+                        Err = true;
+                        Hold = CNT;
+
+                    }
+                    else
+                    {
+                        Err = false;
+                    }
+                }
+            }
+            Err = false;
+            Console.WriteLine("Enter Name of Field:");
+            InputN = Console.ReadLine();
+            int HoldF = 0;
+            for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+            {
+                if (OverScreen[Hold].fields[CNT].name.Equals(InputN))
+                {
+                        bool Err2 = false;
+                        Err = true;
+                        HoldF = CNT;
+                        Console.WriteLine("Enter new name of field:");
+                        InputN = Console.ReadLine();
+                        for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                        {
+                            if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
+                            {
+                                Err2 = true;
+                            }
+                        }
+                        while (Err2)
+                        {
+                            Console.WriteLine("ERROR");
+                            Console.WriteLine("Enter a unique class name:");
+                            InputN = Console.ReadLine();
+                            for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                            {
+                                if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
+                                {
+                                    Err2 = true;
+                                }
+                                else
+                                {
+                                    Err2 = false;
+                                }
+                            }
+                        }
+                    Console.WriteLine("Enter new type name:");
+                    InputT = Console.ReadLine();
+                    //Console.WriteLine("Field added:");
+                }
+            }
+            while (!Err)
+            {
+                Console.WriteLine("ERROR");
+                Console.WriteLine("Enter a valid field name:");
+                Input = Console.ReadLine();
+                for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                {
+                    if (OverScreen[Hold].fields[CNT].name.Equals(Input))
+                    {
+                        bool Err2 = false;
+                        Err = true;
+                        HoldF = CNT;
+                        Console.WriteLine("Enter new name of field:");
+                        InputN = Console.ReadLine();
+                        for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                        {
+                            if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
+                            {
+                                Err2 = true;
+                            }
+                        }
+                        while (Err2)
+                        {
+                            Console.WriteLine("ERROR");
+                            Console.WriteLine("Enter a unique class name:");
+                            InputN = Console.ReadLine();
+                            for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                            {
+                                if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
+                                {
+                                    Err2 = true;
+                                }
+                                else
+                                {
+                                    Err2 = false;
+                                }
+                            }
+                        }
+                        Console.WriteLine("Enter new type name:");
+                        InputT = Console.ReadLine();
+                    }
+                    else
+                    {
+                        Err = false;
+                    }
+                }
+            }
+            Console.WriteLine("Field Modified:");
+            OverScreen[Hold].fields[HoldF].name = InputN;
+            OverScreen[Hold].fields[HoldF].type = InputT;
+        }
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        public static void ModMeth()
+        {
+                bool Err = false;
+                List<Fields> tempF = new List<Fields> { };
+                Console.WriteLine("Enter Name of class:");
+                string Input = Console.ReadLine();
+                string InputM = "";
+                string InputR = "";
+
+                int CNT;
+                int Hold = 0;
+                for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                {
+                    if (OverScreen[CNT].name.Equals(Input))
+                    {
+                        Err = true;
+                        Hold = CNT;
+                    }
+                }
+                while (!Err)
+                {
+                    Console.WriteLine("ERROR");
+                    Console.WriteLine("Enter a unique class name:");
+                    Input = Console.ReadLine();
+                    for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                    {
+                        if (OverScreen[CNT].name.Equals(Input))
+                        {
+                            Err = true;
+                            Hold = CNT;
+                        }
+                        else
+                        {
+                            Err = false;
+                        }
+                    }
+                }
+                Err = false;
+                Console.WriteLine("Enter Name of Method:");
+                Input = Console.ReadLine();
+                int HoldF = 0;
+                for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                {
+                    if (OverScreen[Hold].methods[CNT].name.Equals(Input))
+                    {
+                        Err = true;
+                        HoldF = CNT;
+                        bool Err2 = false;
+                        Console.WriteLine("Enter new method name:");
+                        InputM = Console.ReadLine();
+                        if (OverScreen[Hold].methods != null)
+                        {
+                            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                            {
+                                if (OverScreen[Hold].methods[CNT].name.Equals(InputM) && (CNT != HoldF))
+                                {
+                                    Err2 = true;
+                                    HoldF = CNT;
+                                }
+                            }
+                        }
+                        while (Err2)
+                        {
+                            Console.WriteLine("ERROR");
+                            Console.WriteLine("Enter a valid method name:");
+                            InputM = Console.ReadLine();
+                            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                            {
+                                //Console.WriteLine("ERROR");
+                                if (OverScreen[Hold].methods[CNT].name.Equals(InputM) && (CNT != HoldF))
+                                {
+                                    Err2 = true;
+                                    HoldF = CNT;
+                                }
+                                else
+                                {
+                                    Err2 = false;
+                                }
+                            }
+                        }
+                        Console.WriteLine("Enter return type name:");
+                        InputR = Console.ReadLine();
+                       
+                        //List<Methods> tempM = new List<Methods> { };
+                        string InputN = "";
+                        string InputT;
+                        while (InputN != "N")
+                        {
+                            Console.WriteLine("Enter Parameter name, or 'N' if done or no more:");
+                            InputN = Console.ReadLine();
+                            if (InputN != "N")
+                            {
+                                Console.WriteLine("Enter type name:");
+                                InputT = Console.ReadLine();
+                                tempF.Add(new Fields { name = InputN, type = InputT });
+                            }
+                            //Console.WriteLine(" ");
+                        }
+
+                    }
+                }
+                while (!Err)
+                {
+                    Console.WriteLine("ERROR");
+                    Console.WriteLine("Enter a valid meth name:");
+                    Input = Console.ReadLine();
+                    for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                    {
+                        if (OverScreen[Hold].methods[CNT].name.Equals(Input))
+                        {
+                            Err = true;
+                            HoldF = CNT;
+                        bool Err2 = false;
+                        Console.WriteLine("Enter new method name:");
+                        InputM = Console.ReadLine();
+                        if (OverScreen[Hold].methods != null)
+                        {
+                            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                            {
+                                if (OverScreen[Hold].methods[CNT].name.Equals(InputM) && (CNT != HoldF))
+                                {
+                                    Err2 = true;
+                                    HoldF = CNT;
+                                }
+                            }
+                        }
+                        while (Err2)
+                        {
+                            Console.WriteLine("ERROR");
+                            Console.WriteLine("Enter a valid method name:");
+                            InputM = Console.ReadLine();
+                            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                            {
+                                //Console.WriteLine("ERROR");
+                                if (OverScreen[Hold].methods[CNT].name.Equals(InputM) && (CNT != HoldF))
+                                {
+                                    Err2 = true;
+                                    HoldF = CNT;
+                                }
+                                else
+                                {
+                                    Err2 = false;
+                                }
+                            }
+                        }
+                        Console.WriteLine("Enter return type name:");
+                        InputR = Console.ReadLine();
+
+                        //List<Methods> tempM = new List<Methods> { };
+                        string InputN = "";
+                        string InputT;
+                        while (InputN != "N")
+                        {
+                            Console.WriteLine("Enter Parameter name, or 'N' if done or no more:");
+                            InputN = Console.ReadLine();
+                            if (InputN != "N")
+                            {
+                                Console.WriteLine("Enter type name:");
+                                InputT = Console.ReadLine();
+                                tempF.Add(new Fields { name = InputN, type = InputT });
+                            }
+                            //Console.WriteLine(" ");
+                        }
+                    }
+                        else
+                        {
+                            Err = false;
+                        }
+                    }
+                }
+                Console.WriteLine("Field Modified:");
+                
+                if (!tempF.Any())
+                {
+                    OverScreen[Hold].methods[HoldF].name = InputM;
+                    OverScreen[Hold].methods[HoldF].return_type = InputR;
+                }
+                else
+                {
+                    OverScreen[Hold].methods[HoldF].name = InputM;
+                    OverScreen[Hold].methods[HoldF].return_type = InputR;
+                    OverScreen[Hold].methods[HoldF].@params = tempF.ToArray();
+                }
+        }
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        public static void ModRel()
+        {
+            bool Err = false;
+            Console.WriteLine("Enter Name of to class:");
+            string InputT = Console.ReadLine();
+            Console.WriteLine("Enter Name of from class:");
+            string InputF = Console.ReadLine();
+            Console.WriteLine("Enter type of relation:");
+            string InputR = Console.ReadLine();
+            string InputY = "";
+            int CNT;
+            int Hold = 0;
+            for (CNT = 0; CNT < OverRelations.Count; CNT++)
+            {
+                if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)))
+                {
+                    Err = true;
+                    Hold = CNT;
+                    Console.WriteLine("Enter new type of relation:");
+                    InputY = Console.ReadLine();
+                }
+            }
+            while (!Err)
+            {
+                Console.WriteLine("ERROR");
+                Console.WriteLine("Enter Valid Name of to class:");
+                InputT = Console.ReadLine();
+                Console.WriteLine("Enter Valid Name of from class:");
+                InputF = Console.ReadLine();
+                Console.WriteLine("Enter Valid type of relation:");
+                InputR = Console.ReadLine();
+                for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                {
+                    if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)))
+                    {
+                        Err = true;
+                        Hold = CNT;
+                        Console.WriteLine("Enter new type of relation:");
+                        InputY = Console.ReadLine();
+                    }
+                    else
+                    {
+                        Err = false;
+                    }
+                }
+            }
+            Console.WriteLine("Relation Modified:");
+            OverRelations[Hold].type = InputY;
+        }
+        /// <summary>
+        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
         public static void PrintArray()
         {
 

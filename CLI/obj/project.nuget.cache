@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "2dadO0wp8hWs73d+lIYgaMLUzV9PEGi/xj7m/CejnzGMMK/+qcExWihankniTx4/4addAT5jwyYONNenj1epZw==",
+  "dgSpecHash": "oSO57Jz7N0hcv2/Xh3oHQf48iW0YydcGDqS9AqHnCEdSfPatLkiETGtilulgIeUBX4K04j3ePAJvWfIqoOtSMg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI\\CLI.csproj",
+  "projectFilePath": "C:\\Users\\Hahng\\source\\repos\\CLI\\CLI\\CLI.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Hahng\\.nuget\\packages\\dnsclient\\1.6.1\\dnsclient.1.6.1.nupkg.sha512",
     "C:\\Users\\Hahng\\.nuget\\packages\\microsoft.aspnet.mvc\\5.2.9\\microsoft.aspnet.mvc.5.2.9.nupkg.sha512",
