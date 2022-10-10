@@ -29,7 +29,6 @@ namespace UML.Controllers
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase(databaseName);
             var collection = db.GetCollection<DiagramModel>(collectionName);
-            var results = collection.Find(x => x.Username == model._id).ToList();
             ViewBag.id = model._id;
             return View(new EditorViewModel { userid = model._id });
         }
