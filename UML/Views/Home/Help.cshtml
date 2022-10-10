@@ -1,5 +1,12 @@
 ﻿@{
-ViewData["Title"] = "Help";
+
+
+
+
+
+
+
+    ViewData["Title"] = "Help";
 }
 
 <div class="text-center">
@@ -16,13 +23,16 @@ ViewData["Title"] = "Help";
         <div class="content">
             <p>
                 By default, a new project will be created when you open the editor. <br />
-                <ul>
-                    <li>
-                        <b>Set Project Name:</b> To change the name of the project, click on the project name in the top left corner of the editor.
-                    </li>
-                </ul>
-                If your project does not have a set name, it can still be saved and loaded, but it will be saved as "My Project" along with a timestamp.
-                It is recommended to give your project a name before saving it, especially if you plan to make multiple diagrams using the editor.
+            <ul>
+                <li>
+                    <b>Set Project Name:</b> To change the name of the project, click on the project name in the top
+                    left corner of the editor.
+                </li>
+            </ul>
+            If your project does not have a set name, it can still be saved and loaded, but it will be saved as "My
+            Project" along with a timestamp.
+            It is recommended to give your project a name before saving it, especially if you plan to make multiple
+            diagrams using the editor.
             </p>
         </div>
     </div>
@@ -33,33 +43,39 @@ ViewData["Title"] = "Help";
             <p>
                 Classes are managed through blocks, which are resizable, draggable, and have dropdowns for their
                 attributes and methods. <br />
-                <ul>
-                    <li>
-                        <b>Add Class:</b> you can add a class to your diagram by clicking on the (+) button. By default, the
-                        class will be nameless and have no attributes or methods set.
-                    </li>
-                    <li>
-                        <b>Delete Class:</b> you can delete a class from your diagram by selecting a class and pressing the
-                        Delete key from your keyboard.
-                    </li>
-                    <li>
-                        <b>Change Class Name:</b> click on any class' name field to change its name.
-                    </li>
-                    <li>
-                        <b>Edit Class Attributes:</b> click on any class' attributes field to its rename attributes.
-                    </li>
-                    <li>
-                        <b>Edit Class Methods:</b> click on any class' methods field to rename its methods.
-                    </li>
-                    <li>
-                        <b>Copy/Paste Classes:</b> to duplicate a class, select the block, and use Ctrl+C to copy and Ctrl+V to
-                        paste the class. <br />
-                        NOTE: You cannot have duplicate class names, so you will be prompted to rename the class.
-                    </li>
-                    <li>
-                        <b>Change Class Color:</b> right-click any class and choose a color from the palette to set its color.
-                    </li>
-                </ul>
+            <ul>
+                <li>
+                    <b>Add Class:</b> you can add a class to your diagram by clicking on the (+) button. By default, the
+                    class will be nameless and have no attributes or methods set.
+                </li>
+                <li>
+                    <b>Delete Class:</b> you can delete a class from your diagram by selecting a class and pressing the
+                    Delete key from your keyboard.
+                </li>
+                <li>
+                    <b>Change Class Name:</b> click on any class' name field to change its name.
+                </li>
+                <li>
+                    <b>Methods:</b> right-click on any node and select 'Add Method' to create a method within your
+                    class. You can modify methods
+                    by selecting 'Change Method', and delete by selecting 'Remove Method'.
+                </li>
+                <li>
+                    <b>Fields:</b> right-click on any node and select 'Add Field' to create a field within your class.
+                    You can modify fields
+                    by selecting 'Change Field', and delete by selecting 'Remove Field'.
+                </li>
+                <li>
+                    <b>Copy/Paste Classes:</b> to duplicate a class, select the block, and use Ctrl+C to copy and Ctrl+V
+                    to
+                    paste the class. <br />
+                    NOTE: You cannot have duplicate class names, so you will be prompted to rename the class.
+                </li>
+                <li>
+                    <b>Change Class Color:</b> right-click any class and choose a color from the palette to set its
+                    color.
+                </li>
+            </ul>
             </p>
         </div>
     </div>
@@ -70,20 +86,24 @@ ViewData["Title"] = "Help";
             <p>
                 Once you've created more than one class, you can apply relationships between them and modify their
                 properties. <br />
-                <ul>
-                    <li>
-                        <b>Create Relationship:</b> by dragging a line from the endpoint of one class to another, you can create
-                        a relationship.
-                    </li>
-                    <li>
-                        <b>Delete Relationship:</b> you can delete a relationship between classes by selecting a the arrow/line
-                        and pressing the Delete key from your keyboard. <br />
-                    </li>
-                    <li>
-                        <b>Edit Relationship Type:</b> to change the type, right click the arrow and select "Change Relationship
-                        Type". You can choose a type from one of the following: Aggregation, Composition, Inheritance, and Realization.
-                    </li>
-                </ul>
+            <ul>
+                <li>
+                    <b>Create Relationship:</b> by dragging a line from the endpoint of one class to another, you can
+                    create
+                    a relationship.
+                </li>
+                <li>
+                    <b>Delete Relationship:</b> you can delete a relationship between classes by selecting a the
+                    arrow/line
+                    and pressing the Delete key from your keyboard. <br />
+                </li>
+                <li>
+                    <b>Edit Relationship Type:</b> to change the type, right click the arrow and select "Change
+                    Relationship
+                    Type". You can choose a type from one of the following: Aggregation, Composition, Inheritance, and
+                    Realization.
+                </li>
+            </ul>
             </p>
         </div>
     </div>
@@ -95,22 +115,129 @@ ViewData["Title"] = "Help";
                 Once you've created a UML diagram, you can save and load it for later. This can be done locally as a
                 file, or through the C-Sharks database. <br />
 
-                <ul>
-                    <li>
-                        <b>Save Diagram:</b> you can save your diagram by clicking on the Save button, designated with a
-                        check-mark icon (✓) in the editor toolbar. This will generate a .JSON schema in the text-box below the editor.
-                    </li>
-                    <li>
-                        <b>Load Diagram:</b> you can load a diagram by copying the .JSON schema into the text-box below the
-                        editor and clicking on the Load button, designated with a folder icon (🗀) in the editor toolbar.
-                    </li>
-                    <li>
-                        <b>Local Export:</b> selecting <i>Export</i> from the Help (?) menu will save your diagram to a local .JSON file.
-                    </li>
-                    <li>
-                        <b>Local Import:</b> selecting <i>Import</i> from the Help (?) menu will prompt you to load your .JSON file into the editor.
-                    </li>
-                </ul>
+            <ul>
+                <li>
+                    <b>Save Diagram:</b> you can save your diagram by clicking on the Save button, designated with a
+                    check-mark icon (✓) in the editor toolbar. This will generate a .JSON schema in the text-box below
+                    the editor.
+                </li>
+                <li>
+                    <b>Load Diagram:</b> you can load a diagram by copying the .JSON schema into the text-box below the
+                    editor and clicking on the Load button, designated with a folder icon (🗀) in the editor toolbar.
+                </li>
+                <li>
+                    <b>Local Export:</b> selecting <i>Export</i> from the Help (?) menu will save your diagram to a
+                    local .JSON file.
+                </li>
+                <li>
+                    <b>Local Import:</b> selecting <i>Import</i> from the Help (?) menu will prompt you to load your
+                    .JSON file into the editor.
+                </li>
+            </ul>
+            </p>
+        </div>
+    </div>
+
+    <div class="collapsible-container">
+        <button type="button" class="collapsible">CLI Mode Commands</button>
+        <div class="content">
+            <p>
+                Once you've created a UML diagram, you can save and load it for later. This can be done locally as a
+                file, or through the C-Sharks database. <br />
+
+            <ul>
+                <li>
+                    <b>Help:</b> Displays a list of commands with brief explanations.
+                </li>
+                <li>
+                    <b>Add_Class:</b> Creates a new class if name is valid. Input a name after the prompt.
+                </li>
+                <li>
+                    <b>Add_field:</b> Add a field to a class. Input the class name after the prompt, the input name. And
+                    type after the prompt for each.
+                </li>
+                <li>
+                    <b>Add_Meth:</b> Add a method to a class. Input the class name after the prompt, the input name,
+                    return
+                    type, and enter parameters, after the prompt for each. When you have no parameters, or none are
+                    left, enter 'N'.
+                </li>
+
+                <li>
+                    <b>relat:</b> Add a relation between classes. Input the 'to' class name, 'from' class name, and the
+                    relation type after their prompt.
+                </li>
+
+                <li>
+                    <b>Rem_Class:</b> Remove a class. Input an name after the prompt.
+                </li>
+
+                <li>
+                    <b>Rem_field:</b> Remove a field from a class. Input the class name and field name after their
+                    prompt.
+                </li>
+
+                <li>
+                    <b>Rem_Meth:</b> Remove a method from a class. Input the class name and method name after their
+                    prompt.
+                </li>
+
+                <li>
+                    <b>Rem_relat:</b> Remove a relation between classes. Input the to class name, and from class name
+                    after
+                    their prompt.
+                </li>
+
+                <li>
+                    <b>Mod_Class:</b> Modify a class name. Input a new name after the prompt.
+                </li>
+
+                <li>
+                    <b>Mod_field:</b> modify a field from a class. Input the to class name, input the new field name and
+                    new
+                    type name after their prompt.
+                </li>
+
+                <li>
+                    <b>Mod_Meth:</b> Remove a method from a class. Input the to class name, input the new method name
+                    and
+                    return type name after their prompt.
+                </li>
+
+                <li>
+                    <b>Mod_relat:</b> Modify a relation between classes. Input the to class name, and the new type.
+                </li>
+
+                <li>
+                    <b>List_classes:</b> Lists all classes currently added.
+                </li>
+
+                <li>
+                    <b>List_class:</b> Lists all fields and methods of a given class. Input the unique class name after
+                    the
+                    prompt.
+                </li>
+
+                <li>
+                    <b>List_relat:</b> Lists the relations currently added.
+                </li>
+
+                <li>
+                    <b>save:</b> Saves the UML model to the database.
+                </li>
+
+                <li>
+                    <b>load:</b> Loads a UML model from the database.
+                </li>
+
+                <li>
+                    <b>import:</b> Load a UML model from a JSON file.
+                </li>
+
+                <li>
+                    <b>export:</b> Saves a UML as a JSON file locally.
+                </li>
+            </ul>
             </p>
         </div>
     </div>
