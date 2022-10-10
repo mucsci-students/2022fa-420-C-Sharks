@@ -784,7 +784,7 @@ namespace CLI.Controllers
             OverScreen[Hold].name = Input;
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Modify a given field in a given class
         /// </summary>
         public static void Modfield()
         {
@@ -916,7 +916,7 @@ namespace CLI.Controllers
             OverScreen[Hold].fields[HoldF].type = InputT;
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Modify a given method in a given class
         /// </summary>
         public static void ModMeth()
         {
@@ -1103,7 +1103,7 @@ namespace CLI.Controllers
                 }
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Modify a given relation type between two given classes
         /// </summary>
         public static void ModRel()
         {
@@ -1155,7 +1155,7 @@ namespace CLI.Controllers
             OverRelations[Hold].type = InputY;
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// debug command to print entire contents
         /// </summary>
         public static void PrintArray()
         {
@@ -1174,27 +1174,20 @@ namespace CLI.Controllers
             var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = OverRelations.ToArray() };
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
             Console.WriteLine(json);
-
-            /*int CNT;
-            Console.WriteLine("Objects");
-            for (CNT = 0; CNT < OverScreen.Count; CNT++)
-            {
-                Console.WriteLine(OverScreen[CNT].ToString());
-            }
-            Console.WriteLine("Relations");
-            for (CNT = 0; CNT < OverRelations.Count; CNT++)
-            {
-                Console.WriteLine(OverRelations[CNT].ToString());
-            }
-            Console.WriteLine();*/
         }
 
+        /*
+         * List all classes currently loaded to the diagram
+         * 
+         */
         public static void ListClasses()
         {
 
             Console.WriteLine("CLASSES: \n");
             for (int Cnt = 0; Cnt < OverScreen.Count(); Cnt++)
             {
+                //for every object in the screen
+                //write its name
                 Console.WriteLine("{0}", OverScreen[Cnt].name);
 
             }
@@ -1202,11 +1195,17 @@ namespace CLI.Controllers
 
         }
 
+
+        /*
+         * List all relations currently loaded to the diagram 
+         *
+         */
         public static void ListRelat()
         {
 
             Console.WriteLine("RELATIONS \n");
             List<SingleRelationsModel> display = new List<SingleRelationsModel>();
+            //make new relations model list to add currently loaded relations to 
             for (int Cnt = 0; Cnt < OverRelations.Count(); Cnt++)
             {
                 display.Add(new SingleRelationsModel
@@ -1217,12 +1216,17 @@ namespace CLI.Controllers
                 });
 
             }
+            //json convert them and print them after adding to the relations model list
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(display, Formatting.Indented);
             Console.WriteLine(json);
             Console.WriteLine("");
 
         }
 
+
+        /*
+         * List all contents of a given class
+         */
         public static void ListClass()
         {
             if (OverScreen.Count() > 0){
@@ -1231,6 +1235,7 @@ namespace CLI.Controllers
                 string Input = Console.ReadLine();
                 int CNT;
                 int Hold = 0;
+                //check every name in the currently loaded screen
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].name.Equals(Input))
@@ -1239,10 +1244,12 @@ namespace CLI.Controllers
                         Hold = CNT;
                     }
                 }
+                //if not found
                 while (!Err)
                 {
                     Console.WriteLine("ERROR");
                     Console.WriteLine("Enter a unique class name:");
+                    //then ask again
                     Input = Console.ReadLine();
                     for (CNT = 0; CNT < OverScreen.Count; CNT++)
                     {
@@ -1257,15 +1264,18 @@ namespace CLI.Controllers
                         }
                     }
                 }
+                //if found
                 Err = false;
                 Console.WriteLine("");
                 List<ExportScreenModel> ExpSM = new List<ExportScreenModel>();
+                //make a new export screen model and add the information 
                 ExpSM.Add(new ExportScreenModel
                 {
                     name = OverScreen[Hold].name,
                     fields = OverScreen[Hold].fields,
                     methods = OverScreen[Hold].methods
                 });
+                //then convert to string and print
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(ExpSM, Formatting.Indented);
                 Console.WriteLine(json);
                 Console.WriteLine("");
@@ -1281,6 +1291,15 @@ namespace CLI.Controllers
 
 
 
+        /*
+         * Export a string version of the diagrams contents to a json file of a given name in 
+         * 
+         * Local Disk (C:)
+         *     UML-Saves
+         *         C-Sharks-Editor
+         * 
+         * 
+         */
         public static void exportJson()
         {
             // Specify a name for your top-level folder.
@@ -1346,7 +1365,14 @@ namespace CLI.Controllers
 
 
 
-
+        /*
+         * import locally saved json file to the diagram
+         * file must be stored in 
+         * Local Disk (C:)
+         *      UML-Saves
+         *          C-Sharks-Editor
+         * 
+         */
         public static void importJson()
         {
             string filename;
