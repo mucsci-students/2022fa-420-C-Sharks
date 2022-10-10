@@ -20,11 +20,17 @@ namespace UML.Controllers
 {
     public class EditorController : Controller
     {
-
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult Index(UserModel model)
         {
-
-            return View(new EditorViewModel());
+            string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
+            string databaseName = "uml_db";
+            string collectionName = "diagrams";
+            var client = new MongoClient(connectionString);
+            var db = client.GetDatabase(databaseName);
+            var collection = db.GetCollection<DiagramModel>(collectionName);
+            ViewBag.id = model._id;
+            return View(new EditorViewModel { userid = model._id });
         }
 
         [HttpPost]
@@ -36,42 +42,27 @@ namespace UML.Controllers
                 return View();
             }
 
-            //model.mySavedModel = model.mySavedModel.Replace('\"',' ');
-
-            /*
-			char slash = '\\';
-			while (index <= rawData.Length)
-			{
-				if (!rawData[index].Equals(slash))
-				{
-					rawData = rawData.		
-				}
-				index++;
-			}
-			*/
-            ConvertNsave(model.mySavedModel);
-
-
-            Console.WriteLine("HERE");
-
-            /*var RelationsData = new RelationsModel { };
-
-            foreach (var item in returnedData.nodeDataArray)
-			{
-				var index = 0;
-				DiagramData.screen[index] = item;
-			}
-			foreach (var item in returnedData.linkDataArray)
-			{
-				var index = 0;
-				RelationsData.singleRelation[index] = item;
-			}
-			*/
-            return View();
+            int status = ConvertNsave(model);
+            if (status > 0)
+            {
+                // maybe not give the model back?
+                if (status == 1)
+                {
+                    TempData["Message"] = "Error parsing object list please try again";
+                    return View(model);
+                }
+                if (status == 2)
+                {
+                    TempData["Message"] = "Error parsing link relations please try again";
+                    return View(model);
+                }
+            }
+            return View(model);
 
         }
-        // Post location?
-        public static void ConvertNsave(string input)
+        // changed ConvertNsave to take in a view model
+        // and added some null checks
+        public static int ConvertNsave(EditorViewModel model)
         {
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
             string databaseName = "uml_db";
@@ -79,22 +70,41 @@ namespace UML.Controllers
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase(databaseName);
             var collection = db.GetCollection<DiagramModel>(collectionName);
-            var json = JObject.Parse(input);
+            var json = JObject.Parse(model.mySavedModel);
             var text = json["nodeDataArray"];
             List<ScreenModel> ScreModHLD = new List<ScreenModel> { };
-            foreach (JObject item in text)
+            if (text != null)
             {
-                ScreModHLD.Add(new ScreenModel { text = item.GetValue("text").ToString(), Loc = item.GetValue("loc").ToString(), color = item.GetValue("color").ToString(), key = item.GetValue("key").ToString() });
+                foreach (JObject item in text)
+                {
+                    ScreModHLD.Add(new ScreenModel { text = item.GetValue("text").ToString(), Loc = item.GetValue("loc").ToString(), color = item.GetValue("color").ToString(), key = item.GetValue("key").ToString() });
+                }
+            }
+            else
+            {
+                // if text is null
+                return 1;
             }
             var toFrom = json["linkDataArray"];
             List<SingleRelationsModel> SingRelHLD = new List<SingleRelationsModel> { };
-            foreach (JObject item in toFrom)
+            if (toFrom != null)
             {
-                SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString() });
+                foreach (JObject item in toFrom)
+                {
+                    SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString() });
+                }
             }
-            var Diagram = new DiagramModel { Username = "Test", screen = ScreModHLD.ToArray(), relations = SingRelHLD.ToArray() };
+            else
+            {
+                // if toFrom is null
+                return 2;
+            }
+            // TODO add name for diagram
+            var Diagram = new DiagramModel { Username = model.userid, screen = ScreModHLD.ToArray(), relations = SingRelHLD.ToArray() };
             //don't care + didn't ask + ratio + you fell off + cope + seethe + mald + dilate + L + hoes mad + W + cry about it + stay mad + touch grass + pound sand + skill issue + quote tweet + get real + no bitches?
             collection.InsertOne(Diagram);
+            // if Diagram added
+            return 0;
             //await collection2.InsertOneAsync(relations);
             //string test = colorHLD.ElementAt(2);
             //string test2 = ToHLD.ElementAt(0);
