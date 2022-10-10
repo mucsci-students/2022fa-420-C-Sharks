@@ -14,6 +14,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
+                <img src="\media\C-Sharks_logo-small.jpg" width="50" height="50">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"></a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -27,6 +28,14 @@
 
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Editor" asp-action="Index">Editor</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="CLIDownload">CLI</a>
+                        </li>
+
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Help">Help</a>
                         </li>
 
                         <!-- Login container (for future use)
