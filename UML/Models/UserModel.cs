@@ -11,7 +11,10 @@ namespace UML.Models
         [BsonRequired]
         public string Username { get; set; }
         [BsonRequired]
-        public string Password { get; set; }
+        public string? Password { get; set; }
+        public List<DiagramModel>? Diagrams { get; set; }
+        public string? DiagramName { set; get; }
+       
 
     }
 }

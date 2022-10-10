@@ -39,12 +39,15 @@ namespace UML.Controllers
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase(databaseName);
             var collection = db.GetCollection<UserModel>(collectionName);
+            
             // Look through DB and give me a list of usernames that match what the user provided.
             List<UserModel> userList = collection.Find(x => x.Username == model.Username).ToList();
+            
             //var userID = userList[0]._id;
             // Convert that list to json
             //var json = collection.Find(x => x.Username == model.Username).ToJson();
             var index = userList.Count;
+            
             // We are guaranteed that we have unique usernames from signup but this ensures
             // that if a user would have the same name as another that they can still login.
             while (index > 0)
@@ -85,23 +88,19 @@ namespace UML.Controllers
         [HttpGet]
         public ActionResult ListDiagrams(UserModel model)
         {
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 return RedirectToAction("signup");
             }
             // connects to database and grabs diagrams that match the user ID
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
-            var databaseName = "diagrams";
+            var databaseName = "uml_db";
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase(databaseName);
             var collection = db.GetCollection<DiagramModel>("diagrams");
-            var results = collection.Find(x => x.Username == model._id).ToList();
-            // give the list of matching Diagrams to the view bag for the view to access
-            ViewBag.list = results;
-            ViewBag.id = model._id;
-            ViewBag.username = model.Username;
-            ViewBag.password = model.Password;
-            return View();
+            model.Diagrams = collection.Find(x => x.UserID == model._id).ToList();
+            
+            return View(model);
         }
 
 

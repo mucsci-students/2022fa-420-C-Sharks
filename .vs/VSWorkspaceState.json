@@ -5,8 +5,9 @@
     "\\UML\\Controllers",
     "\\UML\\Models",
     "\\UML\\Views",
-    "\\UML\\Views\\Editor"
+    "\\UML\\Views\\Editor",
+    "\\UML\\Views\\Home"
   ],
-  "SelectedNode": "\\UML\\Controllers\\EditorController.cs",
+  "SelectedNode": "\\UML\\Views\\Home\\ListDiagrams.cshtml",
   "PreviewInSolutionExplorer": false
 }
