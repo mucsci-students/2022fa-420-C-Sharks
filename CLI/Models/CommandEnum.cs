@@ -11,8 +11,6 @@
         rem_meth,
         relat,
         rem_relat,
-        save,
-        load,
         list_class,
         list_classes,
         list_relat,

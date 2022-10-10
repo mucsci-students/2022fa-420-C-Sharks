@@ -27,6 +27,7 @@ using UML.Models;
 using System.Drawing.Printing;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using System.Transactions;
+using System.Diagnostics;
 
 namespace CLI.Controllers
 {
@@ -79,10 +80,10 @@ namespace CLI.Controllers
                 Console.WriteLine(" ");
                 Console.WriteLine("List_relat: Lists the relations currently added");
                 Console.WriteLine(" ");
-                Console.WriteLine("save: Saves the UML model to the database");
-                Console.WriteLine(" ");
-                Console.WriteLine("load: Loads a UML model from the database");
-                Console.WriteLine(" ");
+                //Console.WriteLine("save: Saves the UML model to the database");
+                //Console.WriteLine(" ");
+                //Console.WriteLine("load: Loads a UML model from the database");
+                //Console.WriteLine(" ");
                 Console.WriteLine("import: Load a UML model from a JSON file");
                 Console.WriteLine(" ");
                 Console.WriteLine("export: Saves a UML as a JSON file locally");
@@ -135,14 +136,6 @@ namespace CLI.Controllers
             else if (input == Commands.mod_meth)
             {
                 ModMeth();
-            }
-            else if (input == Commands.save)
-            {
-
-            }
-            else if (input == Commands.load)
-            {
-
             }
             else if (input == Commands.list_class)
             {
@@ -585,7 +578,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverRelations.Count; CNT++)
             {
-                if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)))
+                if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -602,7 +595,7 @@ namespace CLI.Controllers
                 InputR = Console.ReadLine();
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)))
+                    if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1033,6 +1026,7 @@ namespace CLI.Controllers
                         bool Err2 = false;
                         Console.WriteLine("Enter new method name:");
                         InputM = Console.ReadLine();
+                        //different logic for if null
                         if (OverScreen[Hold].methods != null)
                         {
                             for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
@@ -1044,6 +1038,7 @@ namespace CLI.Controllers
                                 }
                             }
                         }
+                        //if activated loop until proper inout is validated
                         while (Err2)
                         {
                             Console.WriteLine("ERROR");
@@ -1069,6 +1064,7 @@ namespace CLI.Controllers
                         //List<Methods> tempM = new List<Methods> { };
                         string InputN = "";
                         string InputT;
+                        //if activated loop until N is input
                         while (InputN != "N")
                         {
                             Console.WriteLine("Enter Parameter name, or 'N' if done or no more:");
@@ -1089,7 +1085,7 @@ namespace CLI.Controllers
                     }
                 }
                 Console.WriteLine("Field Modified:");
-                
+                //check if empty
                 if (!tempF.Any())
                 {
                     OverScreen[Hold].methods[HoldF].name = InputM;
@@ -1107,7 +1103,9 @@ namespace CLI.Controllers
         /// </summary>
         public static void ModRel()
         {
+            //Init variables for use in the function
             bool Err = false;
+            //ask for input
             Console.WriteLine("Enter Name of to class:");
             string InputT = Console.ReadLine();
             Console.WriteLine("Enter Name of from class:");
@@ -1119,7 +1117,8 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverRelations.Count; CNT++)
             {
-                if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)))
+                //check to see if proper input
+                if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -1127,8 +1126,10 @@ namespace CLI.Controllers
                     InputY = Console.ReadLine();
                 }
             }
+            //if activated loop until proper inout is validated
             while (!Err)
             {
+                
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter Valid Name of to class:");
                 InputT = Console.ReadLine();
@@ -1138,7 +1139,7 @@ namespace CLI.Controllers
                 InputR = Console.ReadLine();
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if ((OverRelations[CNT].source.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].destination.Equals(InputT)))
+                    if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1159,8 +1160,9 @@ namespace CLI.Controllers
         /// </summary>
         public static void PrintArray()
         {
-
+            //create list
             List<ExportScreenModel> ExpSM = new List<ExportScreenModel>();
+            //trace trough each item in count add to the export model
             for (int Cnt = 0; Cnt < OverScreen.Count(); Cnt++)
             {
                 ExpSM.Add(new ExportScreenModel
@@ -1171,6 +1173,7 @@ namespace CLI.Controllers
                 });
 
             }
+            //trace trough each item in count add to the export model
             var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = OverRelations.ToArray() };
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
             Console.WriteLine(json);
