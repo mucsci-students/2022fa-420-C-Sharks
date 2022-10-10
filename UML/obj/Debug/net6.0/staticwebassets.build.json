@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rBsuIpeY9HwDVy8tIl21c/MEDLIi4U0zJQB48sDJsiU=",
+  "Hash": "n+FTXnHeZ9BlILbVdF/sM8DRCT15koA/lPDVzMrZ9kg=",
   "Source": "UML",
   "BasePath": "_content/UML",
   "Mode": "Default",
@@ -1054,6 +1054,23 @@
       "OriginalItemSpec": "wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
     },
     {
+      "Identity": "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\wwwroot\\media\\CLI.exe",
+      "SourceId": "UML",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\wwwroot\\",
+      "BasePath": "_content/UML",
+      "RelativePath": "media/CLI.exe",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\media\\CLI.exe"
+    },
+    {
       "Identity": "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\wwwroot\\media\\C-Sharks_logo.jpg",
       "SourceId": "UML",
       "SourceType": "Discovered",
@@ -1103,23 +1120,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\media\\favicon.ico"
-    },
-    {
-      "Identity": "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\wwwroot\\media\\Waves.svg",
-      "SourceId": "UML",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\Trevor\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\wwwroot\\",
-      "BasePath": "_content/UML",
-      "RelativePath": "media/Waves.svg",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\media\\Waves.svg"
     }
   ]
 }
