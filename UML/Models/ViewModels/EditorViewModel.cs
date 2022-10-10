@@ -1,12 +1,10 @@
-﻿using MongoDB.Bson;
-using MongoDB.Bson.Serialization.Attributes;
+﻿using System.ComponentModel.DataAnnotations;
+
 namespace UML.Models.ViewModels
 {
     public class EditorViewModel
     {
-        [BsonRequired]
-        public string userid { get; set; }
-        [BsonRequired]
+        [Required]
         public string mySavedModel { set; get; }
     }
 }
