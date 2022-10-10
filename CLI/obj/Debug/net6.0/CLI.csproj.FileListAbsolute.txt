@@ -172,3 +172,8 @@ C:\Users\Hahng\source\repos\CLI\CLI\obj\Debug\net6.0\refint\CLI.dll
 C:\Users\Hahng\source\repos\CLI\CLI\obj\Debug\net6.0\CLI.pdb
 C:\Users\Hahng\source\repos\CLI\CLI\obj\Debug\net6.0\CLI.genruntimeconfig.cache
 C:\Users\Hahng\source\repos\CLI\CLI\obj\Debug\net6.0\ref\CLI.dll
+E:\Docs\Portfolio\Debug\net6.0\CLI.exe
+E:\Docs\Portfolio\Debug\net6.0\CLI.deps.json
+E:\Docs\Portfolio\Debug\net6.0\CLI.runtimeconfig.json
+E:\Docs\Portfolio\Debug\net6.0\CLI.dll
+E:\Docs\Portfolio\Debug\net6.0\CLI.pdb
