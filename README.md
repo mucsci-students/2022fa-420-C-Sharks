@@ -20,4 +20,4 @@ To save or load a diagram, use the Save and Load icons on the toolbar to do so t
 [Trevor Foresta](https://github.com/trevforesta) <br>
 [Galen Hahn](https://github.com/Alfather-Bear) <br>
 [Ben Schaeffer](https://github.com/Tactical12YearOld) <br>
-[Jacob Smith](https://github.com/jdsmithmv) <br>
+[Jacob Smith](https://github.com/jdsmithmv)
