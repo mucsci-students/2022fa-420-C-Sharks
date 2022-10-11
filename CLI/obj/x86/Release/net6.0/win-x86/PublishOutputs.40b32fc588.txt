@@ -1,0 +1,6 @@
+E:\exe\CLI.pdb
+E:\exe\libzstd.dll
+E:\exe\snappy32.dll
+E:\exe\snappy64.dll
+E:\exe\mongocrypt.dll
+E:\exe\CLI.exe
