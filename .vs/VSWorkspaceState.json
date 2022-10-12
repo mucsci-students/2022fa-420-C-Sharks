@@ -1,6 +1,11 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\UML",
+    "\\UML\\Models",
+    "\\UML\\Views",
+    "\\UML\\Views\\Editor"
   ],
+  "SelectedNode": "\\UML\\Models\\SingleRelationsModel.cs",
   "PreviewInSolutionExplorer": false
 }
