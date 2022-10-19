@@ -1,0 +1,16 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\UML",
+    "\\UML\\Views",
+    "\\UML\\Views\\Editor",
+    "\\UML\\Views\\Home",
+    "\\UML\\Views\\Shared",
+    "\\UML\\wwwroot",
+    "\\UML\\wwwroot\\css",
+    "\\UML\\wwwroot\\js",
+    "\\UML\\wwwroot\\lib"
+  ],
+  "SelectedNode": "\\UML\\Views\\Editor\\Index.cshtml",
+  "PreviewInSolutionExplorer": false
+}

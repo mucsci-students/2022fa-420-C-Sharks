@@ -1,1 +1,1 @@
-# CSCI 420 Fall 2022: C-Sharks
+# 2022fa-420-C-Sharks
