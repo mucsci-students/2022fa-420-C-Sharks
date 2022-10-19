@@ -18,7 +18,8 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: Dir
-      run: pwd
+      run: pwd && cd UML
+      
     - name: Build
       run: dotnet build --no-restore
     - name: Test
