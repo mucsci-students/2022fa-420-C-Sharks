@@ -17,6 +17,8 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: 6.0.x
+    - name: Dir
+      run: pwd
     - name: Build
       run: dotnet build --no-restore
     - name: Test
