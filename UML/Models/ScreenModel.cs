@@ -10,12 +10,11 @@ namespace UML.Models
         public string text { get; set; }
         public string Loc { get; set; }
         public string color { get; set; }
-        [BsonId]
-        public string key { get; set; }
         public Fields[] fields { get; set; }
         public Methods[] methodBinding { get; set; }
-        public string visible { get; set; }
         public string className { get; set; }
-
+        public string visible { get; set; }
+        [BsonId]
+        public string key { get; set; }
     }
 }

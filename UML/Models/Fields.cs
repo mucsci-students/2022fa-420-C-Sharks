@@ -2,7 +2,7 @@
 {
     public class Fields
     {
-        public string name { get; set; }
-        public string type { get; set; }
+        public string fieldName { get; set; }
+        public string fieldType { get; set; }
     }
 }

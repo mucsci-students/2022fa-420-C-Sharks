@@ -16,6 +16,7 @@ using System.Text.Json.Serialization;
 using UML.Models;
 using UML.Models.ViewModels;
 using Newtonsoft.Json;
+using System.Linq;
 using NuGet.ProjectModel;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
@@ -25,7 +26,7 @@ namespace UML.Controllers
 	{
         [HttpGet]
         public ActionResult Index(UserModel? model)
-		{
+        {
             // Open database connection and look for the user given.
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
             string databaseName = "uml_db";
@@ -33,154 +34,144 @@ namespace UML.Controllers
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase(databaseName);
             var collection = db.GetCollection<DiagramModel>(collectionName);
-            string mySavedModel = "";
             if (model.DiagramName != null)
             {
                 List<DiagramModel> dgrams = collection.Find(x => x.Name == model.DiagramName).ToList();
                 List<ScreenModel> ScnMdlHOLD = dgrams[0].screen.ToList();
                 List<SingleRelationsModel> SingleRelations = dgrams[0].relations.ToList();
-
-                mySavedModel = "{ \"class\": \"GraphLinksModel\",\n\"nodeDataArray\": [ \n{\"text\":\"";
-                foreach (var item in ScnMdlHOLD)
-                {
-                    mySavedModel += item.text + "\",\"loc\":\"" + item.Loc + "\",\"color\":\"" + item.color + "\",\"fields\":[{";
-
-                    if (item.fields != null)
-                    {
-                        if (item.fields.Count() <= 1)
-                        {
-                            foreach (var field in item.fields)
-                            {
-                                mySavedModel += "\" fieldType\":\"" + field.type + "\",\"fieldName\":\"" + field.name + "\"}],\"methodBinding\":[{";
-                            }
-                        }
-                        else
-                        {
-                            var index = 0;
-                            while (item.fields.Count() > 1)
-                            {
-                                mySavedModel += "\"fieldType\":\"" + item.fields[index].type + "\",\"fieldName\":\"" + item.fields[index].name + "\"},";
-                                index++;
-                            }
-                            mySavedModel += "\"fieldType\":\"" + item.fields[index].type + "\",\"fieldName\":\"" + item.fields[index].name + "\"}],\"methodBinding\":[{";
-                        }
-                        if (item.methodBinding != null)
-                        {
-                            if (item.methodBinding.Count() <= 1)
-                            {
-                                foreach (var method in item.methodBinding)
-                                {
-                                    mySavedModel += "\"methodName\":\"" + method.name + "\",\"return_type\":\"" + method.return_type + "\",\"methodParams\":[{";
-                                    if (method.@params.Count() <= 1)
-                                    {
-                                        foreach (var parm in method.@params)
-                                        {
-                                            mySavedModel += "\"name\":\"" + parm.name + "\",\"type\":\"" + parm.type + "\"}]}],";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var index2 = 0;
-                                        while (method.@params.Count() > 1)
-                                        {
-                                            mySavedModel += "\"name\":\"" + method.@params[index2].name + "\",\"type\":\"" + method.@params[index2].type + "\"},";
-                                            index2++;
-                                        }
-                                        mySavedModel += "\"name\":\"" + method.@params[index2].name + "\",\"type\":\"" + method.@params[index2].type + "\"}]}],";
-                                    }
-
-                                }
-                            }
-                            else
-                            {
-                                var index3 = 0;
-                                while (item.methodBinding.Count() > 1)
-                                {
-                                    mySavedModel += "\"methodName\":\"" + item.methodBinding[index3].name + "\",\"return_type\":\"" + item.methodBinding[index3].return_type + "\",\"methodParams\":[{";
-                                    if (item.methodBinding[index3].@params.Count() <= 1)
-                                    {
-                                        foreach (var parm in item.methodBinding[index3].@params)
-                                        {
-                                            mySavedModel += "\"name\":\"" + parm.name + "\",\"type\":\"" + parm.type + "\"}]}],";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        var index2 = 0;
-                                        while (item.methodBinding[index3].@params.Count() > 1)
-                                        {
-                                            mySavedModel += "\"name\":\"" + item.methodBinding[index3].@params[index2].name + "\",\"type\":\"" + item.methodBinding[index3].@params[index2].type + "\"},";
-                                            index2++;
-                                        }
-                                        mySavedModel += "\"name\":\"" + item.methodBinding[index3].@params[index2].name + "\",\"type\":\"" + item.methodBinding[index3].@params[index2].type + "\"}]}],";
-                                    }
-
-                                }
-                            }
-                            mySavedModel += "\"className\":\"" + item.className + "\",\"key:" + item.key + "}],";
-                        }
-                        
-                    }
-                }
-                    
-                mySavedModel += "\"linkDataArray\": [{";
-                var index4 = 0;
-                if (SingleRelations.Count <= 1)
-                {
-                    foreach (var item in SingleRelations)
-                    {
-                        mySavedModel += "\"from\":" + item.from + ",\"to\":" + item.to + ",\"toArrow\":\"" + item.toArrow + "\"}]}";
-                    }
-
-                    while (SingleRelations.Count > 1)
-                    {
-                        mySavedModel += "\"from\":" + SingleRelations[index4].from + ",\"to\":" + SingleRelations[index4].to + ",\"toArrow\":\"" + SingleRelations[index4].toArrow + "\"},";
-                        index4++;
-                    }
-                }
-                else
-                {
-                    mySavedModel += "\"from\":" + SingleRelations[index4].from + ",\"to\":" + SingleRelations[index4].to + ",\"toArrow\":\"" + SingleRelations[index4].toArrow + "\"}]}";
-                }
+                var Jsmodel = new GoJsModel();
+                Jsmodel.@class = "GraphLinksModel";
+                Jsmodel.nodeDataArray = ScnMdlHOLD;
+                Jsmodel.linkDataArray = SingleRelations;
+                EditorViewModel viewModel = new EditorViewModel { userid = model._id, mySavedModel = Jsmodel.ToJson(), DiagramName = model.DiagramName };
+                
+                return View(viewModel);
             }
             else
             {
                 return View(new EditorViewModel { userid = model._id, mySavedModel = "" });
             }
-
-            
-
-
-            
-            
-            
-            /*string mySavedModel = "{ \"class\": \"GraphLinksModel\",\n\"nodeDataArray\": [ \n{";
-            foreach(var item in dgrams)
-            {
-                foreach(var node in dgrams[0].screen)
+        }
+                /*  string mySavedModel = "";
+                if (model.DiagramName != null)
                 {
-                    mySavedModel += "\"text\":"+node.text+"\",";
-                    mySavedModel += "\"loc\":" + node.Loc + "\",";
-                    mySavedModel += "\"color\":" + node.color + "\",";
-                    //foreach(var )
+                    List<DiagramModel> dgrams = collection.Find(x => x.Name == model.DiagramName).ToList();
+                    List<ScreenModel> ScnMdlHOLD = dgrams[0].screen.ToList();
+                    List<SingleRelationsModel> SingleRelations = dgrams[0].relations.ToList();
+
+                    mySavedModel = "{ \"class\": \"GraphLinksModel\",\r\n \"nodeDataArray\": [ \r\n ";
+
+                    foreach (var item in ScnMdlHOLD)
+                    {
+                        mySavedModel += "{\"text\":\"" + item.text + "\",\"loc\":\"" + item.Loc + "\",\"color\":\"" + item.color + "\"},";
+
+                        if (item.fields != null)
+                        {
+                            if (item.fields.Length <= 1)
+                            {
+                                foreach (var field in item.fields)
+                                {
+                                    mySavedModel += "\"fields\":[{\" fieldType\":\"" + field.type + "\",\"fieldName\":\"" + field.name + "\"}],\"methodBinding\":[{";
+                                }
+                            }
+                            else
+                            {
+                                var index = 0;
+                                while (item.fields.Length > 1)
+                                {
+                                    mySavedModel += "\"fields\":[{\"fieldType\":\"" + item.fields[index].type + "\",\"fieldName\":\"" + item.fields[index].name + "\"},";
+                                    index++;
+                                }
+                                mySavedModel += "\"fields\":[{\"fieldType\":\"" + item.fields[index].type + "\",\"fieldName\":\"" + item.fields[index].name + "\"}],\"methodBinding\":[";
+                            }
+                            if (item.methodBinding != null)
+                            {
+                                if (item.methodBinding.Count() <= 1)
+                                {
+                                    foreach (var method in item.methodBinding)
+                                    {
+                                        mySavedModel += "{\"methodName\":\"" + method.name + "\",\"return_type\":\"" + method.return_type + "\",\"methodParams\":[";
+                                        if (method.@params.Count() <= 1)
+                                        {
+                                            foreach (var parm in method.@params)
+                                            {
+                                                mySavedModel += "{\"name\":\"" + parm.name + "\",\"type\":\"" + parm.type + "\"}]}],";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var index2 = 0;
+                                            while (method.@params.Count() > 1)
+                                            {
+                                                mySavedModel += "\"name\":\"" + method.@params[index2].name + "\",\"type\":\"" + method.@params[index2].type + "\"},";
+                                                index2++;
+                                            }
+                                            mySavedModel += "\"name\":\"" + method.@params[index2].name + "\",\"type\":\"" + method.@params[index2].type + "\"}]}],";
+                                        }
+
+                                    }
+                                }
+                                else
+                                {
+                                    var index3 = 0;
+                                    while (item.methodBinding.Count() > 1)
+                                    {
+                                        mySavedModel += "\"methodName\":\"" + item.methodBinding[index3].name + "\",\"return_type\":\"" + item.methodBinding[index3].return_type + "\",\"methodParams\":[{";
+                                        if (item.methodBinding[index3].@params.Count() <= 1)
+                                        {
+                                            foreach (var parm in item.methodBinding[index3].@params)
+                                            {
+                                                mySavedModel += "\"name\":\"" + parm.name + "\",\"type\":\"" + parm.type + "\"}]}],";
+                                            }
+                                        }
+                                        else
+                                        {
+                                            var index2 = 0;
+                                            while (item.methodBinding[index3].@params.Count() > 1)
+                                            {
+                                                mySavedModel += "\"name\":\"" + item.methodBinding[index3].@params[index2].name + "\",\"type\":\"" + item.methodBinding[index3].@params[index2].type + "\"},";
+                                                index2++;
+                                            }
+                                            mySavedModel += "\"name\":\"" + item.methodBinding[index3].@params[index2].name + "\",\"type\":\"" + item.methodBinding[index3].@params[index2].type + "\"}]}],";
+                                        }
+
+                                    }
+                                }
+                                mySavedModel += "\"className\":\"" + item.className + "\",\"key:" + item.key + "}],";
+                            }
+
+                        }
+                    }
+
+                    mySavedModel += "\"linkDataArray\": [{";
+                    var index4 = 0;
+                    if (SingleRelations.Count <= 1)
+                    {
+                        foreach (var item in SingleRelations)
+                        {
+                            mySavedModel += "\"from\":" + item.from + ",\"to\":" + item.to + ",\"toArrow\":\"" + item.toArrow + "\"}]}";
+                        }
+
+                        while (SingleRelations.Count > 1)
+                        {
+                            mySavedModel += "\"from\":" + SingleRelations[index4].from + ",\"to\":" + SingleRelations[index4].to + ",\"toArrow\":\"" + SingleRelations[index4].toArrow + "\"},";
+                            index4++;
+                        }
+                    }
+                    else
+                    {
+                        mySavedModel += "\"from\":" + SingleRelations[index4].from + ",\"to\":" + SingleRelations[index4].to + ",\"toArrow\":\"" + SingleRelations[index4].toArrow + "\"}]}";
+                    }
                 }
+                else
+                {
+                    return View(new EditorViewModel { userid = model._id, mySavedModel = "" });
+                }
+
+                return View(new EditorViewModel{ userid = model._id, mySavedModel = mySavedModel});
             }
-
-
-
-            /*
-            string mySavedModel = Newtonsoft.Json.JsonConvert.SerializeObject(dgrams, Formatting.Indented);
-            mySavedModel = mySavedModel.Replace("\"Name\": \"" + dgrams[0].Name + "\",", null);
-            mySavedModel = mySavedModel.Replace("\"UserID\": \""+ dgrams[0].UserID + "\",", null);
-            mySavedModel = mySavedModel.Replace("\"id\": \"" + dgrams[0].id + "\",", null);
-            mySavedModel = mySavedModel.Replace("screen", "nodeDataArray");
-            mySavedModel = mySavedModel.Replace("relations", "linkDataArray");
             */
-
-            return View(new EditorViewModel{ userid = model._id, mySavedModel = mySavedModel});
-		}
-
-		[HttpPost]
+        [HttpPost]
 		public ActionResult Index(EditorViewModel model)
         {
 
@@ -221,10 +212,10 @@ namespace UML.Controllers
             var collection = db.GetCollection<DiagramModel>(collectionName);
 			var json = JObject.Parse(model.mySavedModel);
             var text = json["nodeDataArray"];
-            var field = text["fields"];
-            var methods = text["methodBinding"];
-            var @params = methods["methodParams"];
-            List<Fields> @param = new List<Fields>();
+            //var field = json["fields"];
+            //var methods = json["methodBinding"];
+            //var @params = json["methodParams"];
+            List<Parameters> @param = new List<Parameters>();
 
             List<ScreenModel> ScreModHLD = new List<ScreenModel> { };
             List<Fields> fields = new List<Fields>();
@@ -233,26 +224,32 @@ namespace UML.Controllers
             {
                 foreach (JObject item in text)
                 {
-                    
-                    foreach (JObject item2 in field)
+                    var field = item["fields"];
+                    if (field != null)
                     {
-                        fields.Add(new Fields { name = item2.GetValue("fieldName").ToString(), type = item2.GetValue("fieldType").ToString() });                       
+                        foreach (JObject item2 in field)
+                        {
+                            fields.Add(new Fields { fieldName = item2.GetValue("fieldName").ToString(), fieldType = item2.GetValue("fieldType").ToString() });
+                        }
                     }
+                    var methods = item["methodBinding"];
+                    if(methods != null)
+                    {
                         foreach (JObject item3 in methods)
                         {
-                            foreach (JObject item4 in @params)
+                            var @params = item3["methodParams"];
+                            if(@params != null)
                             {
-                                @param.Add(new Fields { name = item4.GetValue("name").ToString(), type = item4.GetValue("type").ToString() });
-                            }
-                            methodBinding.Add(new Methods { name = item3.GetValue("methodName").ToString(), return_type = item3.GetValue("return_type").ToString(), @params = param.ToArray() });
+                                foreach (JObject item4 in @params)
+                                {
+                                    @param.Add(new Parameters { name = item4.GetValue("name").ToString(), type = item4.GetValue("type").ToString() });
+                                }
+                            }                          
+                            methodBinding.Add(new Methods { methodName = item3.GetValue("methodName").ToString(), return_type = item3.GetValue("return_type").ToString(), methodParams = param.ToArray() });
                         }
-                        ScreModHLD.Add(new ScreenModel { text = item.GetValue("className").ToString(), Loc = item.GetValue("loc").ToString(), color = item.GetValue("color").ToString(), key = item.GetValue("key").ToString(), fields = fields.ToArray(), methodBinding = methodBinding.ToArray() });
+                        ScreModHLD.Add(new ScreenModel { text = "new node", Loc = item.GetValue("Loc").ToString(), color = item.GetValue("color").ToString(), key = item.GetValue("key").ToString(), fields = fields.ToArray(), methodBinding = methodBinding.ToArray(), className = item.GetValue("className").ToString(), visible = item.GetValue("visible").ToString()});
+                    }      
                 }
-            }
-            else
-            {
-                // if text is null
-                return 1;
             }
             var toFrom = json["linkDataArray"];
 			List <SingleRelationsModel> SingRelHLD = new List<SingleRelationsModel> { };
@@ -260,7 +257,7 @@ namespace UML.Controllers
             {
                 foreach (JObject item in toFrom)
                 {
-                    SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString(),  });
+                    SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString(), toArrow = item.GetValue("toArrow").ToString() }); ;
                 }
             }
             else
@@ -274,11 +271,6 @@ namespace UML.Controllers
             collection.InsertOne(Diagram);
             // if Diagram added
             return 0;
-            //await collection2.InsertOneAsync(relations);
-            //string test = colorHLD.ElementAt(2);
-            //string test2 = ToHLD.ElementAt(0);
-            //Console.WriteLine("HERE");
-            //Console.WriteLine("HERE");
         }
     }
 }

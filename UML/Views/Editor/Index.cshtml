@@ -6,7 +6,7 @@
 @using(Html.BeginForm())
 {
     @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { type = "hidden" })
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { id = "mySavedModel",style = "width:100%;height:100px" })
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { id = "mySavedModel2",style = "width:100%;height:100px" })
     @Html.TextBoxFor(EditorViewModel => EditorViewModel.DiagramName, new { style = "width:25%", placeholder = "Diagram Name" })
     <input type="submit" value="saveToServer" />
 }
@@ -312,7 +312,7 @@
                 fromSpot: go.Spot.AllSides,
                 toSpot: go.Spot.AllSides
             },
-            new go.Binding("location", "loc", go.Point.parse).makeTwoWay(go.Point.stringify),
+            new go.Binding("location", "Loc", go.Point.parse).makeTwoWay(go.Point.stringify),
             $(go.Shape,
                 {
                     //Specify ports, this needs to be here for node to be linkable
@@ -472,9 +472,9 @@
         let fields = [];
         let methods = [];
         //Work in progress, trying to make offset when node is created
-        var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 200), Math.floor(Math.random() * 200)));
-        //alert(loc);
-        myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: true });
+        var Loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 200), Math.floor(Math.random() * 200)));
+        //alert(Loc);
+        myDiagram.model.addNodeData({ text: "new node", Loc: Loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: true });
 
         classNames.push(String(promptName));
 
@@ -488,13 +488,13 @@
     function save() {
         let save = myDiagram.model.toJson();
         document.getElementById("mySavedModel").value = save;
-        document.getElementById("mySavedModel").value = save;
+        document.getElementById("mySavedModel2").value = save;
         myDiagram.isModified = false;
         updateClassNames();
     }
 
     function load() {
-        myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+        myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel2").value);
     }
 
     function helpMenuDropdown() {
