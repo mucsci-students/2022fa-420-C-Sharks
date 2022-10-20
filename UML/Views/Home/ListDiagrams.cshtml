@@ -11,7 +11,9 @@
         <thead>
             <tr>
                 <th scope="col">Diagram Name</th>
-                <th scope="col">Enter Diagram</th>
+                <th scope="col">Edit Diagram</th>
+                <th scope="col">Delete Diagram</th>
+
             </tr>
         </thead>
 
@@ -25,9 +27,16 @@
                     <tbody>
                         <tr>
                             <td scope="row">@item.Name</td>
-                            <td scope="row"><input type="button" value="Edit" onclick="@("window.location.href='" + 
+                            <td scope="row">
+                            <input type="button" value="Edit" onclick="@("window.location.href='" + 
                             // need to get the link to give the data to the editor index page
-                            @Url.Action("index", "Editor", new {_id = Model._id, Username = Model.Username, DiagramName = item.Name}) + "'");" /></td> 
+                            @Url.Action("index", "Editor", new {_id = Model._id, Username = Model.Username, DiagramName = item.Name, DiagramID = item.id}) + "'");" /></td>
+                            <td scope="row">
+                                <input type="button" value="Delete" onclick="@("window.location.href='" +
+                            // need to get the link to give the data to the editor index page
+                            @Url.Action("DeleteDiagram", "Home", new {_id = Model._id, Username = Model.Username, DiagramName = item.Name, DiagramID = item.id}) + "'");" />
+                            </td>
+
                         </tr>
                     </tbody>
                 }

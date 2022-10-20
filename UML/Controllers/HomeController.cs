@@ -103,6 +103,23 @@ namespace UML.Controllers
             return View(model);
         }
 
+        // Deletes diagram based on DiagramID from collection
+        [HttpGet]
+        public ActionResult DeleteDiagram(UserModel model)
+        {
+            // Open database connection and look for the DiagramID given.
+            string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
+            string databaseName = "uml_db";
+            string collectionName = "diagrams";
+            var client = new MongoClient(connectionString);
+            var db = client.GetDatabase(databaseName);
+            var collection = db.GetCollection<DiagramModel>(collectionName);
+            var deleteFilter = Builders<DiagramModel>.Filter.Eq("id", model.DiagramID);
+            collection.DeleteOne(deleteFilter);
+            return RedirectToAction("ListDiagrams", model);
+
+
+        }
 
         // Returns a blank user model for the user to fill out
         [HttpGet]
@@ -110,6 +127,7 @@ namespace UML.Controllers
         {
             return View(new UserModel());
         }
+        
         [HttpPost]
         public ActionResult Signup(UserModel model)
         {

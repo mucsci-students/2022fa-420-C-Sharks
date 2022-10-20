@@ -8,7 +8,7 @@ namespace UML.Models
     {
         
         public string text { get; set; }
-        public string Loc { get; set; }
+        public string loc { get; set; }
         public string color { get; set; }
         public Fields[] fields { get; set; }
         public Methods[] methodBinding { get; set; }

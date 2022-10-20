@@ -14,7 +14,7 @@ namespace UML.Models
         public string? Password { get; set; }
         public List<DiagramModel>? Diagrams { get; set; }
         public string? DiagramName { set; get; }
-       
+        public string? DiagramID { set; get; }
 
     }
 }
