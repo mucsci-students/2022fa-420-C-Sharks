@@ -6,6 +6,7 @@
 @using(Html.BeginForm())
 {  
     @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { type = "hidden" })
+    // uncomment type to hide text box
     @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /*type = "hidden",*/ id = "mySavedModel",style = "width:100%;height:100px" })
     @Html.TextBoxFor(EditorViewModel => EditorViewModel.DiagramName, new { style = "width:25%", placeholder = "Diagram Name" })
     <input type="submit" value="saveToServer" />
@@ -452,6 +453,7 @@
     // deserialize json 
     myDiagram.model = go.Model.fromJson(JSON.parse(document.getElementById("mySavedModel").value));
 
+    //myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     //checks to see when anything is changed and updates the classnmaes list when something does
     myDiagram.addModelChangedListener(function (evt) {
         if (evt.isTransactionFinished) updateClassNames();
