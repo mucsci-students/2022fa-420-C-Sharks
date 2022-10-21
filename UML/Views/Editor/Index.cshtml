@@ -450,20 +450,10 @@
         );
 
     //add data here if you want nodes to be loaded on default
-<<<<<<< HEAD
     // deserialize json 
     myDiagram.model = go.Model.fromJson(JSON.parse(document.getElementById("mySavedModel").value));
-
     //myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
-=======
-<<<<<<< HEAD
-    // deserialize json 
-    myDiagram.model = go.Model.fromJson(JSON.parse(document.getElementById("mySavedModel").value));
-
-=======
-    myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
->>>>>>> 050f753e59c252872a1ba16d77be699a48406474
->>>>>>> 86b47c05535ac7989c00e9a7689beb0536b3f6b3
+    
     //checks to see when anything is changed and updates the classnmaes list when something does
     myDiagram.addModelChangedListener(function (evt) {
         if (evt.isTransactionFinished) updateClassNames();
