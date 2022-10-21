@@ -134,7 +134,14 @@ namespace UML.Controllers
                     var methods = item["methodBinding"];
                     if(methods != null)
                     {
+<<<<<<< HEAD
                         // clear previous method
+=======
+<<<<<<< HEAD
+                        // clear previous method
+=======
+>>>>>>> 050f753e59c252872a1ba16d77be699a48406474
+>>>>>>> 86b47c05535ac7989c00e9a7689beb0536b3f6b3
                         methodBinding.Clear();
                         //int methodCount = 0;
                         // Looping through methods in node
@@ -143,7 +150,14 @@ namespace UML.Controllers
                             var @params = item3["methodParams"];
                             if(@params != null)
                             {
+<<<<<<< HEAD
                                 // clear previous method's params
+=======
+<<<<<<< HEAD
+                                // clear previous method's params
+=======
+>>>>>>> 050f753e59c252872a1ba16d77be699a48406474
+>>>>>>> 86b47c05535ac7989c00e9a7689beb0536b3f6b3
                                 @param.Clear();
                                 //int paramsCount = 0;
                                 // Looping through params in methods in node
@@ -169,8 +183,16 @@ namespace UML.Controllers
             {
                 foreach (JObject item in toFrom)
                 {
+<<<<<<< HEAD
                     if(item.GetValue("fill") != null)
                     // fill and toArrow added/changed to be able to handle drawing the arrows in js screen
+=======
+<<<<<<< HEAD
+                    if(item.GetValue("fill") != null)
+                    // fill and toArrow added/changed to be able to handle drawing the arrows in js screen
+=======
+>>>>>>> 050f753e59c252872a1ba16d77be699a48406474
+>>>>>>> 86b47c05535ac7989c00e9a7689beb0536b3f6b3
                     SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString(), toArrow = item.GetValue("toArrow").ToString(), fill = item.GetValue("fill").ToString() }); ;
                 }
             }

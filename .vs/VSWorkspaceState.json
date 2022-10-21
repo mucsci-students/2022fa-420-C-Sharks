@@ -9,6 +9,10 @@
     "\\UML\\Views\\Home",
     "\\UML\\Views\\Shared"
   ],
+<<<<<<< HEAD
   "SelectedNode": "\\UML\\Controllers\\HomeController.cs",
+=======
+  "SelectedNode": "\\UML\\UML.sln",
+>>>>>>> 050f753e59c252872a1ba16d77be699a48406474
   "PreviewInSolutionExplorer": false
 }
