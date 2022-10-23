@@ -29,4 +29,11 @@ jobs:
           name: Dotnet Tests            # Name of the check run which will be created
           path: unitTests/TestResults/test-results.trx   # Path to test results
           reporter: dotnet-trx        # Format of test results
+      - name: CodeCov
+        run: curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov && ./codecov
+        
+        
+
+
+
 
