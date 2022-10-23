@@ -23,12 +23,12 @@ jobs:
       - name: Test
         run: dotnet test unitTests --logger "trx;LogFileName=test-results.trx"
       - name: Dir
-        run: cd unitTests && pwd && ls
+        run: cd UML && pwd && ls
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
         with:
           name: Dotnet Tests            # Name of the check run which will be created
-          path: unitTests/TestResults/test-results   # Path to test results
+          path: unitTests/TestResults   # Path to test results
           reporter: dotnet-trx        # Format of test results
 
