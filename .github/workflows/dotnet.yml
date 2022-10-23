@@ -17,7 +17,7 @@ jobs:
         with:
           dotnet-version: 6.0.x
       - name: Install Coverlet
-        run: cd && ls && dotnet add package coverlet.msbuild
+        run: pwd && dotnet add package coverlet.msbuild
       - name: Navigate to UML
         run: cd UML
       - name: Build
