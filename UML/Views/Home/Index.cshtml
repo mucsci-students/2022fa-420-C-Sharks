@@ -1,7 +1,6 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-
 <div class="text-center">
     <img src="\media\C-Sharks_logo.jpg" width="500">
     <h1 class="display-4"><b>UML Editor</b></h1>
@@ -14,5 +13,19 @@
         <br /><br />
         For any help with how to use the editor, perform different functions, run the CLI, etc. - visit our <a asp-controller="Home" asp-action="Help">Help</a> page. 
     </p>
+</div>
+<div class="text-center">
+    @if (TempData["Message"] != null)
+    {
+        <span>@TempData["Message"]</span>
+    }
+    @model LoginViewModel
+    @using (Html.BeginForm())
+    {
+        @Html.TextBoxFor(UserModel=>UserModel.Username, new {placeholder="Username"})
+        @Html.TextBoxFor(UserModel=>UserModel.Password, new {placeholder="Password", type="password"})
+        <input type="Submit" value="Login" />
+    }
+    <p> If you are new here please create a login <a asp-controller="Home" asp-action="Signup">Here</a>.</p>
 </div>
 
