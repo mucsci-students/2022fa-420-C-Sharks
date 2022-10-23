@@ -1,17 +1,47 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Hahng\\source\\repos\\CLI\\CLI\\CLI.csproj": {}
+    "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\CLI\\CLI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hahng\\source\\repos\\CLI\\CLI\\CLI.csproj": {
+    "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
+        "projectName": "AutoCompleteUtils",
+        "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
+        "frameworks": {
+          "net452": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net452": {}
+      }
+    },
+    "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj",
+        "projectName": "ConsoleUtils",
+        "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj",
+        "frameworks": {
+          "net452": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net452": {}
+      }
+    },
+    "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\CLI\\CLI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hahng\\source\\repos\\CLI\\CLI\\CLI.csproj",
+        "projectUniqueName": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\CLI\\CLI.csproj",
         "projectName": "CLI",
-        "projectPath": "C:\\Users\\Hahng\\source\\repos\\CLI\\CLI\\CLI.csproj",
+        "projectPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\CLI\\CLI.csproj",
         "packagesPath": "C:\\Users\\Hahng\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Hahng\\source\\repos\\CLI\\CLI\\obj\\",
+        "outputPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\CLI\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "E:\\Studio SDK\\NuGetPackages"
@@ -32,7 +62,14 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
+                "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj"
+              },
+              "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj": {
+                "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -55,15 +92,19 @@
             },
             "Microsoft.Build.Framework": {
               "target": "Package",
-              "version": "[17.3.1, )"
+              "version": "[17.3.2, )"
             },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[2.17.1, )"
+              "version": "[2.18.0, )"
             },
             "NuGet.Protocol": {
               "target": "Package",
-              "version": "[6.3.0, )"
+              "version": "[6.3.1, )"
+            },
+            "System.CommandLine": {
+              "target": "Package",
+              "version": "[2.0.0-beta4.22272.1, )"
             }
           },
           "imports": [

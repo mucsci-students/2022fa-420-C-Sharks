@@ -13,9 +13,15 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNet.Mvc" Version="5.2.9" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
-    <PackageReference Include="Microsoft.Build.Framework" Version="17.3.1" />
-    <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
-    <PackageReference Include="NuGet.Protocol" Version="6.3.0" />
+    <PackageReference Include="Microsoft.Build.Framework" Version="17.3.2" />
+    <PackageReference Include="MongoDB.Driver" Version="2.18.0" />
+    <PackageReference Include="NuGet.Protocol" Version="6.3.1" />
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\..\..\Downloads\AutoCompleteConsole_V4.0\AutoCompleteUtils\AutoCompleteUtils.csproj" />
+    <ProjectReference Include="..\..\..\..\..\..\Downloads\AutoCompleteConsole_V4.0\ConsoleUtils\ConsoleUtils.csproj" />
   </ItemGroup>
 
 </Project>
