@@ -4,26 +4,11 @@
     "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\CLI\\CLI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
+    "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
       "restore": {
-        "projectUniqueName": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
+        "projectUniqueName": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
         "projectName": "AutoCompleteUtils",
-        "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
-        "frameworks": {
-          "net452": {
-            "projectReferences": {}
-          }
-        }
-      },
-      "frameworks": {
-        "net452": {}
-      }
-    },
-    "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj": {
-      "restore": {
-        "projectUniqueName": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj",
-        "projectName": "ConsoleUtils",
-        "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj",
+        "projectPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
         "frameworks": {
           "net452": {
             "projectReferences": {}
@@ -63,11 +48,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
-                "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj"
+              "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
+                "projectPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\AutoCompleteUtils\\AutoCompleteUtils.csproj"
               },
-              "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj": {
-                "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj"
+              "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\ConsoleUtils\\ConsoleUtils.csproj": {
+                "projectPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\ConsoleUtils\\ConsoleUtils.csproj"
               }
             }
           }
@@ -125,6 +110,21 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\ConsoleUtils\\ConsoleUtils.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\ConsoleUtils\\ConsoleUtils.csproj",
+        "projectName": "ConsoleUtils",
+        "projectPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\ConsoleUtils\\ConsoleUtils.csproj",
+        "frameworks": {
+          "net452": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net452": {}
       }
     }
   }

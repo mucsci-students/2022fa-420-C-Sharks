@@ -4895,13 +4895,13 @@
     },
     "AutoCompleteUtils/1.0.0": {
       "type": "project",
-      "path": "../../../../../../Downloads/AutoCompleteConsole_V4.0/AutoCompleteUtils/AutoCompleteUtils.csproj",
-      "msbuildProject": "../../../../../../Downloads/AutoCompleteConsole_V4.0/AutoCompleteUtils/AutoCompleteUtils.csproj"
+      "path": "../AutoCompleteUtils/AutoCompleteUtils.csproj",
+      "msbuildProject": "../AutoCompleteUtils/AutoCompleteUtils.csproj"
     },
     "ConsoleUtils/1.0.0": {
       "type": "project",
-      "path": "../../../../../../Downloads/AutoCompleteConsole_V4.0/ConsoleUtils/ConsoleUtils.csproj",
-      "msbuildProject": "../../../../../../Downloads/AutoCompleteConsole_V4.0/ConsoleUtils/ConsoleUtils.csproj"
+      "path": "../ConsoleUtils/ConsoleUtils.csproj",
+      "msbuildProject": "../ConsoleUtils/ConsoleUtils.csproj"
     }
   },
   "projectFileDependencyGroups": {
@@ -4949,11 +4949,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
-              "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\AutoCompleteUtils\\AutoCompleteUtils.csproj"
+            "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
+              "projectPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\AutoCompleteUtils\\AutoCompleteUtils.csproj"
             },
-            "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj": {
-              "projectPath": "C:\\Users\\Hahng\\Downloads\\AutoCompleteConsole_V4.0\\ConsoleUtils\\ConsoleUtils.csproj"
+            "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\ConsoleUtils\\ConsoleUtils.csproj": {
+              "projectPath": "C:\\Users\\Hahng\\source\\repos\\2022fa-420-C-Sharks\\Sprint2\\CLI-1\\ConsoleUtils\\ConsoleUtils.csproj"
             }
           }
         }

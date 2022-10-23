@@ -5,9 +5,9 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CLI", "CLI.csproj", "{C79B6BF3-3124-4F69-9BB2-8AB145975D42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCompleteUtils", "..\..\..\..\..\..\Downloads\AutoCompleteConsole_V4.0\AutoCompleteUtils\AutoCompleteUtils.csproj", "{E93CED0B-C4F6-4455-8E5D-17076F12AD10}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCompleteUtils", "..\AutoCompleteUtils\AutoCompleteUtils.csproj", "{E93CED0B-C4F6-4455-8E5D-17076F12AD10}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUtils", "..\..\..\..\..\..\Downloads\AutoCompleteConsole_V4.0\ConsoleUtils\ConsoleUtils.csproj", "{CF1C083E-EE8E-4A1B-B503-0C39C0A7F8B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUtils", "..\ConsoleUtils\ConsoleUtils.csproj", "{CF1C083E-EE8E-4A1B-B503-0C39C0A7F8B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

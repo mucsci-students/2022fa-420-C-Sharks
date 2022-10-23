@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -20,8 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\..\Downloads\AutoCompleteConsole_V4.0\AutoCompleteUtils\AutoCompleteUtils.csproj" />
-    <ProjectReference Include="..\..\..\..\..\..\Downloads\AutoCompleteConsole_V4.0\ConsoleUtils\ConsoleUtils.csproj" />
+    <ProjectReference Include="..\AutoCompleteUtils\AutoCompleteUtils.csproj" />
+    <ProjectReference Include="..\ConsoleUtils\ConsoleUtils.csproj" />
   </ItemGroup>
 
 </Project>
