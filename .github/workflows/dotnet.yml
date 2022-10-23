@@ -23,7 +23,7 @@ jobs:
       - name: Test
         run: dotnet test unitTests --logger "trx;LogFileName=test-results.trx" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
       - name: Dir
-        run: ls
+        run: cd UML && ls
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
@@ -32,7 +32,7 @@ jobs:
           path: unitTests/TestResults/test-results.trx   # Path to test results
           reporter: dotnet-trx        # Format of test results
       - name: CodeCov
-        run: curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov && ./codecov
+        run: curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov && ./codecov -R UML
         
         
 
