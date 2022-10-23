@@ -167,13 +167,13 @@ namespace UML.Controllers
                     if (item.GetValue("fill") != null)
                     {
                         // fill and toArrow added/changed to be able to handle drawing the arrows in js screen
-                        SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString(), toArrow = item.GetValue("toArrow").ToString(), fill = item.GetValue("fill").ToString() }); ;
+                        SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString(), toArrow = item.GetValue("toArrow").ToString(), fill = item.GetValue("fill").ToString() });
                     }
                     else
                     {
-                        SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString(), toArrow = item.GetValue("toArrow").ToString() }); ;
+                        SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString(), toArrow = item.GetValue("toArrow").ToString() });
                     }
-                    SingRelHLD.Add(new SingleRelationsModel { to = item.GetValue("to").ToString(), from = item.GetValue("from").ToString(), toArrow = item.GetValue("toArrow").ToString(), fill = item.GetValue("fill").ToString() }); ;
+                    
                 }
             }
             else
