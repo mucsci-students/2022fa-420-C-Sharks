@@ -23,7 +23,8 @@ jobs:
       - name: Test
         run: dotnet test unitTests --logger "trx;LogFileName=test-results.trx"
       - name: Dir
-        run: cd unitTests && cd TestReults && pwd && ls
+        run: cd unitTests && pwd && ls
+      - name: Dir2
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
