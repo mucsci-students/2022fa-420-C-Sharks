@@ -22,5 +22,5 @@ jobs:
     - name: Build
       run: dotnet build UML
     - name: Test
-      run: dotnet test unitTests --no-restore --verbosity normal
+      run: dotnet test unitTests --no-restore --verbosity detailed
 
