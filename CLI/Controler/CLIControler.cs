@@ -1532,8 +1532,8 @@ namespace CLI.Controllers
             undoCounter++;
             undoIndex++;
 
-            Console.WriteLine("{0} Counter", undoCounter);
-            Console.WriteLine("{0} Index", undoIndex);
+            //Console.WriteLine("{0} Counter", undoCounter);
+            //Console.WriteLine("{0} Index", undoIndex);
         }
 
         static void undo()
