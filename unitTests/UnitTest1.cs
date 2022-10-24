@@ -104,6 +104,30 @@ namespace unitTests
             Assert.AreEqual(um.DiagramName, "dname");
             Assert.AreEqual("123", um.DiagramID);
         }
+        [TestMethod]
+        public void testFields()
+        {
+            Fields fs = new Fields() { fieldName = "fname", fieldType = "ftype" };
+            Assert.AreEqual(fs.fieldName, "fname");
+            Assert.AreEqual(fs.fieldType, "ftype");
+        }
+
+        [TestMethod]
+        public void testMethods()
+        {
+            Methods md = new Methods() { methodName = "mname", methodParams = new Parameters[3], return_type = "String" };
+            Assert.AreEqual(md.return_type, "String");
+            Assert.AreEqual(md.methodName, "mname");
+            Assert.AreEqual(md.methodParams.Length,3);
+        }
+
+        [TestMethod]
+        public void testParameters()
+        {
+            Parameters pm = new Parameters() { name = "pname", type = "String" };
+            Assert.AreEqual(pm.name, "pname");
+            Assert.AreEqual(pm.type, "String");
+        }
     }
 
 }
