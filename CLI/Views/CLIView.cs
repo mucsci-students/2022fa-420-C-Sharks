@@ -26,6 +26,8 @@ List<string> CommandLST = new List<string>
         "mod_field",
         "mod_meth",
         "mod_relat",
+        "undo",
+        "redo"
 };
 var curDat = DateTime.Now;
 Console.WriteLine($"WELCOME TO C-SHARK UML COMMAND LINE INTERFACE {curDat:d}");
