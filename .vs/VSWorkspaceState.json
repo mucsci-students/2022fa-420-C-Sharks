@@ -3,14 +3,14 @@
     "",
     "\\UML",
     "\\UML\\Views",
-    "\\UML\\Views\\Editor",
-    "\\UML\\Views\\Home",
     "\\UML\\Views\\Shared",
     "\\UML\\wwwroot",
     "\\UML\\wwwroot\\css",
     "\\UML\\wwwroot\\js",
-    "\\UML\\wwwroot\\lib"
+    "\\UML\\wwwroot\\lib",
+    "\\unitTests",
+    "\\unitTests\\obj"
   ],
-  "SelectedNode": "\\UML\\Views\\Editor\\Index.cshtml",
+  "SelectedNode": "\\UML\\UML.sln",
   "PreviewInSolutionExplorer": false
 }
