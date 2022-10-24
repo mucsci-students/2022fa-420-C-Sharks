@@ -8,49 +8,57 @@ build_property.PlatformNeutralAssembly =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = UML
 build_property.RootNamespace = UML
-build_property.ProjectDir = C:\Users\bscha\source\repos\2022fa-420-C-Sharks\UML\
+build_property.ProjectDir = C:\Users\Jacob\Documents\GitHub\2022fa-420-C-Sharks\UML\
 build_property.RazorLangVersion = 6.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = C:\Users\bscha\source\repos\2022fa-420-C-Sharks\UML
+build_property.MSBuildProjectDirectory = C:\Users\Jacob\Documents\GitHub\2022fa-420-C-Sharks\UML
 build_property._RazorSourceGeneratorDebug = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/Editor/Index.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Editor/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWRpdG9yXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/Home/CLIDownload.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Home/CLIDownload.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxDTElEb3dubG9hZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/Home/Help.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Home/Help.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxIZWxwLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/Home/Index.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/Home/Privacy.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Home/ListDiagrams.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMaXN0RGlhZ3JhbXMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/Shared/Error.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Home/Signup.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTaWdudXAuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/Shared/_ValidationScriptsPartial.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/_ViewImports.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/_ViewStart.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[C:/Users/bscha/source/repos/2022fa-420-C-Sharks/UML/Views/Shared/_Layout.cshtml]
+[C:/Users/Jacob/Documents/GitHub/2022fa-420-C-Sharks/UML/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-rgs9fz9cgt
