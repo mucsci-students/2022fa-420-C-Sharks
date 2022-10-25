@@ -36,6 +36,9 @@ namespace CLI.Controllers
     {
         static List<ScreenModel> OverScreen = new List<ScreenModel> { };
         static List<SingleRelationsModel> OverRelations = new List<SingleRelationsModel> { };
+        static List<DiagramModel> MomentoSave = new List<DiagramModel> { };
+        static int undoCounter = 0;
+        static int undoIndex = 0;
         public static void interpet(Commands input)
         {
             if (input == Commands.help)
@@ -161,6 +164,14 @@ namespace CLI.Controllers
             {
                 PrintArray();
             }
+            else if (input == Commands.undo)
+            {
+                undo();
+            }
+            else if (input == Commands.redo)
+            {
+                redo();
+            }
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -195,8 +206,13 @@ namespace CLI.Controllers
                     }
                 }
             }
+            if (undoCounter == 0 || undoCounter == 1)
+            {
+                addSave();
+            }
             Console.WriteLine("Class added:");
             OverScreen.Add(new ScreenModel { name = Input });
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -262,6 +278,7 @@ namespace CLI.Controllers
             string InputRR = Console.ReadLine();
             Console.WriteLine("Relation added:");
             OverRelations.Add(new SingleRelationsModel { source = InputRF, destination = InputRT, type = InputRR });
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -349,6 +366,7 @@ namespace CLI.Controllers
                 tempt.Add(new Fields { name = InputN, type = InputT });
                 OverScreen[Hold].fields = tempt.ToArray();
             }
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -450,6 +468,7 @@ namespace CLI.Controllers
                 tempM.Add(new Methods { name = InputM, return_type = InputR, @params = tempF.ToArray() });
                 OverScreen[Hold].methods = tempM.ToArray();
             }
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -489,6 +508,7 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Class Removed:");
             OverScreen.RemoveAt(Hold);
+            addSave();
         }
         ///<summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -561,6 +581,7 @@ namespace CLI.Controllers
             tempt = OverScreen[Hold].fields.ToList();
             tempt.RemoveAt(HoldF);
             OverScreen[Hold].fields = tempt.ToArray();
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -608,6 +629,7 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Relation Removed:");
             OverRelations.RemoveAt(Hold);
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -680,6 +702,7 @@ namespace CLI.Controllers
             tempt = OverScreen[Hold].methods.ToList();
             tempt.RemoveAt(HoldF);
             OverScreen[Hold].methods = tempt.ToArray();
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -775,6 +798,7 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Class modified:");
             OverScreen[Hold].name = Input;
+            addSave();
         }
         /// <summary>
         /// Modify a given field in a given class
@@ -907,6 +931,7 @@ namespace CLI.Controllers
             Console.WriteLine("Field Modified:");
             OverScreen[Hold].fields[HoldF].name = InputN;
             OverScreen[Hold].fields[HoldF].type = InputT;
+            addSave();
         }
         /// <summary>
         /// Modify a given method in a given class
@@ -1097,6 +1122,7 @@ namespace CLI.Controllers
                     OverScreen[Hold].methods[HoldF].return_type = InputR;
                     OverScreen[Hold].methods[HoldF].@params = tempF.ToArray();
                 }
+            addSave();
         }
         /// <summary>
         /// Modify a given relation type between two given classes
@@ -1154,6 +1180,7 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Relation Modified:");
             OverRelations[Hold].type = InputY;
+            addSave();
         }
         /// <summary>
         /// debug command to print entire contents
@@ -1393,6 +1420,14 @@ namespace CLI.Controllers
                 //get the file input
                 string jsonString = System.IO.File.ReadAllText(filename);
                 //parse it IDK thats what galen said
+                if (undoCounter >= 0)
+                {
+                    undoCounter = 0;
+                    undoIndex = 0;
+                    OverRelations = new List<SingleRelationsModel> { };
+                    OverScreen = new List<ScreenModel> { };
+                    addSave();
+                }
                 var json = JObject.Parse(jsonString);
                 var jclasses = json["classes"];
                 var jrelations = json["relationships"];
@@ -1468,6 +1503,7 @@ namespace CLI.Controllers
                 Console.WriteLine("{0} CLASSES IMPORTED", ScreenList.Count());
                 Console.WriteLine("{0} RELATIONSHIPS IMPORTED", relations.Count());
                 OverRelations = relations;
+                addSave();
             }
 
             else
@@ -1477,6 +1513,79 @@ namespace CLI.Controllers
             }
         }
 
+        static void addSave()
+        {
+            if (undoIndex < undoCounter)
+            {
+                DiagramModel[] SaveArray = new DiagramModel[undoIndex];
+                Array.Copy(MomentoSave.ToArray(), 0, SaveArray, 0, undoIndex);
+                undoCounter = undoIndex;
+                MomentoSave.Clear();
+                MomentoSave = SaveArray.ToList();
+            }
+            
+            MomentoSave.Add(new DiagramModel
+            {
+                screen = OverScreen.ToArray(),
+                relations = OverRelations.ToArray()
+            });
+            undoCounter++;
+            undoIndex++;
+
+            //Console.WriteLine("{0} Counter", undoCounter);
+            //Console.WriteLine("{0} Index", undoIndex);
+        }
+
+        static void undo()
+        {
+            if (undoCounter == 0)
+            {
+                Console.WriteLine("NO PREVIOUS STATES TO LOAD");
+                return;
+            }
+            else if (undoIndex == 0)
+            {
+                if (undoCounter == 1)
+                {
+                    Console.WriteLine("SILLY BILLY, YOU ONLY HAVE ONE CHANGE STORED BUT TRIED TO UNDO TWICE");
+                }
+                Console.WriteLine("ALREADY LOADED OLDEST STATE");
+                return;
+            }
+
+
+
+            DiagramModel[] SaveArray;
+            SaveArray = MomentoSave.ToArray();
+            undoIndex--;
+
+            if (undoIndex == 0)
+            {
+                OverScreen = new List<ScreenModel> { };
+                OverRelations = new List<SingleRelationsModel> { };
+                Console.WriteLine("EMPTY STATE LOADED");
+                return;
+            }
+            OverScreen = SaveArray[undoIndex].screen.ToList();
+            OverRelations = SaveArray[undoIndex].relations.ToList();
+            Console.WriteLine("PREVIOUS STATE LOADED");
+        }
+        
+
+        static void redo()
+        {
+            undoIndex++;
+            if (undoIndex >= undoCounter)
+            {
+                Console.WriteLine("ALREADY LOADED MOST RECENT STATE");
+                return;
+            }
+            DiagramModel[] SaveArray;
+            SaveArray = MomentoSave.ToArray();
+            OverScreen = SaveArray[undoIndex].screen.ToList();
+            OverRelations = SaveArray[undoIndex].relations.ToList();
+            Console.WriteLine("SUBSEQUENT STATE LOADED");
+        }
 
 
 
