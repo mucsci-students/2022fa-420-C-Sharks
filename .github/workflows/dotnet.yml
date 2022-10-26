@@ -34,7 +34,7 @@ jobs:
           path: unitTests/TestResults/test-results.trx   # Path to test results
           reporter: dotnet-trx        # Format of test results
       - name: CodeCov
-      - uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v3
         with:
           files: ./coverage.opencover.xml # optional
           flags: unittests # optional
