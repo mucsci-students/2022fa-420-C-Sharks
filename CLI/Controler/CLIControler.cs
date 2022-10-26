@@ -174,14 +174,14 @@ namespace CLI.Controllers
             {
                 redo();
             }
-            else if (input == Commands.save)
+            /*else if (input == Commands.save)
             {
                 save();
             }
             else if (input == Commands.load)
             {
                 load();
-            }
+            }*/
 
         }
         /// <summary>
@@ -1677,7 +1677,14 @@ namespace CLI.Controllers
         }
         public static void load()
         {
-
+            /*
+            string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
+            var databaseName = "uml_db";
+            var client = new MongoClient(connectionString);
+            var db = client.GetDatabase(databaseName);
+            var collection = db.GetCollection<DiagramModel>("diagrams");
+            GLOBALuserModel.Diagrams = collection.Find(x => x.UserID == GLOBALuserModel._id).ToList();
+            */
         }
     }
 }
