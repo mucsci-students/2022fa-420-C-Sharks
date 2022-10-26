@@ -43,6 +43,10 @@ namespace CLI.Controllers
         static UserModel GLOBALuserModel = new UserModel();
         public static void interpet(Commands input)
         {
+            if (undoCounter == 0)
+            {
+                addSave();
+            }
             if (input == Commands.help)
             {
                 Console.WriteLine("List of Commands:");
@@ -217,13 +221,9 @@ namespace CLI.Controllers
                     }
                 }
             }
-            if (undoCounter == 0 || undoCounter == 1)
-            {
-                addSave();
-            }
             Console.WriteLine("Class added:");
-            OverScreen.Add(new ScreenModel { name = Input });
             addSave();
+            OverScreen.Add(new ScreenModel { name = Input });
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -288,8 +288,8 @@ namespace CLI.Controllers
             Console.WriteLine("Enter type of relation:");
             string InputRR = Console.ReadLine();
             Console.WriteLine("Relation added:");
-            OverRelations.Add(new SingleRelationsModel { source = InputRF, destination = InputRT, type = InputRR });
             addSave();
+            OverRelations.Add(new SingleRelationsModel { source = InputRF, destination = InputRT, type = InputRR });
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -369,15 +369,16 @@ namespace CLI.Controllers
             if (OverScreen[Hold].fields == null)
             {
                 tempt.Add(new Fields { name = InputN, type = InputT });
+                addSave();
                 OverScreen[Hold].fields = tempt.ToArray();
             }
             else
             {
                 tempt = OverScreen[Hold].fields.ToList();
                 tempt.Add(new Fields { name = InputN, type = InputT });
+                addSave();
                 OverScreen[Hold].fields = tempt.ToArray();
             }
-            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -471,15 +472,16 @@ namespace CLI.Controllers
             if (OverScreen[Hold].methods == null)
             {
                 tempM.Add(new Methods { name = InputM, return_type = InputR, @params = tempF.ToArray() });
+                addSave();
                 OverScreen[Hold].methods = tempM.ToArray();
             }
             else
             {
                 tempM = OverScreen[Hold].methods.ToList();
                 tempM.Add(new Methods { name = InputM, return_type = InputR, @params = tempF.ToArray() });
+                addSave();
                 OverScreen[Hold].methods = tempM.ToArray();
             }
-            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -518,8 +520,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Class Removed:");
-            OverScreen.RemoveAt(Hold);
             addSave();
+            OverScreen.RemoveAt(Hold);
         }
         ///<summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -591,8 +593,8 @@ namespace CLI.Controllers
             List<Fields> tempt = new List<Fields> { };
             tempt = OverScreen[Hold].fields.ToList();
             tempt.RemoveAt(HoldF);
-            OverScreen[Hold].fields = tempt.ToArray();
             addSave();
+            OverScreen[Hold].fields = tempt.ToArray();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -639,8 +641,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Relation Removed:");
-            OverRelations.RemoveAt(Hold);
             addSave();
+            OverRelations.RemoveAt(Hold);
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -712,8 +714,8 @@ namespace CLI.Controllers
             List<Methods> tempt = new List<Methods> { };
             tempt = OverScreen[Hold].methods.ToList();
             tempt.RemoveAt(HoldF);
-            OverScreen[Hold].methods = tempt.ToArray();
             addSave();
+            OverScreen[Hold].methods = tempt.ToArray();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -808,8 +810,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Class modified:");
-            OverScreen[Hold].name = Input;
             addSave();
+            OverScreen[Hold].name = Input;
         }
         /// <summary>
         /// Modify a given field in a given class
@@ -940,9 +942,9 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Field Modified:");
+            addSave();
             OverScreen[Hold].fields[HoldF].name = InputN;
             OverScreen[Hold].fields[HoldF].type = InputT;
-            addSave();
         }
         /// <summary>
         /// Modify a given method in a given class
@@ -1124,16 +1126,17 @@ namespace CLI.Controllers
                 //check if empty
                 if (!tempF.Any())
                 {
+                    addSave();
                     OverScreen[Hold].methods[HoldF].name = InputM;
                     OverScreen[Hold].methods[HoldF].return_type = InputR;
                 }
                 else
                 {
+                    addSave();
                     OverScreen[Hold].methods[HoldF].name = InputM;
                     OverScreen[Hold].methods[HoldF].return_type = InputR;
                     OverScreen[Hold].methods[HoldF].@params = tempF.ToArray();
                 }
-            addSave();
         }
         /// <summary>
         /// Modify a given relation type between two given classes
@@ -1190,8 +1193,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Relation Modified:");
-            OverRelations[Hold].type = InputY;
             addSave();
+            OverRelations[Hold].type = InputY;
         }
         /// <summary>
         /// debug command to print entire contents
@@ -1435,9 +1438,7 @@ namespace CLI.Controllers
                 {
                     undoCounter = 0;
                     undoIndex = 0;
-                    OverRelations = new List<SingleRelationsModel> { };
-                    OverScreen = new List<ScreenModel> { };
-                    addSave();
+                    MomentoSave = new List<DiagramModel> { };
                 }
                 var json = JObject.Parse(jsonString);
                 var jclasses = json["classes"];
