@@ -21,7 +21,7 @@ jobs:
       - name: Navigate to UML
         run: cd UML
       - name: Test
-        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger "trx;LogFileName=test-results.trx" 
+        run: dotnet UML test /p:ExcludeByFile="../Views/**/*.cshtml" /p:CollectCoverage=true /p:CoverletOutputFormat=opencover  --logger "trx;LogFileName=test-results.trx" 
       - name: Build
         run: dotnet build UML
       - name: Dir
