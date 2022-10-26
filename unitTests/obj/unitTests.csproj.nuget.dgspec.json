@@ -116,6 +116,10 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "dependencies": {
+            "FakeItEasy": {
+              "target": "Package",
+              "version": "[7.3.1, )"
+            },
             "MSTest.TestAdapter": {
               "target": "Package",
               "version": "[2.2.8, )"
