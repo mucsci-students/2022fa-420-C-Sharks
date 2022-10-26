@@ -2,6 +2,12 @@
 @{
     ViewData["Title"] = "Home Page";
 }
+<div>
+    @if (TempData["Message"] != null)
+    {
+        <span>@TempData["Message"]</span>
+    }
+</div>
 @model EditorViewModel
 @using (Html.BeginForm())
 {

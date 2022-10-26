@@ -65,6 +65,23 @@ namespace UML.Controllers
                 return View();
             }
 
+            string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
+            string databaseName = "uml_db";
+            string collectionName = "diagrams";
+            var client = new MongoClient(connectionString);
+            var db = client.GetDatabase(databaseName);
+            var collection = db.GetCollection<DiagramModel>(collectionName);
+            List<DiagramModel> diagrams = collection.Find(x => x.UserID == model.userid).ToList();
+
+            foreach(var item in diagrams)
+            {
+                if(item.Name == model.DiagramName)
+                {
+                    TempData["Message"] = "Diagram name already used";
+                    return View(model);
+                }
+            }
+
             int status = ConvertNsave(model);
             if (status > 0)
             {
