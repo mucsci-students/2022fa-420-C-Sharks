@@ -28,6 +28,7 @@ using System.Drawing.Printing;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using System.Transactions;
 using System.Diagnostics;
+using CLI.Models.ViewModels;
 
 namespace CLI.Controllers
 {
@@ -39,6 +40,7 @@ namespace CLI.Controllers
         static List<DiagramModel> MomentoSave = new List<DiagramModel> { };
         static int undoCounter = 0;
         static int undoIndex = 0;
+        static UserModel GLOBALuserModel = new UserModel();
         public static void interpet(Commands input)
         {
             if (input == Commands.help)
@@ -83,10 +85,10 @@ namespace CLI.Controllers
                 Console.WriteLine(" ");
                 Console.WriteLine("List_relat: Lists the relations currently added");
                 Console.WriteLine(" ");
-                //Console.WriteLine("save: Saves the UML model to the database");
-                //Console.WriteLine(" ");
-                //Console.WriteLine("load: Loads a UML model from the database");
-                //Console.WriteLine(" ");
+                Console.WriteLine("save: Saves the UML model to the database");
+                Console.WriteLine(" ");
+                Console.WriteLine("load: Loads a UML model from the database");
+                Console.WriteLine(" ");
                 Console.WriteLine("import: Load a UML model from a JSON file");
                 Console.WriteLine(" ");
                 Console.WriteLine("export: Saves a UML as a JSON file locally");
@@ -172,6 +174,15 @@ namespace CLI.Controllers
             {
                 redo();
             }
+            else if (input == Commands.save)
+            {
+                save();
+            }
+            else if (input == Commands.load)
+            {
+                load();
+            }
+
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1586,9 +1597,88 @@ namespace CLI.Controllers
             OverRelations = SaveArray[undoIndex].relations.ToList();
             Console.WriteLine("SUBSEQUENT STATE LOADED");
         }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static int Signup(UserModel model)
+        {
+            string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
+            string databaseName = "uml_db";
+            string collectionName = "users";
+            var client = new MongoClient(connectionString);
+            var db = client.GetDatabase(databaseName);
+            var collection = db.GetCollection<UserModel>(collectionName);
+            var results = collection.Find(x => x.Username == model.Username).ToList();
+            // if no existing usernames exist the user can have that username and creates the user in db
+            if (results.Count == 0)
+            {
+                GLOBALuserModel = model; 
+                collection.InsertOne(model);
 
+                return 0;
+            }
+            else
+            {
+                //TempData["Message"] = "Username Already Taken";
+                return 1;
+            }
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        public static LoginModel Login(UserModel model)
+        {
+            // connect to db and get a list of users
+            string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
+            string databaseName = "uml_db";
+            string collectionName = "users";
+            var client = new MongoClient(connectionString);
+            var db = client.GetDatabase(databaseName);
+            var collection = db.GetCollection<UserModel>(collectionName);
 
+            // Look through DB and give me a list of usernames that match what the user provided.
+            List<UserModel> userList = collection.Find(x => x.Username == model.Username).ToList();
 
+            //var userID = userList[0]._id;
+            // Convert that list to json
+            //var json = collection.Find(x => x.Username == model.Username).ToJson();
+            var index = userList.Count;
+
+            // We are guaranteed that we have unique usernames from signup 
+            if ((userList.Count > 0) && (userList[0].Password == model.Password))
+            {
+
+                // Create LoginModel with user info.               
+                var login = new LoginModel { status = 0, User = new UserModel { _id = userList[0]._id, Username = userList[0].Username, Password = userList[0].Password } };
+                //ViewData["UserModel"] = user;
+                //var client2 = new MongoClient(connectionString);
+                //var db2 = client2.GetDatabase(databaseName);
+                //var collection2 = db2.GetCollection<DiagramModel>("diagrams");
+                //var results2 = collection2.Find(x => x.Username == userID).ToList();
+                //ViewData["list"] = results2;
+                GLOBALuserModel = login.User;
+                return login;
+            }
+            if ((userList.Count > 0) && !(userList[0].Password == model.Password))
+            {
+                //TempData["Message"] = "Incorrect password";
+                return new LoginModel { status = 1 };
+            }
+            else
+            {
+                //TempData["Message"] = "User not found.";
+                return new LoginModel { status = 2 };
+            }
+
+        }
+        public static void load()
+        {
+
+        }
     }
 }
     

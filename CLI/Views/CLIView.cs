@@ -2,6 +2,7 @@
 using CLI.Controllers;
 using AutoCompleteUtils;
 using ConsoleUtils;
+using System.Web.Mvc;
 //using AutoCompletUtils;
 //Globals
 List<string> CommandLST = new List<string>
@@ -27,7 +28,9 @@ List<string> CommandLST = new List<string>
         "mod_meth",
         "mod_relat",
         "undo",
-        "redo"
+        "redo",
+        "save",
+        "load"
 };
 var curDat = DateTime.Now;
 Console.WriteLine($"WELCOME TO C-SHARK UML COMMAND LINE INTERFACE {curDat:d}");
@@ -37,6 +40,76 @@ Console.Title = "C-Sharks";
 Commands Input = new Commands();
 string autocom;
 var cyclingAutoComplete = new CyclingAutoComplete();
+
+Console.WriteLine("NEW USER? [y/n]");
+string userBool = Console.ReadLine();
+UserModel userModel = new UserModel();
+if (userBool == "y")
+{
+    string user;
+    string pass;
+    Console.WriteLine("NEW USER SIGNUP");
+    Console.WriteLine("USERNAME:");
+    user = Console.ReadLine();
+    Console.WriteLine("PASSWORD:");
+    pass = Console.ReadLine();
+    userModel = new UserModel() { Username = user, Password = pass};
+    int status = CLIController.Signup(userModel);
+    if(status == 0)
+    {
+        Console.WriteLine("USER CREATED");
+    }
+    if(status == 1)
+    {
+        while (status != 0)
+        {
+            Console.WriteLine("USERNAME ALREADY TAKEN");
+            Console.WriteLine("TRY AGAIN");
+            Console.WriteLine("USERNAME:");
+            user = Console.ReadLine();
+            Console.WriteLine("PASSWORD:");
+            pass = Console.ReadLine();
+            userModel = new UserModel() { Username = user, Password = pass };
+            status = CLIController.Signup(userModel);
+        }
+        Console.WriteLine("USER CREATED");
+        
+    }
+}
+else if (userBool == "n")
+{
+    Console.WriteLine("PLEASE LOGIN");
+    Console.WriteLine("USER:");
+    string user = Console.ReadLine();
+    Console.WriteLine("PASSWORD:");
+    string pass = Console.ReadLine();
+    userModel = new UserModel() { Username = user, Password = pass };
+    LoginModel loginModel = CLIController.Login(userModel);
+
+    if (loginModel.status == 0)
+    {
+        Console.Write("WELCOME BACK " + user + "\n");
+    }
+    if (loginModel.status == 1)
+    {
+        Console.WriteLine("INCORRECT CREDENTIALS");
+    }
+    if (loginModel.status == 2)
+    {
+        Console.WriteLine("USER NOT FOUND");
+    }
+}
+else
+{
+    while (userBool != "y" || userBool != "n")
+    {
+        Console.WriteLine("INVALID INPUT TRY AGAIN");
+        userBool = Console.ReadLine();
+    }
+}
+
+
+
 Console.WriteLine("PLEASE ENTER A COMMAND:");
 while (exitCon == false)
 {

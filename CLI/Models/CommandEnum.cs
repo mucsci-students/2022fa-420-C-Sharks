@@ -23,6 +23,9 @@
         mod_meth,
         mod_relat,
         undo,
-        redo
+        redo,
+        save,
+        load
+
     }
 }
