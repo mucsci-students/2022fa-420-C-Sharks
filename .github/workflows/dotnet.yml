@@ -36,7 +36,7 @@ jobs:
       - name: CodeCov
         uses: codecov/codecov-action@v3
         with:
-          files: ./coverage.opencover.xml # optional
+          files: ./unitTests/coverage.opencover.xml # optional
           flags: unittests # optional
           name: codecov-umbrella # optional
           fail_ci_if_error: true # optional (default = false)
