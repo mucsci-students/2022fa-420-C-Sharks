@@ -427,10 +427,18 @@ Start Toolbar code -->
                     click: function (e, obj) {
                         e.diagram.commit(function (d) {
                             myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'toArrow', 'Triangle');
+                            myDiagram.model.setDataProperty(obj.part.adornedPart.data, 'fill', 'black');
                         });
                     }
                 })
         );
+
+    myDiagram.addDiagramListener('LinkDrawn', function (e) {
+        var link = e.subject;
+        myDiagram.model.setDataProperty(link.data, 'toArrow', 'Triangle');
+        myDiagram.updateAllTargetBindings();
+    });
+
     myDiagram.linkTemplate =
         $(go.Link,
             {
@@ -461,10 +469,6 @@ Start Toolbar code -->
         if (evt.isTransactionFinished) updateClassNames();
     });
 
-    myDiagram.addDiagramListener('LinkDrawn', function (e) {
-        var link = e.subject;
-        myDiagram.model.setDataProperty(link.data, 'toArrow', 'triangle');
-    });
 
 
     //Add new class
