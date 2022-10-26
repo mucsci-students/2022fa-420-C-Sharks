@@ -34,7 +34,13 @@ jobs:
           path: unitTests/TestResults/test-results.trx   # Path to test results
           reporter: dotnet-trx        # Format of test results
       - name: CodeCov
-        run: curl -Os https://uploader.codecov.io/latest/linux/codecov && chmod +x codecov && ./codecov -R unitTests
+      - uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.opencover.xml # optional
+          flags: unittests # optional
+          name: codecov-umbrella # optional
+          fail_ci_if_error: true # optional (default = false)
+          verbose: true # optional (default = false)
         
         
 
