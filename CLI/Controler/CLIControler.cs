@@ -37,6 +37,7 @@ namespace CLI.Controllers
     {
         static List<ScreenModel> OverScreen = new List<ScreenModel> { };
         static List<SingleRelationsModel> OverRelations = new List<SingleRelationsModel> { };
+        DiagramModel LastUndone = new DiagramModel { };
         static List<DiagramModel> MomentoSave = new List<DiagramModel> { };
         static int undoCounter = 0;
         static int undoIndex = 0;
@@ -222,8 +223,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Class added:");
-            addSave();
             OverScreen.Add(new ScreenModel { name = Input });
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -288,8 +289,8 @@ namespace CLI.Controllers
             Console.WriteLine("Enter type of relation:");
             string InputRR = Console.ReadLine();
             Console.WriteLine("Relation added:");
-            addSave();
             OverRelations.Add(new SingleRelationsModel { source = InputRF, destination = InputRT, type = InputRR });
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -369,15 +370,15 @@ namespace CLI.Controllers
             if (OverScreen[Hold].fields == null)
             {
                 tempt.Add(new Fields { name = InputN, type = InputT });
-                addSave();
                 OverScreen[Hold].fields = tempt.ToArray();
+                addSave();
             }
             else
             {
                 tempt = OverScreen[Hold].fields.ToList();
                 tempt.Add(new Fields { name = InputN, type = InputT });
-                addSave();
                 OverScreen[Hold].fields = tempt.ToArray();
+                addSave();
             }
         }
         /// <summary>
@@ -472,15 +473,15 @@ namespace CLI.Controllers
             if (OverScreen[Hold].methods == null)
             {
                 tempM.Add(new Methods { name = InputM, return_type = InputR, @params = tempF.ToArray() });
-                addSave();
                 OverScreen[Hold].methods = tempM.ToArray();
+                addSave();
             }
             else
             {
                 tempM = OverScreen[Hold].methods.ToList();
                 tempM.Add(new Methods { name = InputM, return_type = InputR, @params = tempF.ToArray() });
-                addSave();
                 OverScreen[Hold].methods = tempM.ToArray();
+                addSave();
             }
         }
         /// <summary>
@@ -520,8 +521,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Class Removed:");
-            addSave();
             OverScreen.RemoveAt(Hold);
+            addSave();
         }
         ///<summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -593,8 +594,8 @@ namespace CLI.Controllers
             List<Fields> tempt = new List<Fields> { };
             tempt = OverScreen[Hold].fields.ToList();
             tempt.RemoveAt(HoldF);
-            addSave();
             OverScreen[Hold].fields = tempt.ToArray();
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -641,8 +642,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Relation Removed:");
-            addSave();
             OverRelations.RemoveAt(Hold);
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -714,8 +715,8 @@ namespace CLI.Controllers
             List<Methods> tempt = new List<Methods> { };
             tempt = OverScreen[Hold].methods.ToList();
             tempt.RemoveAt(HoldF);
-            addSave();
             OverScreen[Hold].methods = tempt.ToArray();
+            addSave();
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -810,8 +811,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Class modified:");
-            addSave();
             OverScreen[Hold].name = Input;
+            addSave();
         }
         /// <summary>
         /// Modify a given field in a given class
@@ -942,9 +943,9 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Field Modified:");
-            addSave();
             OverScreen[Hold].fields[HoldF].name = InputN;
             OverScreen[Hold].fields[HoldF].type = InputT;
+            addSave();
         }
         /// <summary>
         /// Modify a given method in a given class
@@ -1126,16 +1127,18 @@ namespace CLI.Controllers
                 //check if empty
                 if (!tempF.Any())
                 {
-                    addSave();
+                    
                     OverScreen[Hold].methods[HoldF].name = InputM;
                     OverScreen[Hold].methods[HoldF].return_type = InputR;
+                    addSave();
                 }
                 else
                 {
-                    addSave();
+                    
                     OverScreen[Hold].methods[HoldF].name = InputM;
                     OverScreen[Hold].methods[HoldF].return_type = InputR;
                     OverScreen[Hold].methods[HoldF].@params = tempF.ToArray();
+                    addSave();
                 }
         }
         /// <summary>
@@ -1193,8 +1196,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Relation Modified:");
-            addSave();
             OverRelations[Hold].type = InputY;
+            addSave();
         }
         /// <summary>
         /// debug command to print entire contents
@@ -1525,22 +1528,50 @@ namespace CLI.Controllers
             }
         }
 
-        static void addSave()
+        public static void addSave()
         {
-            if (undoIndex < undoCounter)
-            {
-                DiagramModel[] SaveArray = new DiagramModel[undoIndex];
-                Array.Copy(MomentoSave.ToArray(), 0, SaveArray, 0, undoIndex);
-                undoCounter = undoIndex;
-                MomentoSave.Clear();
-                MomentoSave = SaveArray.ToList();
-            }
-            
+
             MomentoSave.Add(new DiagramModel
             {
-                screen = OverScreen.ToArray(),
-                relations = OverRelations.ToArray()
+                screen = new ScreenModel[OverScreen.Count],
+                relations = new SingleRelationsModel[OverRelations.Count]
             });
+
+            if (undoIndex < undoCounter)
+            {
+                undoCounter = undoIndex;
+            }
+
+
+            /*ScreenModel[] SaveArray = new ScreenModel[undoIndex];
+            SingleRelationsModel[] RelSave = new SingleRelationsModel[undoIndex];
+            Array.Copy(OverScreen.ToArray(), SaveArray, OverScreen.Count);
+            Array.Copy(OverRelations.ToArray(), RelSave, OverRelations.Count);*/
+            
+
+            //Array.Copy(OverScreen.ToArray(), MomentoSave[undoIndex].screen, OverScreen.Count);
+            //Array.Copy(OverRelations.ToArray(), MomentoSave[undoIndex].relations, OverRelations.Count);
+
+            for(int i = 0; i < OverScreen.Count; i++)
+            {
+                MomentoSave[undoIndex].screen[i] = new ScreenModel
+                {
+                    name = OverScreen[i].name,
+                    methods = OverScreen[i].methods,
+                    fields = OverScreen[i].fields
+                };
+            }
+
+            for (int i = 0; i < OverRelations.Count; i++)
+            {
+                MomentoSave[undoIndex].relations[i] = new SingleRelationsModel
+                {
+                    source = OverRelations[i].source,
+                    destination = OverRelations[i].destination,
+                    type = OverRelations[i].type
+                };
+            }
+
             undoCounter++;
             undoIndex++;
 
@@ -1548,8 +1579,10 @@ namespace CLI.Controllers
             //Console.WriteLine("{0} Index", undoIndex);
         }
 
-        static void undo()
+        public static void undo()
         {
+
+
             if (undoCounter == 0)
             {
                 Console.WriteLine("NO PREVIOUS STATES TO LOAD");
@@ -1578,25 +1611,29 @@ namespace CLI.Controllers
                 Console.WriteLine("EMPTY STATE LOADED");
                 return;
             }
-            OverScreen = SaveArray[undoIndex].screen.ToList();
+            OverScreen = SaveArray[undoIndex-1].screen.ToList();
             OverRelations = SaveArray[undoIndex].relations.ToList();
             Console.WriteLine("PREVIOUS STATE LOADED");
+            Console.WriteLine("{0} Counter", undoCounter);
+            Console.WriteLine("{0} Index", undoIndex);
         }
-        
+
 
         static void redo()
         {
-            undoIndex++;
-            if (undoIndex >= undoCounter)
+            if (undoIndex == undoCounter)
             {
                 Console.WriteLine("ALREADY LOADED MOST RECENT STATE");
                 return;
             }
+            undoIndex++;
             DiagramModel[] SaveArray;
             SaveArray = MomentoSave.ToArray();
-            OverScreen = SaveArray[undoIndex].screen.ToList();
-            OverRelations = SaveArray[undoIndex].relations.ToList();
+            OverScreen = SaveArray[undoIndex-1].screen.ToList();
+            OverRelations = SaveArray[undoIndex-1].relations.ToList();
             Console.WriteLine("SUBSEQUENT STATE LOADED");
+            Console.WriteLine("{0} Counter", undoCounter);
+            Console.WriteLine("{0} Index", undoIndex);
         }
         /// <summary>
         /// 
