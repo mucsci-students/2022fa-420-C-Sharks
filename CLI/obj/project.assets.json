@@ -4801,24 +4801,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Hahng\\.nuget\\packages\\": {},
-    "E:\\Studio SDK\\NuGetPackages": {}
+    "C:\\Users\\trevf\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Hahng\\source\\repos\\CLI\\CLI\\CLI.csproj",
+      "projectUniqueName": "C:\\Users\\trevf\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\CLI\\CLI.csproj",
       "projectName": "CLI",
-      "projectPath": "C:\\Users\\Hahng\\source\\repos\\CLI\\CLI\\CLI.csproj",
-      "packagesPath": "C:\\Users\\Hahng\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Hahng\\source\\repos\\CLI\\CLI\\obj\\",
+      "projectPath": "C:\\Users\\trevf\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\CLI\\CLI.csproj",
+      "packagesPath": "C:\\Users\\trevf\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\trevf\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\CLI\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "E:\\Studio SDK\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Hahng\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\trevf\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4826,7 +4821,6 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -4882,7 +4876,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.401\\RuntimeIdentifierGraph.json"
       }
     }
   },

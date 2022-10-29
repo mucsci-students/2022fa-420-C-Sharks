@@ -1,6 +1,6 @@
 ﻿using CLI.Models;
 using CLI.Controllers;
-Console.WriteLine("WELCOME TO C-SHARK UML COMMAND LINE INTERFACE");
+Console.WriteLine("WELCOME TO C-SHARKS UML COMMAND LINE INTERFACE");
 bool exitCon = false;
 string UsrIpt;
 Commands Input = new Commands();
@@ -18,6 +18,6 @@ while (exitCon == false)
     }
     else
     {
-        Console.WriteLine("INVALID COMMAND TRY HELP:");
+        Console.WriteLine("INVALID COMMAND, TRY HELP:");
     }
 }

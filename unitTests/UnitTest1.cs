@@ -40,6 +40,7 @@ namespace unitTests
             ErrorViewModel ervm = new UML.Models.ErrorViewModel() {RequestId = "id"};
             Assert.AreEqual(ervm.RequestId, "id");
         }
+
         [TestMethod]
         public void testGoJsModel()
         {
@@ -58,7 +59,7 @@ namespace unitTests
         }
 
         [TestMethod]
-        public void testScrrenModel()
+        public void testScreenModel()
         {
             ScreenModel sm = new ScreenModel() { color = "red", key = "1", Loc = "1", text = "text"};
             Assert.AreEqual(sm.color, "red");
