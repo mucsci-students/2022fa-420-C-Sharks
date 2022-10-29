@@ -1614,8 +1614,8 @@ namespace CLI.Controllers
             OverScreen = SaveArray[undoIndex-1].screen.ToList();
             OverRelations = SaveArray[undoIndex].relations.ToList();
             Console.WriteLine("PREVIOUS STATE LOADED");
-            Console.WriteLine("{0} Counter", undoCounter);
-            Console.WriteLine("{0} Index", undoIndex);
+            //Console.WriteLine("{0} Counter", undoCounter);
+            //Console.WriteLine("{0} Index", undoIndex);
         }
 
 
@@ -1632,8 +1632,8 @@ namespace CLI.Controllers
             OverScreen = SaveArray[undoIndex-1].screen.ToList();
             OverRelations = SaveArray[undoIndex-1].relations.ToList();
             Console.WriteLine("SUBSEQUENT STATE LOADED");
-            Console.WriteLine("{0} Counter", undoCounter);
-            Console.WriteLine("{0} Index", undoIndex);
+            //Console.WriteLine("{0} Counter", undoCounter);
+            //Console.WriteLine("{0} Index", undoIndex);
         }
         /// <summary>
         /// 
