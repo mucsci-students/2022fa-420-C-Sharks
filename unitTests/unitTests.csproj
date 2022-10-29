@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UML\UML.csproj" />
+    <ProjectReference Include="..\CLI\CLI.csproj" />
   </ItemGroup>
 
 </Project>
