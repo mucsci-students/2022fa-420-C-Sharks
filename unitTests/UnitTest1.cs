@@ -1,8 +1,13 @@
 using System.Collections.Generic;
+using FakeItEasy;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis.Differencing;
+using Microsoft.Extensions.Logging;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel.DataCollection;
 using MongoDB.Bson;
 using MongoDB.Driver;
+using UML.Controllers;
 using UML.Models;
 using UML.Models.ViewModels;
 
@@ -104,6 +109,70 @@ namespace unitTests
             Assert.AreEqual(um.DiagramName, "dname");
             Assert.AreEqual("123", um.DiagramID);
         }
-    }
+        [TestMethod]
+        public void testFields()
+        {
+            Fields fs = new Fields() { fieldName = "fname", fieldType = "ftype" };
+            Assert.AreEqual(fs.fieldName, "fname");
+            Assert.AreEqual(fs.fieldType, "ftype");
+        }
 
+        [TestMethod]
+        public void testMethods()
+        {
+            Methods md = new Methods() { methodName = "mname", methodParams = new Parameters[3], return_type = "String" };
+            Assert.AreEqual(md.return_type, "String");
+            Assert.AreEqual(md.methodName, "mname");
+            Assert.AreEqual(md.methodParams.Length,3);
+        }
+
+        [TestMethod]
+        public void testParameters()
+        {
+            Parameters pm = new Parameters() { name = "pname", type = "String" };
+            Assert.AreEqual(pm.name, "pname");
+            Assert.AreEqual(pm.type, "String");
+        }
+    }
+    [TestClass]
+    public class TestControllers
+    {
+
+        private HomeController homeController;
+        private EditorController editorController;
+        private ILogger<HomeController> logger;
+        public TestControllers()
+        {
+            //Dependencies
+            logger = A.Fake<ILogger<HomeController>>();
+            homeController = new HomeController(logger);
+
+            editorController = new EditorController();
+        }
+
+        [TestMethod]
+        public void testHomeController()
+        {
+            var result = homeController.Index() as ViewResult;
+            var result1 = homeController.CLIDownload() as ViewResult;
+            var result2 = homeController.Help() as ViewResult;
+            var result3 = homeController.Privacy() as ViewResult;
+            // assert
+            Assert.IsNotNull(result);
+            Assert.IsNotNull(result1);
+            Assert.IsNotNull(result2);
+            Assert.IsNotNull(result3);
+        }
+
+
+        [TestMethod]
+        public void testEditorController()
+        {
+            UserModel model = A.Fake<UserModel>();
+            var result = editorController.Index(model) as ViewResult;
+
+            // assert
+            Assert.IsNotNull(result);
+        }
+    }
 }
