@@ -307,14 +307,42 @@ namespace CLI.Controllers
                     }
                 }
             }
+            string relationType = "";
+            string relationFill = "";
+            Relation:
             Console.WriteLine("Enter type of relation:");
             string InputRR = Console.ReadLine();
             if (InputRR == "esc")
             {
                 return;
             }
+            if (InputRR == "Aggregation")
+            {
+                relationType = "StretchedDiamond";
+                relationFill = "#DAE4E4";
+            }
+            else if (InputRR == "Composition")
+            {
+                relationType = "StretchedDiamond";
+                relationFill = "black";
+            }
+            else if (InputRR == "Inheritance")
+            {
+                relationType = "Triangle";
+                relationFill = "#DAE4E4";
+            }
+            else if (InputRR == "Realization")
+            {
+                relationType = "Triangle";
+                relationFill = "black";
+            }
+            else
+            {
+                goto Relation;
+            }
+
             Console.WriteLine("Relation added:");
-            OverRelations.Add(new SingleRelationsModel { from = InputRF, to = InputRT, toArrow = InputRR });
+            OverRelations.Add(new SingleRelationsModel { from = InputRF, to = InputRT, toArrow = relationType, fill = relationFill });
             addSave();
         }
         /// <summary>
