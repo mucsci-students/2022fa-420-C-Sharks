@@ -98,6 +98,7 @@ namespace CLI.Controllers
                 Console.WriteLine(" ");
                 Console.WriteLine("export: Saves a UML as a JSON file locally");
                 Console.WriteLine(" ");
+                Console.WriteLine("type esc to exit any command");
             }
             else if (input == Commands.add_class)
             {
@@ -197,6 +198,10 @@ namespace CLI.Controllers
             bool Err = false;
             Console.WriteLine("Enter Name of class:");
             string Input = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             int CNT;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
@@ -210,6 +215,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a unique class name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].name.Equals(Input))
@@ -234,6 +243,10 @@ namespace CLI.Controllers
             bool Err = true;
             Console.WriteLine("Enter Name of from class:");
             string InputRF = Console.ReadLine();
+            if (InputRF == "esc")
+            {
+                return;
+            }
             int CNT;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
@@ -247,6 +260,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
                 InputRF = Console.ReadLine();
+                if (InputRF == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].name.Equals(InputRF))
@@ -262,6 +279,10 @@ namespace CLI.Controllers
             Err = true;
             Console.WriteLine("Enter Name of to class:");
             string InputRT = Console.ReadLine();
+            if (InputRT == "esc")
+            {
+                return;
+            }
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
                 if (OverScreen[CNT].name.Equals(InputRT))
@@ -274,6 +295,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
                 InputRT = Console.ReadLine();
+                if (InputRT == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].name.Equals(InputRT))
@@ -288,6 +313,10 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Enter type of relation:");
             string InputRR = Console.ReadLine();
+            if (InputRR == "esc")
+            {
+                return;
+            }
             Console.WriteLine("Relation added:");
             OverRelations.Add(new SingleRelationsModel { source = InputRF, destination = InputRT, type = InputRR });
             addSave();
@@ -300,6 +329,10 @@ namespace CLI.Controllers
             bool Err = true;
             Console.WriteLine("Enter Name of class to add a field to:");
             string Input = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             int Hold = 0;
             int CNT;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
@@ -315,6 +348,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     //Console.WriteLine("ERROR");
@@ -332,6 +369,10 @@ namespace CLI.Controllers
             Err = false;
             Console.WriteLine("Enter field name:");
             string InputN = Console.ReadLine();
+            if (InputN == "esc")
+            {
+                return;
+            }
             if (OverScreen[Hold].fields != null)
             {
                 for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
@@ -348,6 +389,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid field name:");
                 InputN = Console.ReadLine();
+                if (InputN == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].fields[CNT].name.Equals(InputN))
@@ -363,6 +408,10 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Enter type name:");
             string InputT = Console.ReadLine();
+            if (InputT == "esc")
+            {
+                return;
+            }
             Console.WriteLine("Field added:");
             //static List<ScreenModel> OverScreen = new List<ScreenModel> { };
             List<Fields> tempt = new List<Fields> { };
@@ -389,6 +438,10 @@ namespace CLI.Controllers
             bool Err = true;
             Console.WriteLine("Enter Name of class to add a method to:");
             string Input = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             int Hold = 0;
             int CNT;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
@@ -404,6 +457,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].name.Equals(Input))
@@ -420,6 +477,10 @@ namespace CLI.Controllers
             //Err = false;
             Console.WriteLine("Enter method name:");
             string InputM = Console.ReadLine();
+            if (InputM == "esc")
+            {
+                return;
+            }
             if (OverScreen[Hold].methods != null)
             {
                 for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
@@ -436,6 +497,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid method name:");
                 InputM = Console.ReadLine();
+                if (InputM == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                 {
                     Console.WriteLine("ERROR");
@@ -452,6 +517,10 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Enter return type name:");
             string InputR = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             List<Fields> tempF = new List<Fields> { };
             List<Methods> tempM = new List<Methods> { };
             string InputN = "";
@@ -460,10 +529,18 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("Enter Parameter name, or 'N' if none or no more:");
                 InputN = Console.ReadLine();
+                if (InputN == "esc")
+                {
+                    return;
+                }
                 if (InputN != "N")
                 {
                     Console.WriteLine("Enter type name:");
                     InputT = Console.ReadLine();
+                    if (InputT == "esc")
+                    {
+                        return;
+                    }
                     tempF.Add(new Fields { name = InputN, type = InputT });
                 }
                 Console.WriteLine(" ");
@@ -492,6 +569,10 @@ namespace CLI.Controllers
             bool Err = false;
             Console.WriteLine("Enter Name of class:");
             string Input = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             int CNT;
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
@@ -507,6 +588,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].name.Equals(Input))
@@ -532,6 +617,10 @@ namespace CLI.Controllers
             bool Err = false;
             Console.WriteLine("Enter Name of class:");
             string Input = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             int CNT;
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
@@ -547,6 +636,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a unique class name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].name.Equals(Input))
@@ -563,6 +656,10 @@ namespace CLI.Controllers
             Err = false;
             Console.WriteLine("Enter Name of Field:");
             Input = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             int HoldF = 0;
             for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
             {
@@ -577,6 +674,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid field name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                 {
                     if (OverScreen[Hold].fields[CNT].name.Equals(Input))
@@ -605,10 +706,22 @@ namespace CLI.Controllers
             bool Err = false;
             Console.WriteLine("Enter Name of to class:");
             string InputT = Console.ReadLine();
+            if (InputT == "esc")
+            {
+                return;
+            }
             Console.WriteLine("Enter Name of from class:");
             string InputF = Console.ReadLine();
+            if (InputT == "esc")
+            {
+                return;
+            }
             Console.WriteLine("Enter type of relation:");
             string InputR = Console.ReadLine();
+            if (InputR == "esc")
+            {
+                return;
+            }
             int CNT;
             int Hold = 0;
             for (CNT = 0; CNT < OverRelations.Count; CNT++)
@@ -624,10 +737,22 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter Valid Name of to class:");
                 InputT = Console.ReadLine();
+                if (InputT == "esc")
+                {
+                    return;
+                }
                 Console.WriteLine("Enter Valid Name of from class:");
                 InputF = Console.ReadLine();
+                if (InputT == "esc")
+                {
+                    return;
+                }
                 Console.WriteLine("Enter Valid type of relation:");
                 InputR = Console.ReadLine();
+                if (InputT == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
@@ -653,6 +778,10 @@ namespace CLI.Controllers
             bool Err = false;
             Console.WriteLine("Enter Name of class:");
             string Input = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             int CNT;
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
@@ -668,6 +797,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a unique class name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].name.Equals(Input))
@@ -684,6 +817,10 @@ namespace CLI.Controllers
             Err = false;
             Console.WriteLine("Enter Name of Method:");
             Input = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             int HoldF = 0;
             for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
             {
@@ -698,6 +835,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid meth name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                 {
                     if (OverScreen[Hold].methods[CNT].name.Equals(Input))
@@ -711,7 +852,7 @@ namespace CLI.Controllers
                     }
                 }
             }
-            Console.WriteLine("Field Removed:");
+            Console.WriteLine("Method Removed:");
             List<Methods> tempt = new List<Methods> { };
             tempt = OverScreen[Hold].methods.ToList();
             tempt.RemoveAt(HoldF);
@@ -824,6 +965,10 @@ namespace CLI.Controllers
             string InputT = "";
             Console.WriteLine("Enter Name of class:");
             string Input = Console.ReadLine();
+            if (Input == "esc")
+            {
+                return;
+            }
             int CNT;
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
@@ -839,6 +984,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a unique class name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].name.Equals(Input))
@@ -856,6 +1005,10 @@ namespace CLI.Controllers
             Err = false;
             Console.WriteLine("Enter Name of Field:");
             InputN = Console.ReadLine();
+            if (InputN == "esc")
+            {
+                return;
+            }
             int HoldF = 0;
             for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
             {
@@ -866,7 +1019,11 @@ namespace CLI.Controllers
                         HoldF = CNT;
                         Console.WriteLine("Enter new name of field:");
                         InputN = Console.ReadLine();
-                        for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                    if (InputN == "esc")
+                    {
+                        return;
+                    }
+                    for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                         {
                             if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
                             {
@@ -878,7 +1035,11 @@ namespace CLI.Controllers
                             Console.WriteLine("ERROR");
                             Console.WriteLine("Enter a unique class name:");
                             InputN = Console.ReadLine();
-                            for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                        if (InputN == "esc")
+                        {
+                            return;
+                        }
+                        for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                             {
                                 if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
                                 {
@@ -892,6 +1053,10 @@ namespace CLI.Controllers
                         }
                     Console.WriteLine("Enter new type name:");
                     InputT = Console.ReadLine();
+                    if (InputT == "esc")
+                    {
+                        return;
+                    }
                     //Console.WriteLine("Field added:");
                 }
             }
@@ -900,6 +1065,10 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid field name:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                 {
                     if (OverScreen[Hold].fields[CNT].name.Equals(Input))
@@ -909,6 +1078,10 @@ namespace CLI.Controllers
                         HoldF = CNT;
                         Console.WriteLine("Enter new name of field:");
                         InputN = Console.ReadLine();
+                        if (InputN == "esc")
+                        {
+                            return;
+                        }
                         for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                         {
                             if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
@@ -921,6 +1094,10 @@ namespace CLI.Controllers
                             Console.WriteLine("ERROR");
                             Console.WriteLine("Enter a unique class name:");
                             InputN = Console.ReadLine();
+                            if (InputN == "esc")
+                            {
+                                return;
+                            }
                             for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                             {
                                 if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
@@ -935,6 +1112,10 @@ namespace CLI.Controllers
                         }
                         Console.WriteLine("Enter new type name:");
                         InputT = Console.ReadLine();
+                        if (InputT == "esc")
+                        {
+                            return;
+                        }
                     }
                     else
                     {
@@ -956,6 +1137,10 @@ namespace CLI.Controllers
                 List<Fields> tempF = new List<Fields> { };
                 Console.WriteLine("Enter Name of class:");
                 string Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 string InputM = "";
                 string InputR = "";
 
@@ -974,6 +1159,10 @@ namespace CLI.Controllers
                     Console.WriteLine("ERROR");
                     Console.WriteLine("Enter a unique class name:");
                     Input = Console.ReadLine();
+                    if (Input == "esc")
+                    {
+                        return;
+                    }
                     for (CNT = 0; CNT < OverScreen.Count; CNT++)
                     {
                         if (OverScreen[CNT].name.Equals(Input))
@@ -990,6 +1179,10 @@ namespace CLI.Controllers
                 Err = false;
                 Console.WriteLine("Enter Name of Method:");
                 Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 int HoldF = 0;
                 for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                 {
@@ -1000,6 +1193,10 @@ namespace CLI.Controllers
                         bool Err2 = false;
                         Console.WriteLine("Enter new method name:");
                         InputM = Console.ReadLine();
+                        if (InputM == "esc")
+                        {
+                            return;
+                        }
                         if (OverScreen[Hold].methods != null)
                         {
                             for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
@@ -1016,6 +1213,10 @@ namespace CLI.Controllers
                             Console.WriteLine("ERROR");
                             Console.WriteLine("Enter a valid method name:");
                             InputM = Console.ReadLine();
+                            if (InputM == "esc")
+                            {
+                                return;
+                            }
                             for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                             {
                                 //Console.WriteLine("ERROR");
@@ -1032,18 +1233,29 @@ namespace CLI.Controllers
                         }
                         Console.WriteLine("Enter return type name:");
                         InputR = Console.ReadLine();
-                       
-                        //List<Methods> tempM = new List<Methods> { };
-                        string InputN = "";
+                        if (InputR == "esc")
+                        {
+                            return;
+                        }
+                    //List<Methods> tempM = new List<Methods> { };
+                    string InputN = "";
                         string InputT;
                         while (InputN != "N")
                         {
                             Console.WriteLine("Enter Parameter name, or 'N' if done or no more:");
                             InputN = Console.ReadLine();
+                            if (InputN == "esc")
+                            {
+                                return;
+                            }
                             if (InputN != "N")
                             {
                                 Console.WriteLine("Enter type name:");
                                 InputT = Console.ReadLine();
+                                if (InputT == "esc")
+                                {
+                                    return;
+                                }
                                 tempF.Add(new Fields { name = InputN, type = InputT });
                             }
                             //Console.WriteLine(" ");
@@ -1056,6 +1268,10 @@ namespace CLI.Controllers
                     Console.WriteLine("ERROR");
                     Console.WriteLine("Enter a valid meth name:");
                     Input = Console.ReadLine();
+                    if (Input == "esc")
+                    {
+                        return;
+                    }
                     for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                     {
                         if (OverScreen[Hold].methods[CNT].name.Equals(Input))
@@ -1065,6 +1281,10 @@ namespace CLI.Controllers
                         bool Err2 = false;
                         Console.WriteLine("Enter new method name:");
                         InputM = Console.ReadLine();
+                        if (InputM == "esc")
+                        {
+                            return;
+                        }
                         //different logic for if null
                         if (OverScreen[Hold].methods != null)
                         {
@@ -1083,6 +1303,10 @@ namespace CLI.Controllers
                             Console.WriteLine("ERROR");
                             Console.WriteLine("Enter a valid method name:");
                             InputM = Console.ReadLine();
+                            if (InputM == "esc")
+                            {
+                                return;
+                            }
                             for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
                             {
                                 //Console.WriteLine("ERROR");
@@ -1099,7 +1323,10 @@ namespace CLI.Controllers
                         }
                         Console.WriteLine("Enter return type name:");
                         InputR = Console.ReadLine();
-
+                        if (InputR == "esc")
+                        {
+                            return;
+                        }
                         //List<Methods> tempM = new List<Methods> { };
                         string InputN = "";
                         string InputT;
@@ -1108,10 +1335,18 @@ namespace CLI.Controllers
                         {
                             Console.WriteLine("Enter Parameter name, or 'N' if done or no more:");
                             InputN = Console.ReadLine();
+                            if (InputN == "esc")
+                            {
+                                return;
+                            }
                             if (InputN != "N")
                             {
                                 Console.WriteLine("Enter type name:");
                                 InputT = Console.ReadLine();
+                                if (InputT == "esc")
+                                {
+                                    return;
+                                }
                                 tempF.Add(new Fields { name = InputN, type = InputT });
                             }
                             //Console.WriteLine(" ");
@@ -1151,10 +1386,22 @@ namespace CLI.Controllers
             //ask for input
             Console.WriteLine("Enter Name of to class:");
             string InputT = Console.ReadLine();
+            if (InputT == "esc")
+            {
+                return;
+            }
             Console.WriteLine("Enter Name of from class:");
             string InputF = Console.ReadLine();
+            if (InputF == "esc")
+            {
+                return;
+            }
             Console.WriteLine("Enter type of relation:");
             string InputR = Console.ReadLine();
+            if (InputR == "esc")
+            {
+                return;
+            }
             string InputY = "";
             int CNT;
             int Hold = 0;
@@ -1167,6 +1414,10 @@ namespace CLI.Controllers
                     Hold = CNT;
                     Console.WriteLine("Enter new type of relation:");
                     InputY = Console.ReadLine();
+                    if (InputY == "esc")
+                    {
+                        return;
+                    }
                 }
             }
             //if activated loop until proper inout is validated
@@ -1176,10 +1427,22 @@ namespace CLI.Controllers
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter Valid Name of to class:");
                 InputT = Console.ReadLine();
+                if (InputT == "esc")
+                {
+                    return;
+                }
                 Console.WriteLine("Enter Valid Name of from class:");
                 InputF = Console.ReadLine();
+                if (InputF == "esc")
+                {
+                    return;
+                }
                 Console.WriteLine("Enter Valid type of relation:");
                 InputR = Console.ReadLine();
+                if (InputR == "esc")
+                {
+                    return;
+                }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
@@ -1188,6 +1451,10 @@ namespace CLI.Controllers
                         Hold = CNT;
                         Console.WriteLine("Enter new type of relation:");
                         InputY = Console.ReadLine();
+                        if (InputY == "esc")
+                        {
+                            return;
+                        }
                     }
                     else
                     {
@@ -1280,6 +1547,10 @@ namespace CLI.Controllers
                 bool Err = false;
                 Console.WriteLine("Enter Name of class:");
                 string Input = Console.ReadLine();
+                if (Input == "esc")
+                {
+                    return;
+                }
                 int CNT;
                 int Hold = 0;
                 //check every name in the currently loaded screen
@@ -1298,6 +1569,10 @@ namespace CLI.Controllers
                     Console.WriteLine("Enter a unique class name:");
                     //then ask again
                     Input = Console.ReadLine();
+                    if (Input == "esc")
+                    {
+                        return;
+                    }
                     for (CNT = 0; CNT < OverScreen.Count; CNT++)
                     {
                         if (OverScreen[CNT].name.Equals(Input))

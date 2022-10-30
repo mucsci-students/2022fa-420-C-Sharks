@@ -107,13 +107,9 @@ else
         userBool = Console.ReadLine();
     }
 }
-
-
-
 Console.WriteLine("PLEASE ENTER A COMMAND:");
 while (exitCon == false)
-{
-   
+{ 
     var result = ConsoleExt.ReadKey();
     switch (result.Key)
     {
@@ -126,6 +122,7 @@ while (exitCon == false)
                     exitCon = true;
                 }
                 CLIController.interpet(Input);
+                Console.WriteLine("PLEASE ENTER A COMMAND:");
             }
             else
             {
