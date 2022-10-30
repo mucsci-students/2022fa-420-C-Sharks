@@ -22,5 +22,10 @@
         mod_field,
         mod_meth,
         mod_relat,
+        undo,
+        redo,
+        save,
+        load
+
     }
 }
