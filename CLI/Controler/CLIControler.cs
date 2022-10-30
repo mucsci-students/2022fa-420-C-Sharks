@@ -230,6 +230,7 @@ namespace CLI.Controllers
             Console.WriteLine("Class added:");
             OverScreen.Add(new ScreenModel { className = Input, color = "white", key = keyForClass.ToString(), loc = "0 0", text = "new node", visible = "true" });
             addSave();
+            keyForClass--;
         }
         /// <summary>
         /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -237,6 +238,8 @@ namespace CLI.Controllers
         public static void addRel()
         {
             bool Err = true;
+            string toK = "";
+            string fromK = "";
             Console.WriteLine("Enter Name of from class:");
             string InputRF = Console.ReadLine();
             if (InputRF == "esc")
@@ -249,6 +252,8 @@ namespace CLI.Controllers
                 if (OverScreen[CNT].className.Equals(InputRF))
                 {
                     Err = false;
+                    fromK = OverScreen[CNT].key;
+                    
                 }
             }
             while (Err)
@@ -265,6 +270,7 @@ namespace CLI.Controllers
                     if (OverScreen[CNT].className.Equals(InputRF))
                     {
                         Err = false;
+                        fromK = OverScreen[CNT].key;
                     }
                     else
                     {
@@ -284,6 +290,7 @@ namespace CLI.Controllers
                 if (OverScreen[CNT].className.Equals(InputRT))
                 {
                     Err = false;
+                    toK = OverScreen[CNT].key;
                 }
             }
             while (Err)
@@ -300,6 +307,7 @@ namespace CLI.Controllers
                     if (OverScreen[CNT].className.Equals(InputRT))
                     {
                         Err = false;
+                        toK = OverScreen[CNT].key;
                     }
                     else
                     {
@@ -307,14 +315,42 @@ namespace CLI.Controllers
                     }
                 }
             }
+            string relationType;
+            string relationFill;
+            Relation:
             Console.WriteLine("Enter type of relation:");
             string InputRR = Console.ReadLine();
             if (InputRR == "esc")
             {
                 return;
             }
+            if (InputRR == "Aggregation")
+            {
+                relationType = "StretchedDiamond";
+                relationFill = "#DAE4E4";
+            }
+            else if (InputRR == "Composition")
+            {
+                relationType = "StretchedDiamond";
+                relationFill = "black";
+            }
+            else if (InputRR == "Inheritance")
+            {
+                relationType = "Triangle";
+                relationFill = "#DAE4E4";
+            }
+            else if (InputRR == "Realization")
+            {
+                relationType = "Triangle";
+                relationFill = "black";
+            }
+            else
+            {
+                goto Relation;
+            }
+
             Console.WriteLine("Relation added:");
-            OverRelations.Add(new SingleRelationsModel { from = InputRF, to = InputRT, toArrow = InputRR });
+            OverRelations.Add(new SingleRelationsModel { from = fromK, to = toK, toArrow = relationType, fill = relationFill });
             addSave();
         }
         /// <summary>
