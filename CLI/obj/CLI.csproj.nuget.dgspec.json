@@ -4,6 +4,21 @@
     "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\CLI\\CLI.csproj": {}
   },
   "projects": {
+    "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
+        "projectName": "AutoCompleteUtils",
+        "projectPath": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
+      }
+    },
     "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\CLI\\CLI.csproj": {
       "version": "1.0.0",
       "restore": {
@@ -27,7 +42,14 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
+                "projectPath": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj"
+              },
+              "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj": {
+                "projectPath": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj"
+              }
+            }
           }
         },
         "warningProperties": {
@@ -50,15 +72,19 @@
             },
             "Microsoft.Build.Framework": {
               "target": "Package",
-              "version": "[17.3.1, )"
+              "version": "[17.3.2, )"
             },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[2.17.1, )"
+              "version": "[2.18.0, )"
             },
             "NuGet.Protocol": {
               "target": "Package",
-              "version": "[6.3.0, )"
+              "version": "[6.3.1, )"
+            },
+            "System.CommandLine": {
+              "target": "Package",
+              "version": "[2.0.0-beta4.22272.1, )"
             }
           },
           "imports": [
@@ -79,6 +105,21 @@
           },
           "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
+      }
+    },
+    "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj": {
+      "restore": {
+        "projectUniqueName": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj",
+        "projectName": "ConsoleUtils",
+        "projectPath": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj",
+        "frameworks": {
+          "net48": {
+            "projectReferences": {}
+          }
+        }
+      },
+      "frameworks": {
+        "net48": {}
       }
     }
   }
