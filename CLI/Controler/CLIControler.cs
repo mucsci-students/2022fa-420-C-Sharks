@@ -44,10 +44,6 @@ namespace CLI.Controllers
         static UserModel GLOBALuserModel = new UserModel();
         public static void interpet(Commands input)
         {
-            if (undoCounter == 0)
-            {
-                addSave();
-            }
             if (input == Commands.help)
             {
                 Console.WriteLine("List of Commands:");
