@@ -23,7 +23,6 @@ using MongoDB.Bson.Serialization.Attributes;
 using System.Security.Permissions;
 using System.Linq;
 using static System.Net.Mime.MediaTypeNames;
-using UML.Models;
 using System.Drawing.Printing;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 using System.Transactions;
@@ -41,6 +40,7 @@ namespace CLI.Controllers
         static List<DiagramModel> MomentoSave = new List<DiagramModel> { };
         static int undoCounter = 0;
         static int undoIndex = 0;
+        static int keyForClass = -1;
         static UserModel GLOBALuserModel = new UserModel();
         public static void interpet(Commands input)
         {
@@ -176,14 +176,14 @@ namespace CLI.Controllers
             {
                 redo();
             }
-            /*else if (input == Commands.save)
+            else if (input == Commands.save)
             {
                 save();
             }
             else if (input == Commands.load)
             {
                 load();
-            }*/
+            }
 
         }
         /// <summary>
@@ -201,7 +201,7 @@ namespace CLI.Controllers
             int CNT;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(Input))
+                if (OverScreen[CNT].className.Equals(Input))
                 {
                     Err = true;
                 }
@@ -217,7 +217,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         Err = true;
                     }
@@ -228,7 +228,7 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Class added:");
-            OverScreen.Add(new ScreenModel { name = Input });
+            OverScreen.Add(new ScreenModel { className = Input, color = "white", key = keyForClass.ToString(), loc = "0 0", text = "new node", visible = "true" });
             addSave();
         }
         /// <summary>
@@ -246,7 +246,7 @@ namespace CLI.Controllers
             int CNT;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(InputRF))
+                if (OverScreen[CNT].className.Equals(InputRF))
                 {
                     Err = false;
                 }
@@ -262,7 +262,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(InputRF))
+                    if (OverScreen[CNT].className.Equals(InputRF))
                     {
                         Err = false;
                     }
@@ -281,7 +281,7 @@ namespace CLI.Controllers
             }
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(InputRT))
+                if (OverScreen[CNT].className.Equals(InputRT))
                 {
                     Err = false;
                 }
@@ -297,7 +297,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(InputRT))
+                    if (OverScreen[CNT].className.Equals(InputRT))
                     {
                         Err = false;
                     }
@@ -314,7 +314,7 @@ namespace CLI.Controllers
                 return;
             }
             Console.WriteLine("Relation added:");
-            OverRelations.Add(new SingleRelationsModel { source = InputRF, destination = InputRT, type = InputRR });
+            OverRelations.Add(new SingleRelationsModel { from = InputRF, to = InputRT, toArrow = InputRR });
             addSave();
         }
         /// <summary>
@@ -333,7 +333,7 @@ namespace CLI.Controllers
             int CNT;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(Input))
+                if (OverScreen[CNT].className.Equals(Input))
                 {
                     Err = false;
                     Hold = CNT;
@@ -351,7 +351,7 @@ namespace CLI.Controllers
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     //Console.WriteLine("ERROR");
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         Err = false;
                         Hold = CNT;
@@ -373,7 +373,7 @@ namespace CLI.Controllers
             {
                 for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                 {
-                    if (OverScreen[Hold].fields[CNT].name.Equals(InputN))
+                    if (OverScreen[Hold].fields[CNT].fieldName.Equals(InputN))
                     {
                         Err = true;
                         //Hold = CNT;
@@ -391,7 +391,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].fields[CNT].name.Equals(InputN))
+                    if (OverScreen[CNT].fields[CNT].fieldName.Equals(InputN))
                     {
                         Err = true;
                         //Hold = CNT;
@@ -414,14 +414,14 @@ namespace CLI.Controllers
             //List<Fields> Hold = new List<Fields> { };
             if (OverScreen[Hold].fields == null)
             {
-                tempt.Add(new Fields { name = InputN, type = InputT });
+                tempt.Add(new Fields { fieldName = InputN, fieldType = InputT });
                 OverScreen[Hold].fields = tempt.ToArray();
                 addSave();
             }
             else
             {
                 tempt = OverScreen[Hold].fields.ToList();
-                tempt.Add(new Fields { name = InputN, type = InputT });
+                tempt.Add(new Fields { fieldName = InputN, fieldType = InputT });
                 OverScreen[Hold].fields = tempt.ToArray();
                 addSave();
             }
@@ -442,7 +442,7 @@ namespace CLI.Controllers
             int CNT;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(Input))
+                if (OverScreen[CNT].className.Equals(Input))
                 {
                     Err = false;
                     Hold = CNT;
@@ -459,7 +459,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         Err = false;
                         Hold = CNT;
@@ -477,11 +477,11 @@ namespace CLI.Controllers
             {
                 return;
             }
-            if (OverScreen[Hold].methods != null)
+            if (OverScreen[Hold].methodBinding != null)
             {
-                for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                 {
-                    if (OverScreen[Hold].methods[CNT].name.Equals(InputM))
+                    if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM))
                     {
                         Err = true;
                         //Hold = CNT;
@@ -497,10 +497,10 @@ namespace CLI.Controllers
                 {
                     return;
                 }
-                for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                 {
                     Console.WriteLine("ERROR");
-                    if (OverScreen[Hold].methods[CNT].name.Equals(InputM))
+                    if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM))
                     {
                         Err = true;
                         //Hold = CNT;
@@ -519,6 +519,7 @@ namespace CLI.Controllers
             }
             List<Fields> tempF = new List<Fields> { };
             List<Methods> tempM = new List<Methods> { };
+            List<Parameters> tempP = new List<Parameters> { };
             string InputN = "";
             string InputT;
             while (InputN != "N")
@@ -537,23 +538,23 @@ namespace CLI.Controllers
                     {
                         return;
                     }
-                    tempF.Add(new Fields { name = InputN, type = InputT });
+                    tempP.Add(new Parameters { name = InputN, type = InputT });
                 }
                 Console.WriteLine(" ");
             }
             Console.WriteLine("meth added:");
             //static List<ScreenModel> OverScreen = new List<ScreenModel> { };
-            if (OverScreen[Hold].methods == null)
+            if (OverScreen[Hold].methodBinding == null)
             {
-                tempM.Add(new Methods { name = InputM, return_type = InputR, @params = tempF.ToArray() });
-                OverScreen[Hold].methods = tempM.ToArray();
+                tempM.Add(new Methods { methodName = InputM, return_type = InputR, methodParams = tempP.ToArray() });
+                OverScreen[Hold].methodBinding = tempM.ToArray();
                 addSave();
             }
             else
             {
-                tempM = OverScreen[Hold].methods.ToList();
-                tempM.Add(new Methods { name = InputM, return_type = InputR, @params = tempF.ToArray() });
-                OverScreen[Hold].methods = tempM.ToArray();
+                tempM = OverScreen[Hold].methodBinding.ToList();
+                tempM.Add(new Methods { methodName = InputM, return_type = InputR, methodParams = tempP.ToArray() });
+                OverScreen[Hold].methodBinding = tempM.ToArray();
                 addSave();
             }
         }
@@ -573,7 +574,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(Input))
+                if (OverScreen[CNT].className.Equals(Input))
                 {
                     Err = true;
                     Hold = CNT;
@@ -590,7 +591,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         Err = true;
                         Hold = CNT;
@@ -621,7 +622,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(Input))
+                if (OverScreen[CNT].className.Equals(Input))
                 {
                     Err = true;
                     Hold = CNT;
@@ -638,7 +639,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         Err = true;
                         Hold = CNT;
@@ -659,7 +660,7 @@ namespace CLI.Controllers
             int HoldF = 0;
             for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
             {
-                if (OverScreen[Hold].fields[CNT].name.Equals(Input))
+                if (OverScreen[Hold].fields[CNT].fieldName.Equals(Input))
                 {
                     Err = true;
                     HoldF = CNT;
@@ -676,7 +677,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                 {
-                    if (OverScreen[Hold].fields[CNT].name.Equals(Input))
+                    if (OverScreen[Hold].fields[CNT].fieldName.Equals(Input))
                     {
                         Err = true;
                         HoldF = CNT;
@@ -722,7 +723,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverRelations.Count; CNT++)
             {
-                if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
+                if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -751,7 +752,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
+                    if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -782,7 +783,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(Input))
+                if (OverScreen[CNT].className.Equals(Input))
                 {
                     Err = true;
                     Hold = CNT;
@@ -799,7 +800,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         Err = true;
                         Hold = CNT;
@@ -818,9 +819,9 @@ namespace CLI.Controllers
                 return;
             }
             int HoldF = 0;
-            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+            for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
             {
-                if (OverScreen[Hold].methods[CNT].name.Equals(Input))
+                if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(Input))
                 {
                     Err = true;
                     HoldF = CNT;
@@ -835,9 +836,9 @@ namespace CLI.Controllers
                 {
                     return;
                 }
-                for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                 {
-                    if (OverScreen[Hold].methods[CNT].name.Equals(Input))
+                    if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(Input))
                     {
                         Err = true;
                         HoldF = CNT;
@@ -850,9 +851,9 @@ namespace CLI.Controllers
             }
             Console.WriteLine("Method Removed:");
             List<Methods> tempt = new List<Methods> { };
-            tempt = OverScreen[Hold].methods.ToList();
+            tempt = OverScreen[Hold].methodBinding.ToList();
             tempt.RemoveAt(HoldF);
-            OverScreen[Hold].methods = tempt.ToArray();
+            OverScreen[Hold].methodBinding = tempt.ToArray();
             addSave();
         }
         /// <summary>
@@ -867,7 +868,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(Input))
+                if (OverScreen[CNT].className.Equals(Input))
                 {
                     bool Err2 = false;
                     Err = true;
@@ -877,7 +878,7 @@ namespace CLI.Controllers
                     //int CNT;
                     for (CNT = 0; CNT < OverScreen.Count; CNT++)
                     {
-                        if ((OverScreen[CNT].name.Equals(Input)) && (CNT != Hold))
+                        if ((OverScreen[CNT].className.Equals(Input)) && (CNT != Hold))
                         {
                             Err2 = true;
                         }
@@ -889,7 +890,7 @@ namespace CLI.Controllers
                         Input = Console.ReadLine();
                         for (CNT = 0; CNT < OverScreen.Count; CNT++)
                         {
-                            if ((OverScreen[CNT].name.Equals(Input)) && (CNT != Hold))
+                            if ((OverScreen[CNT].className.Equals(Input)) && (CNT != Hold))
                             {
                                 Err2 = true;
                             }
@@ -909,7 +910,7 @@ namespace CLI.Controllers
                 Input = Console.ReadLine();
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         bool Err2 = false;
                         Err = true;
@@ -918,7 +919,7 @@ namespace CLI.Controllers
                         Input = Console.ReadLine();
                         for (CNT = 0; CNT < OverScreen.Count; CNT++)
                         {
-                            if ((OverScreen[CNT].name.Equals(Input))&&(CNT!=Hold))
+                            if ((OverScreen[CNT].className.Equals(Input))&&(CNT!=Hold))
                             {
                                 Err2 = true;
                             }
@@ -930,7 +931,7 @@ namespace CLI.Controllers
                             Input = Console.ReadLine();
                             for (CNT = 0; CNT < OverScreen.Count; CNT++)
                             {
-                                if ((OverScreen[CNT].name.Equals(Input)) && (CNT != Hold))
+                                if ((OverScreen[CNT].className.Equals(Input)) && (CNT != Hold))
                                 {
                                     Err2 = true;
                                 }
@@ -948,7 +949,7 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Class modified:");
-            OverScreen[Hold].name = Input;
+            OverScreen[Hold].className = Input;
             addSave();
         }
         /// <summary>
@@ -969,7 +970,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
-                if (OverScreen[CNT].name.Equals(Input))
+                if (OverScreen[CNT].className.Equals(Input))
                 {
                     Err = true;
                     Hold = CNT;
@@ -986,7 +987,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1008,7 +1009,7 @@ namespace CLI.Controllers
             int HoldF = 0;
             for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
             {
-                if (OverScreen[Hold].fields[CNT].name.Equals(InputN))
+                if (OverScreen[Hold].fields[CNT].fieldName.Equals(InputN))
                 {
                         bool Err2 = false;
                         Err = true;
@@ -1021,7 +1022,7 @@ namespace CLI.Controllers
                     }
                     for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                         {
-                            if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
+                            if ((OverScreen[Hold].fields[CNT].fieldName.Equals(InputN)) && (CNT != HoldF))
                             {
                                 Err2 = true;
                             }
@@ -1037,7 +1038,7 @@ namespace CLI.Controllers
                         }
                         for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                             {
-                                if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
+                                if ((OverScreen[Hold].fields[CNT].fieldName.Equals(InputN)) && (CNT != HoldF))
                                 {
                                     Err2 = true;
                                 }
@@ -1067,7 +1068,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                 {
-                    if (OverScreen[Hold].fields[CNT].name.Equals(Input))
+                    if (OverScreen[Hold].fields[CNT].fieldName.Equals(Input))
                     {
                         bool Err2 = false;
                         Err = true;
@@ -1080,7 +1081,7 @@ namespace CLI.Controllers
                         }
                         for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                         {
-                            if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
+                            if ((OverScreen[Hold].fields[CNT].fieldName.Equals(InputN)) && (CNT != HoldF))
                             {
                                 Err2 = true;
                             }
@@ -1096,7 +1097,7 @@ namespace CLI.Controllers
                             }
                             for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
                             {
-                                if ((OverScreen[Hold].fields[CNT].name.Equals(InputN)) && (CNT != HoldF))
+                                if ((OverScreen[Hold].fields[CNT].fieldName.Equals(InputN)) && (CNT != HoldF))
                                 {
                                     Err2 = true;
                                 }
@@ -1120,8 +1121,8 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Field Modified:");
-            OverScreen[Hold].fields[HoldF].name = InputN;
-            OverScreen[Hold].fields[HoldF].type = InputT;
+            OverScreen[Hold].fields[HoldF].fieldName = InputN;
+            OverScreen[Hold].fields[HoldF].fieldType = InputT;
             addSave();
         }
         /// <summary>
@@ -1131,6 +1132,7 @@ namespace CLI.Controllers
         {
                 bool Err = false;
                 List<Fields> tempF = new List<Fields> { };
+                List<Parameters> tempP = new List<Parameters> { };
                 Console.WriteLine("Enter Name of class:");
                 string Input = Console.ReadLine();
                 if (Input == "esc")
@@ -1144,7 +1146,7 @@ namespace CLI.Controllers
                 int Hold = 0;
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1161,7 +1163,7 @@ namespace CLI.Controllers
                     }
                     for (CNT = 0; CNT < OverScreen.Count; CNT++)
                     {
-                        if (OverScreen[CNT].name.Equals(Input))
+                        if (OverScreen[CNT].className.Equals(Input))
                         {
                             Err = true;
                             Hold = CNT;
@@ -1180,9 +1182,9 @@ namespace CLI.Controllers
                     return;
                 }
                 int HoldF = 0;
-                for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                 {
-                    if (OverScreen[Hold].methods[CNT].name.Equals(Input))
+                    if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(Input))
                     {
                         Err = true;
                         HoldF = CNT;
@@ -1193,11 +1195,11 @@ namespace CLI.Controllers
                         {
                             return;
                         }
-                        if (OverScreen[Hold].methods != null)
+                        if (OverScreen[Hold].methodBinding != null)
                         {
-                            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                            for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                             {
-                                if (OverScreen[Hold].methods[CNT].name.Equals(InputM) && (CNT != HoldF))
+                                if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM) && (CNT != HoldF))
                                 {
                                     Err2 = true;
                                     HoldF = CNT;
@@ -1213,10 +1215,10 @@ namespace CLI.Controllers
                             {
                                 return;
                             }
-                            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                            for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                             {
                                 //Console.WriteLine("ERROR");
-                                if (OverScreen[Hold].methods[CNT].name.Equals(InputM) && (CNT != HoldF))
+                                if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM) && (CNT != HoldF))
                                 {
                                     Err2 = true;
                                     HoldF = CNT;
@@ -1252,7 +1254,7 @@ namespace CLI.Controllers
                                 {
                                     return;
                                 }
-                                tempF.Add(new Fields { name = InputN, type = InputT });
+                                tempP.Add(new Parameters { name = InputN, type = InputT });
                             }
                             //Console.WriteLine(" ");
                         }
@@ -1268,9 +1270,9 @@ namespace CLI.Controllers
                     {
                         return;
                     }
-                    for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                    for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                     {
-                        if (OverScreen[Hold].methods[CNT].name.Equals(Input))
+                        if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(Input))
                         {
                             Err = true;
                             HoldF = CNT;
@@ -1282,11 +1284,11 @@ namespace CLI.Controllers
                             return;
                         }
                         //different logic for if null
-                        if (OverScreen[Hold].methods != null)
+                        if (OverScreen[Hold].methodBinding != null)
                         {
-                            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                            for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                             {
-                                if (OverScreen[Hold].methods[CNT].name.Equals(InputM) && (CNT != HoldF))
+                                if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM) && (CNT != HoldF))
                                 {
                                     Err2 = true;
                                     HoldF = CNT;
@@ -1303,10 +1305,10 @@ namespace CLI.Controllers
                             {
                                 return;
                             }
-                            for (CNT = 0; CNT < OverScreen[Hold].methods.Length; CNT++)
+                            for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                             {
                                 //Console.WriteLine("ERROR");
-                                if (OverScreen[Hold].methods[CNT].name.Equals(InputM) && (CNT != HoldF))
+                                if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM) && (CNT != HoldF))
                                 {
                                     Err2 = true;
                                     HoldF = CNT;
@@ -1343,7 +1345,7 @@ namespace CLI.Controllers
                                 {
                                     return;
                                 }
-                                tempF.Add(new Fields { name = InputN, type = InputT });
+                                tempP.Add(new Parameters { name = InputN, type = InputT });
                             }
                             //Console.WriteLine(" ");
                         }
@@ -1356,19 +1358,19 @@ namespace CLI.Controllers
                 }
                 Console.WriteLine("Field Modified:");
                 //check if empty
-                if (!tempF.Any())
+                if (!tempP.Any())
                 {
                     
-                    OverScreen[Hold].methods[HoldF].name = InputM;
-                    OverScreen[Hold].methods[HoldF].return_type = InputR;
+                    OverScreen[Hold].methodBinding[HoldF].methodName = InputM;
+                    OverScreen[Hold].methodBinding[HoldF].return_type = InputR;
                     addSave();
                 }
                 else
                 {
                     
-                    OverScreen[Hold].methods[HoldF].name = InputM;
-                    OverScreen[Hold].methods[HoldF].return_type = InputR;
-                    OverScreen[Hold].methods[HoldF].@params = tempF.ToArray();
+                    OverScreen[Hold].methodBinding[HoldF].methodName = InputM;
+                    OverScreen[Hold].methodBinding[HoldF].return_type = InputR;
+                    OverScreen[Hold].methodBinding[HoldF].methodParams = tempP.ToArray();
                     addSave();
                 }
         }
@@ -1404,7 +1406,7 @@ namespace CLI.Controllers
             for (CNT = 0; CNT < OverRelations.Count; CNT++)
             {
                 //check to see if proper input
-                if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
+                if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -1441,7 +1443,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if ((OverRelations[CNT].source.Equals(InputF)) && (OverRelations[CNT].destination.Equals(InputT)) && (OverRelations[CNT].type.Equals(InputR)))
+                    if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1459,7 +1461,7 @@ namespace CLI.Controllers
                 }
             }
             Console.WriteLine("Relation Modified:");
-            OverRelations[Hold].type = InputY;
+            OverRelations[Hold].toArrow = InputY;
             addSave();
         }
         /// <summary>
@@ -1474,9 +1476,9 @@ namespace CLI.Controllers
             {
                 ExpSM.Add(new ExportScreenModel
                 {
-                    name = OverScreen[Cnt].name,
+                    name = OverScreen[Cnt].className,
                     fields = OverScreen[Cnt].fields,
-                    methods = OverScreen[Cnt].methods
+                    methods = OverScreen[Cnt].methodBinding
                 });
 
             }
@@ -1498,7 +1500,7 @@ namespace CLI.Controllers
             {
                 //for every object in the screen
                 //write its name
-                Console.WriteLine("{0}", OverScreen[Cnt].name);
+                Console.WriteLine("{0}", OverScreen[Cnt].className);
 
             }
             Console.WriteLine("");
@@ -1520,9 +1522,9 @@ namespace CLI.Controllers
             {
                 display.Add(new SingleRelationsModel
                 {
-                    source = OverRelations[Cnt].source,
-                    destination = OverRelations[Cnt].destination,
-                    type = OverRelations[Cnt].type
+                    from = OverRelations[Cnt].from,
+                    to = OverRelations[Cnt].to,
+                    toArrow = OverRelations[Cnt].toArrow
                 });
 
             }
@@ -1552,7 +1554,7 @@ namespace CLI.Controllers
                 //check every name in the currently loaded screen
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if (OverScreen[CNT].name.Equals(Input))
+                    if (OverScreen[CNT].className.Equals(Input))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1571,7 +1573,7 @@ namespace CLI.Controllers
                     }
                     for (CNT = 0; CNT < OverScreen.Count; CNT++)
                     {
-                        if (OverScreen[CNT].name.Equals(Input))
+                        if (OverScreen[CNT].className.Equals(Input))
                         {
                             Err = true;
                             Hold = CNT;
@@ -1589,9 +1591,9 @@ namespace CLI.Controllers
                 //make a new export screen model and add the information 
                 ExpSM.Add(new ExportScreenModel
                 {
-                    name = OverScreen[Hold].name,
+                    name = OverScreen[Hold].className,
                     fields = OverScreen[Hold].fields,
-                    methods = OverScreen[Hold].methods
+                    methods = OverScreen[Hold].methodBinding
                 });
                 //then convert to string and print
                 string json = Newtonsoft.Json.JsonConvert.SerializeObject(ExpSM, Formatting.Indented);
@@ -1663,9 +1665,9 @@ namespace CLI.Controllers
                     {
                         ExpSM.Add(new ExportScreenModel
                         {
-                            name = OverScreen[Cnt].name,
+                            name = OverScreen[Cnt].className,
                             fields = OverScreen[Cnt].fields,
-                            methods = OverScreen[Cnt].methods
+                            methods = OverScreen[Cnt].methodBinding
                         });
 
                     }
@@ -1733,8 +1735,8 @@ namespace CLI.Controllers
                     {
                         FieldList.Add(new Fields
                         {
-                            name = field.GetValue("name").ToString(),
-                            type = field.GetValue("type").ToString()
+                            fieldName = field.GetValue("name").ToString(),
+                            fieldType = field.GetValue("type").ToString()
                         });
                     }
 
@@ -1742,7 +1744,7 @@ namespace CLI.Controllers
                     foreach (JObject meth in jmethods)
                     {
                         //save the name and return type for the given method
-                        List<Fields> parameters = new List<Fields> { };
+                        List<Parameters> parameters = new List<Parameters> { };
                         var nameHoldMeth = meth.GetValue("name").ToString();
                         var retHold = meth.GetValue("return_type").ToString();
                         var paramets = meth["params"];
@@ -1751,7 +1753,7 @@ namespace CLI.Controllers
                         //then save a list of params 
                         foreach (JObject param in paramets)
                         {
-                            parameters.Add(new Fields
+                            parameters.Add(new Parameters
                             {
                                 name = param.GetValue("name").ToString(),
                                 type = param.GetValue("type").ToString()
@@ -1760,17 +1762,17 @@ namespace CLI.Controllers
                         //and add a new method to the list using saved values and the parameterlist.toArray
                         MethList.Add(new Methods
                         {
-                            name = nameHoldMeth,
+                            methodName = nameHoldMeth,
                             return_type = retHold,
-                            @params = parameters.ToArray()
+                            methodParams = parameters.ToArray()
                         });
                     }
 
                     //Ayo idk what to put in LOC and KEY
                     ScreenList.Add(new ScreenModel
                     {
-                        name = nameHoldClass,
-                        methods = MethList.ToArray(),
+                        className = nameHoldClass,
+                        methodBinding = MethList.ToArray(),
                         fields = FieldList.ToArray(),
                     });
                 }
@@ -1779,9 +1781,9 @@ namespace CLI.Controllers
                 {
                     relations.Add(new SingleRelationsModel
                     {
-                        source = rel.GetValue("source").ToString(),
-                        destination = rel.GetValue("destination").ToString(),
-                        type = rel.GetValue("type").ToString()
+                        from = rel.GetValue("source").ToString(),
+                        to = rel.GetValue("destination").ToString(),
+                        toArrow = rel.GetValue("type").ToString()
                     });
                 }
                 OverScreen = ScreenList;
@@ -1826,38 +1828,38 @@ namespace CLI.Controllers
             {
                 MomentoSave[undoIndex].screen[o] = new ScreenModel
                 {
-                    name = OverScreen[o].name,
-                    methods = null,
+                    className = OverScreen[o].className,
+                    methodBinding = null,
                     fields = null,
                 };
 
-                if (OverScreen[o].methods is not null)
+                if (OverScreen[o].methodBinding is not null)
                 {
-                    Methods[] meth = new Methods[OverScreen[o].methods.Length];
+                    Methods[] meth = new Methods[OverScreen[o].methodBinding.Length];
 
-                    for (int m = 0; m < OverScreen[o].methods.Length; m++)//m for method
+                    for (int m = 0; m < OverScreen[o].methodBinding.Length; m++)//m for method
                     {
                         meth[m] = new Methods { };
-                        if (!OverScreen[o].methods[m].@params.Length.Equals(null))
+                        if (!OverScreen[o].methodBinding[m].methodParams.Length.Equals(null))
                         {
-                            Fields[] parm = new Fields[OverScreen[o].methods[m].@params.Length];
+                            Parameters[] parm = new Parameters[OverScreen[o].methodBinding[m].methodParams.Length];
 
-                            for (int p = 0; p < OverScreen[o].methods[m].@params.Length; p++)//p for param
+                            for (int p = 0; p < OverScreen[o].methodBinding[m].methodParams.Length; p++)//p for param
                             {
-                                parm[p] = OverScreen[o].methods[m].@params[p];
+                                parm[p] = OverScreen[o].methodBinding[m].methodParams[p];
                             }
-                            meth[m].name = OverScreen[o].methods[m].name;
-                            meth[m].return_type = OverScreen[o].methods[m].return_type;
-                            meth[m].@params = parm;
+                            meth[m].methodName = OverScreen[o].methodBinding[m].methodName;
+                            meth[m].return_type = OverScreen[o].methodBinding[m].return_type;
+                            meth[m].methodParams = parm;
                         }
                         else
                         {
-                            meth[m].name = OverScreen[o].methods[m].name;
-                            meth[m].return_type = OverScreen[o].methods[m].return_type;
+                            meth[m].methodName = OverScreen[o].methodBinding[m].methodName;
+                            meth[m].return_type = OverScreen[o].methodBinding[m].return_type;
                         }
 
                     }
-                    MomentoSave[undoIndex].screen[o].methods = meth;
+                    MomentoSave[undoIndex].screen[o].methodBinding = meth;
 
                 }
 
@@ -1867,8 +1869,8 @@ namespace CLI.Controllers
                     for (int f = 0; f < OverScreen[o].fields.Length; f++)
                     {
                         fld[f] = new Fields { };
-                        fld[f].name = OverScreen[o].fields[f].name;
-                        fld[f].type = OverScreen[o].fields[f].type;
+                        fld[f].fieldName = OverScreen[o].fields[f].fieldName;
+                        fld[f].fieldType = OverScreen[o].fields[f].fieldType;
                     };
                     MomentoSave[undoIndex].screen[o].fields = fld;
 
@@ -1882,9 +1884,9 @@ namespace CLI.Controllers
             {
                 MomentoSave[undoIndex].relations[i] = new SingleRelationsModel
                 {
-                    source = OverRelations[i].source,
-                    destination = OverRelations[i].destination,
-                    type = OverRelations[i].type
+                    from = OverRelations[i].from,
+                    to = OverRelations[i].to,
+                    toArrow = OverRelations[i].toArrow
                 };
             }
 
@@ -2029,16 +2031,60 @@ namespace CLI.Controllers
             }
 
         }
-        public static void load()
+        public static void save()
         {
-            /*
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
             var databaseName = "uml_db";
             var client = new MongoClient(connectionString);
             var db = client.GetDatabase(databaseName);
             var collection = db.GetCollection<DiagramModel>("diagrams");
-            GLOBALuserModel.Diagrams = collection.Find(x => x.UserID == GLOBALuserModel._id).ToList();
-            */
+            Console.WriteLine("ENTER DIAGRAM NAME");
+            string input = Console.ReadLine();
+            if (input == "esc")
+            {
+                return;
+            }
+
+            var diagram = new DiagramModel { Name = input, UserID = GLOBALuserModel._id, screen = OverScreen.ToArray(), relations = OverRelations.ToArray() };
+            collection.InsertOne(diagram);
+
+        }
+        public static void load()
+        {
+
+            string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
+            var databaseName = "uml_db";
+            var client = new MongoClient(connectionString);
+            var db = client.GetDatabase(databaseName);
+            var collection = db.GetCollection<DiagramModel>("diagrams");
+            if (GLOBALuserModel._id != null)
+            {
+                GLOBALuserModel.Diagrams = collection.Find(x => x.UserID == GLOBALuserModel._id).ToList();
+                foreach (var item in GLOBALuserModel.Diagrams)
+                {
+                    Console.WriteLine(item.Name);
+                }
+                Console.WriteLine("ENTER DIAGRAM NAME LISTED ABOVE");
+                string name = Console.ReadLine();
+                if (name != "")
+                {
+                    var diagram = GLOBALuserModel.Diagrams.Find(x => x.Name == name);
+                    for (int i = 0; i < diagram.screen.Count(); i++)
+                    {
+                        OverScreen.Add(diagram.screen[i]);
+                    }
+                    for (int i = 0; i < diagram.relations.Count(); i++)
+                    {
+                        OverRelations.Add(diagram.relations[i]);
+                    }
+                }
+            }
+            else if (GLOBALuserModel._id == null)
+            {
+                Console.WriteLine("NOT LOGGED IN,");
+                Console.WriteLine("LOG IN WITH Login");
+
+            }
         }
     }
 }

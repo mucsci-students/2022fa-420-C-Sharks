@@ -1,11 +1,10 @@
 ﻿using CLI.Models;
-
-namespace UML.Models
+namespace CLI.Models
 {
     public class Methods
     {
-        public string name { get; set; }
+        public string methodName { get; set; }
         public string return_type { get; set; }
-        public Fields[] @params { get; set; }
+        public Parameters[]? methodParams { get; set; }
     }
 }
