@@ -21,7 +21,7 @@ jobs:
       - name: Install Coverlet
         run: cd CLIUnitTests && dotnet add package coverlet.msbuild
       - name: Navigate to CLI
-        run: cd CLI
+        run: cd CLI && ls
       - name: Test
         run: dotnet test CLI /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger "trx;LogFileName=test-results.trx" 
       - name: Build
