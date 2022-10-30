@@ -1,4 +1,4 @@
-name: .NET
+name: Unit Test and Build WebApp
 
 on:
   push:
