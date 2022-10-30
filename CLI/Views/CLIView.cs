@@ -44,6 +44,7 @@ var cyclingAutoComplete = new CyclingAutoComplete();
 Console.WriteLine("NEW USER? [y/n]");
 string userBool = Console.ReadLine();
 UserModel userModel = new UserModel();
+UserLog:
 if (userBool == "y")
 {
     string user;
@@ -101,11 +102,12 @@ else if (userBool == "n")
 }
 else
 {
-    while (userBool != "y" || userBool != "n")
+    while (userBool != "y" && userBool != "n")
     {
         Console.WriteLine("INVALID INPUT TRY AGAIN");
         userBool = Console.ReadLine();
     }
+    goto UserLog;
 }
 Console.WriteLine("PLEASE ENTER A COMMAND:");
 while (exitCon == false)
