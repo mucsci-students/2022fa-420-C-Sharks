@@ -1,13 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+  
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <PlatformTarget>x86</PlatformTarget>
-    <BaseOutputPath>E:\Docs\Portfolio</BaseOutputPath>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <BaseOutputPath></BaseOutputPath>
     <Platforms>AnyCPU;x86</Platforms>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <Optimize>True</Optimize>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <Optimize>True</Optimize>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +24,9 @@
     <PackageReference Include="Microsoft.Build.Framework" Version="17.3.1" />
     <PackageReference Include="MongoDB.Driver" Version="2.17.1" />
     <PackageReference Include="NuGet.Protocol" Version="6.3.1" />
-  </ItemGroup>
+    <PackageReference Include="System.CommandLine" Version="2.0.0-beta4.22272.1" />
 
+  </ItemGroup>
+    <ProjectReference Include="..\AutoCompleteUtils\AutoCompleteUtils.csproj" />
+    <ProjectReference Include="..\ConsoleUtils\ConsoleUtils.csproj" />
 </Project>
