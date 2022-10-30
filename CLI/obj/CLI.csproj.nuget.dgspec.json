@@ -1,35 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI.csproj": {}
+    "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\CLI\\CLI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
-      "restore": {
-        "projectUniqueName": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
-        "projectName": "AutoCompleteUtils",
-        "projectPath": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj",
-        "frameworks": {
-          "net452": {
-            "projectReferences": {}
-          }
-        }
-      },
-      "frameworks": {
-        "net452": {}
-      }
-    },
-    "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI.csproj": {
+    "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\CLI\\CLI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI.csproj",
+        "projectUniqueName": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\CLI\\CLI.csproj",
         "projectName": "CLI",
-        "projectPath": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\CLI\\CLI.csproj",
-        "packagesPath": "C:\\Users\\bscha\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\CLI\\obj\\",
+        "projectPath": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\CLI\\CLI.csproj",
+        "packagesPath": "C:\\Users\\Jacob\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\CLI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\bscha\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Jacob\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -42,14 +27,7 @@
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
-            "projectReferences": {
-              "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj": {
-                "projectPath": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\AutoCompleteUtils\\AutoCompleteUtils.csproj"
-              },
-              "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj": {
-                "projectPath": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj"
-              }
-            }
+            "projectReferences": {}
           }
         },
         "warningProperties": {
@@ -72,19 +50,15 @@
             },
             "Microsoft.Build.Framework": {
               "target": "Package",
-              "version": "[17.3.2, )"
+              "version": "[17.3.1, )"
             },
             "MongoDB.Driver": {
               "target": "Package",
-              "version": "[2.18.0, )"
+              "version": "[2.17.1, )"
             },
             "NuGet.Protocol": {
               "target": "Package",
-              "version": "[6.3.1, )"
-            },
-            "System.CommandLine": {
-              "target": "Package",
-              "version": "[2.0.0-beta4.22272.1, )"
+              "version": "[6.3.0, )"
             }
           },
           "imports": [
@@ -103,23 +77,8 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
         }
-      }
-    },
-    "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj": {
-      "restore": {
-        "projectUniqueName": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj",
-        "projectName": "ConsoleUtils",
-        "projectPath": "C:\\Users\\bscha\\source\\repos\\2022fa-420-C-Sharks\\ConsoleUtils\\ConsoleUtils.csproj",
-        "frameworks": {
-          "net452": {
-            "projectReferences": {}
-          }
-        }
-      },
-      "frameworks": {
-        "net452": {}
       }
     }
   }
