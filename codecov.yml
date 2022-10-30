@@ -1,0 +1,7 @@
+ignore:
+  - "**/*.cshtml"         # glob accepted
+  - "UML/Program.cs" 
+  - "UML/Views" 
+  - "UML/Controllers" 
+
+
