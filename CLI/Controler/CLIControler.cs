@@ -1822,19 +1822,64 @@ namespace CLI.Controllers
             SingleRelationsModel[] RelSave = new SingleRelationsModel[undoIndex];
             Array.Copy(OverScreen.ToArray(), SaveArray, OverScreen.Count);
             Array.Copy(OverRelations.ToArray(), RelSave, OverRelations.Count);*/
-            
+
 
             //Array.Copy(OverScreen.ToArray(), MomentoSave[undoIndex].screen, OverScreen.Count);
             //Array.Copy(OverRelations.ToArray(), MomentoSave[undoIndex].relations, OverRelations.Count);
-
-            for(int i = 0; i < OverScreen.Count; i++)
+            for (int o = 0; o < OverScreen.Count; o++)//o for object
             {
-                MomentoSave[undoIndex].screen[i] = new ScreenModel
+                MomentoSave[undoIndex].screen[o] = new ScreenModel
                 {
-                    name = OverScreen[i].name,
-                    methods = OverScreen[i].methods,
-                    fields = OverScreen[i].fields
+                    name = OverScreen[o].name,
+                    methods = null,
+                    fields = null,
                 };
+
+                if (OverScreen[o].methods is not null)
+                {
+                    Methods[] meth = new Methods[OverScreen[o].methods.Length];
+
+                    for (int m = 0; m < OverScreen[o].methods.Length; m++)//m for method
+                    {
+                        meth[m] = new Methods { };
+                        if (!OverScreen[o].methods[m].@params.Length.Equals(null))
+                        {
+                            Fields[] parm = new Fields[OverScreen[o].methods[m].@params.Length];
+
+                            for (int p = 0; p < OverScreen[o].methods[m].@params.Length; p++)//p for param
+                            {
+                                parm[p] = OverScreen[o].methods[m].@params[p];
+                            }
+                            meth[m].name = OverScreen[o].methods[m].name;
+                            meth[m].return_type = OverScreen[o].methods[m].return_type;
+                            meth[m].@params = parm;
+                        }
+                        else
+                        {
+                            meth[m].name = OverScreen[o].methods[m].name;
+                            meth[m].return_type = OverScreen[o].methods[m].return_type;
+                        }
+
+                    }
+                    MomentoSave[undoIndex].screen[o].methods = meth;
+
+                }
+
+                if (OverScreen[o].fields is not null)
+                {
+                    Fields[] fld = new Fields[OverScreen[o].fields.Length];
+                    for (int f = 0; f < OverScreen[o].fields.Length; f++)
+                    {
+                        fld[f] = new Fields { };
+                        fld[f].name = OverScreen[o].fields[f].name;
+                        fld[f].type = OverScreen[o].fields[f].type;
+                    };
+                    MomentoSave[undoIndex].screen[o].fields = fld;
+
+                }
+
+
+
             }
 
             for (int i = 0; i < OverRelations.Count; i++)
