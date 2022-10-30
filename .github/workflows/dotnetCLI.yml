@@ -19,15 +19,15 @@ jobs:
         with:
           dotnet-version: 6.0.x
       - name: Install Coverlet
-        run: cd unitTests && dotnet add package coverlet.msbuild
-      - name: Navigate to UML
-        run: cd UML
+        run: cd CLIUnitTests && dotnet add package coverlet.msbuild
+      - name: Navigate to CLI
+        run: cd CLI
       - name: Test
-        run: dotnet test UML /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger "trx;LogFileName=test-results.trx" 
+        run: dotnet test CLI /p:CollectCoverage=true /p:CoverletOutputFormat=opencover --logger "trx;LogFileName=test-results.trx" 
       - name: Build
-        run: dotnet build UML
+        run: dotnet build CLI
       - name: Dir
-        run: cd unitTests && ls
+        run: cd CLIUnitTests && ls
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
