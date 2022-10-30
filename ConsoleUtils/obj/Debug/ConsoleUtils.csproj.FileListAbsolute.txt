@@ -16,3 +16,9 @@ C:\Users\Hahng\source\repos\2022fa-420-C-Sharks\Sprint2\CLI-1\ConsoleUtils\obj\D
 C:\Users\Hahng\source\repos\2022fa-420-C-Sharks\Sprint2\CLI-1\ConsoleUtils\obj\Debug\ConsoleUtils.csproj.CoreCompileInputs.cache
 C:\Users\Hahng\source\repos\2022fa-420-C-Sharks\Sprint2\CLI-1\ConsoleUtils\obj\Debug\ConsoleUtils.dll
 C:\Users\Hahng\source\repos\2022fa-420-C-Sharks\Sprint2\CLI-1\ConsoleUtils\obj\Debug\ConsoleUtils.pdb
+C:\Users\Jacob\Documents\GitHub\2022fa-420-C-Sharks\ConsoleUtils\bin\Debug\ConsoleUtils.dll
+C:\Users\Jacob\Documents\GitHub\2022fa-420-C-Sharks\ConsoleUtils\bin\Debug\ConsoleUtils.pdb
+C:\Users\Jacob\Documents\GitHub\2022fa-420-C-Sharks\ConsoleUtils\obj\Debug\ConsoleUtils.csproj.AssemblyReference.cache
+C:\Users\Jacob\Documents\GitHub\2022fa-420-C-Sharks\ConsoleUtils\obj\Debug\ConsoleUtils.csproj.CoreCompileInputs.cache
+C:\Users\Jacob\Documents\GitHub\2022fa-420-C-Sharks\ConsoleUtils\obj\Debug\ConsoleUtils.dll
+C:\Users\Jacob\Documents\GitHub\2022fa-420-C-Sharks\ConsoleUtils\obj\Debug\ConsoleUtils.pdb

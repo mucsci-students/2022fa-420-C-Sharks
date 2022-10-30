@@ -35,7 +35,9 @@
 
 
 
-  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\AutoCompleteUtils\AutoCompleteUtils.csproj" />
     <ProjectReference Include="..\ConsoleUtils\ConsoleUtils.csproj" />
+
+</ItemGroup>
 </Project>

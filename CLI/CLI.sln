@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoCompleteUtils", "..\Aut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUtils", "..\ConsoleUtils\ConsoleUtils.csproj", "{CF1C083E-EE8E-4A1B-B503-0C39C0A7F8B4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CLIUnitTests", "..\TestProject1\CLIUnitTests.csproj", "{9447CCFD-3812-414B-9E2C-F602959CD82E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,14 @@ Global
 		{CF1C083E-EE8E-4A1B-B503-0C39C0A7F8B4}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CF1C083E-EE8E-4A1B-B503-0C39C0A7F8B4}.Release|x86.ActiveCfg = Release|Any CPU
 		{CF1C083E-EE8E-4A1B-B503-0C39C0A7F8B4}.Release|x86.Build.0 = Release|Any CPU
+		{9447CCFD-3812-414B-9E2C-F602959CD82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9447CCFD-3812-414B-9E2C-F602959CD82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9447CCFD-3812-414B-9E2C-F602959CD82E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9447CCFD-3812-414B-9E2C-F602959CD82E}.Debug|x86.Build.0 = Debug|Any CPU
+		{9447CCFD-3812-414B-9E2C-F602959CD82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9447CCFD-3812-414B-9E2C-F602959CD82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9447CCFD-3812-414B-9E2C-F602959CD82E}.Release|x86.ActiveCfg = Release|Any CPU
+		{9447CCFD-3812-414B-9E2C-F602959CD82E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
