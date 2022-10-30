@@ -5,8 +5,10 @@ namespace CLI.Models
     public class DiagramModel
     {
         [BsonId]
-        public ObjectId id { get; set; }
-        public string Username { get; set; }
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string id { get; set; }
+        public string UserID { get; set; }
+        public string Name { get; set; }
         public ScreenModel[] screen { get; set; }
         public SingleRelationsModel[] relations { get; set; }
     }

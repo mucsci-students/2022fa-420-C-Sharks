@@ -1,7 +1,6 @@
 using Microsoft.Extensions.Primitives;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
-using UML.Models;
 
 namespace CLI.Models
 {
