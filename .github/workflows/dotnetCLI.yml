@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: dotnet build CLI
       - name: Dir
-        run: cd CLIUnitTests && ls
+        run: cd CLIUnitTests
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: success() || failure()    # run this step even if previous step failed
