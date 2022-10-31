@@ -91,9 +91,12 @@ namespace unitTests
         [TestMethod]
         public void testSingleRelationsModel()
         {
-            SingleRelationsModel srm = new SingleRelationsModel() { from = "1", to = "2" };
+            SingleRelationsModel srm = new SingleRelationsModel() { from = "1", to = "2", fromName = "Class1", toName = "Class2", toArrow = "Inheritance" };
             Assert.AreEqual(srm.from, "1");
             Assert.AreEqual(srm.to, "2");
+            Assert.AreEqual(srm.fromName, "Class1");
+            Assert.AreEqual(srm.toName, "Class2");
+            Assert.AreEqual(srm.toArrow, "Inheritance");
         }
 
         [TestMethod]

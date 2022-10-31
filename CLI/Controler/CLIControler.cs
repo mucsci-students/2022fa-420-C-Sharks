@@ -36,6 +36,7 @@ namespace CLI.Controllers
     {
         static List<ScreenModel> OverScreen = new List<ScreenModel> { };
         static List<SingleRelationsModel> OverRelations = new List<SingleRelationsModel> { };
+        static List<SingleRelationsModel> nameStorage = new List<SingleRelationsModel> { };
         DiagramModel LastUndone = new DiagramModel { };
         static List<DiagramModel> MomentoSave = new List<DiagramModel> { };
         static int undoCounter = 0;
@@ -350,7 +351,14 @@ namespace CLI.Controllers
             }
 
             Console.WriteLine("Relation added:");
-            OverRelations.Add(new SingleRelationsModel { from = fromK, to = toK, toArrow = relationType, fill = relationFill });
+            nameStorage.Add(new SingleRelationsModel
+            {
+                from = InputRF,
+                to = InputRT,
+                toArrow = relationType,
+                fill = relationFill,
+            });
+            OverRelations.Add(new SingleRelationsModel { from = fromK, to = toK, fromName = InputRF, toName = InputRT, toArrow = InputRR, fill = relationFill });
             addSave();
         }
         /// <summary>
@@ -759,7 +767,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverRelations.Count; CNT++)
             {
-                if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
+                if ((OverRelations[CNT].fromName.Equals(InputF)) && (OverRelations[CNT].toName.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -788,7 +796,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
+                    if ((OverRelations[CNT].fromName.Equals(InputF)) && (OverRelations[CNT].toName.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1442,7 +1450,7 @@ namespace CLI.Controllers
             for (CNT = 0; CNT < OverRelations.Count; CNT++)
             {
                 //check to see if proper input
-                if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
+                if ((OverRelations[CNT].fromName.Equals(InputF)) && (OverRelations[CNT].toName.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -1477,9 +1485,9 @@ namespace CLI.Controllers
                 {
                     return;
                 }
-                for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                for (CNT = 0; CNT < OverRelations.Count; CNT++)
                 {
-                    if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
+                    if ((OverRelations[CNT].fromName.Equals(InputF)) && (OverRelations[CNT].toName.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1519,7 +1527,18 @@ namespace CLI.Controllers
 
             }
             //trace trough each item in count add to the export model
-            var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = OverRelations.ToArray() };
+            List<ExportRelation> ExpR = new List<ExportRelation> { };
+            for (int Cnt = 0; Cnt < OverRelations.Count(); Cnt++)
+            {
+                ExpR.Add(new ExportRelation
+                {
+                    fromName = OverRelations[Cnt].fromName,
+                    toName = OverRelations[Cnt].toName,
+                    toArrow = OverRelations[Cnt].toArrow
+                });
+            }
+
+                var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = ExpR.ToArray() };
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
             Console.WriteLine(json);
         }
@@ -1696,7 +1715,7 @@ namespace CLI.Controllers
                 {
 
 
-                    List<ExportScreenModel> ExpSM = new List<ExportScreenModel>();
+                    List<ExportScreenModel> ExpSM = new List<ExportScreenModel> { };
                     for (int Cnt = 0; Cnt < OverScreen.Count(); Cnt++)
                     {
                         ExpSM.Add(new ExportScreenModel
@@ -1707,7 +1726,19 @@ namespace CLI.Controllers
                         });
 
                     }
-                    var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = OverRelations.ToArray() };
+
+                    List<ExportRelation> ExpR = new List<ExportRelation> { };
+                    for (int Cnt = 0; Cnt < OverRelations.Count(); Cnt++)
+                    {
+                        ExpR.Add(new ExportRelation
+                        {
+                            fromName = OverRelations[Cnt].fromName,
+                            toName = OverRelations[Cnt].toName,
+                            toArrow = OverRelations[Cnt].toArrow
+                        });
+                    }
+
+                    var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = ExpR.ToArray() };
                     string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
                     JsonSerializer.SerializeAsync(fs, Exp);
                 }
@@ -1918,12 +1949,11 @@ namespace CLI.Controllers
 
             for (int i = 0; i < OverRelations.Count; i++)
             {
-                MomentoSave[undoIndex].relations[i] = new SingleRelationsModel
-                {
-                    from = OverRelations[i].from,
-                    to = OverRelations[i].to,
-                    toArrow = OverRelations[i].toArrow
-                };
+                SingleRelationsModel relation = new SingleRelationsModel();
+                relation.to = OverRelations[i].to;
+                relation.from = OverRelations[i].from;
+                relation.toArrow = OverRelations[i].toArrow;
+                MomentoSave[undoIndex].relations[i] = relation;
             }
 
             undoCounter++;
@@ -2080,13 +2110,43 @@ namespace CLI.Controllers
             {
                 return;
             }
+            var OverRelCpy = OverRelations;
+            foreach(var item in OverRelCpy)
+            {
+                if (item.toArrow == "Aggregation")
+                {
+                    item.toArrow = "StretchedDiamond";
+                    item.fill = "#DAE4E4";
+                }
+                else if (item.toArrow == "Composition")
+                {
+                    item.toArrow = "StretchedDiamond";
+                    item.fill = "black";
+                }
+                else if (item.toArrow == "Inheritance")
+                {
+                    item.toArrow = "Triangle";
+                    item.fill = "#DAE4E4";
+                }
+                else if (item.toArrow == "Realization")
+                {
+                    item.toArrow = "Triangle";
+                    item.fill = "black";
+                }
+            }
 
-            var diagram = new DiagramModel { Name = input, UserID = GLOBALuserModel._id, screen = OverScreen.ToArray(), relations = OverRelations.ToArray() };
+
+            var diagram = new DiagramModel { Name = input, UserID = GLOBALuserModel._id, screen = OverScreen.ToArray(), relations = OverRelations.ToArray()};
             collection.InsertOne(diagram);
 
         }
         public static void load()
         {
+            undoIndex = 0;
+            undoCounter = 0;
+            OverScreen = new List<ScreenModel> { };
+            OverRelations = new List<SingleRelationsModel> { };
+
 
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
             var databaseName = "uml_db";

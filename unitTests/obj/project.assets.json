@@ -11194,19 +11194,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Jacob\\.nuget\\packages\\": {}
+    "C:\\Users\\bscha\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\unitTests\\unitTests.csproj",
+      "projectUniqueName": "C:\\Users\\bscha\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\unitTests\\unitTests.csproj",
       "projectName": "unitTests",
-      "projectPath": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\unitTests\\unitTests.csproj",
-      "packagesPath": "C:\\Users\\Jacob\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\unitTests\\obj\\",
+      "projectPath": "C:\\Users\\bscha\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\unitTests\\unitTests.csproj",
+      "packagesPath": "C:\\Users\\bscha\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\bscha\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\unitTests\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Jacob\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\bscha\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -11220,8 +11220,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\UML\\UML.csproj": {
-              "projectPath": "C:\\Users\\Jacob\\Documents\\GitHub\\2022fa-420-C-Sharks\\UML\\UML.csproj"
+            "C:\\Users\\bscha\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj": {
+              "projectPath": "C:\\Users\\bscha\\source\\repos\\mucsci-students\\2022fa-420-C-Sharks\\UML\\UML.csproj"
             }
           }
         }
@@ -11273,7 +11273,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.402\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }
