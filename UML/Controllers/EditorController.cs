@@ -72,14 +72,14 @@ namespace UML.Controllers
             var collection = db.GetCollection<DiagramModel>(collectionName);
             List<DiagramModel> diagrams = collection.Find(x => x.UserID == model.userid).ToList();
 
-            foreach (var item in diagrams)
+            /*foreach (var item in diagrams)
             {
                 if (item.Name == model.DiagramName)
                 {
                     TempData["Message"] = "Diagram name already used";
                     return View(model);
                 }
-            }
+            }*/
 
             int status = ConvertNsave(model);
             if (status > 0)
