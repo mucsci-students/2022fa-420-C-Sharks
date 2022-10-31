@@ -358,7 +358,7 @@ namespace CLI.Controllers
                 toArrow = relationType,
                 fill = relationFill,
             });
-            OverRelations.Add(new SingleRelationsModel { from = fromK, to = toK, toArrow = relationType, fill = relationFill });
+            OverRelations.Add(new SingleRelationsModel { from = fromK, to = toK, fromName = InputRF, toName = InputRT, toArrow = InputRR, fill = relationFill });
             addSave();
         }
         /// <summary>
@@ -767,7 +767,7 @@ namespace CLI.Controllers
             int Hold = 0;
             for (CNT = 0; CNT < OverRelations.Count; CNT++)
             {
-                if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
+                if ((OverRelations[CNT].fromName.Equals(InputF)) && (OverRelations[CNT].toName.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -796,7 +796,7 @@ namespace CLI.Controllers
                 }
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
-                    if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
+                    if ((OverRelations[CNT].fromName.Equals(InputF)) && (OverRelations[CNT].toName.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1447,10 +1447,10 @@ namespace CLI.Controllers
             string InputY = "";
             int CNT;
             int Hold = 0;
-            for (CNT = 0; CNT < nameStorage.Count; CNT++)
+            for (CNT = 0; CNT < OverRelations.Count; CNT++)
             {
                 //check to see if proper input
-                if ((nameStorage[CNT].from.Equals(InputF)) && (nameStorage[CNT].to.Equals(InputT)) && (nameStorage[CNT].toArrow.Equals(InputR)))
+                if ((OverRelations[CNT].fromName.Equals(InputF)) && (OverRelations[CNT].toName.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -1485,9 +1485,9 @@ namespace CLI.Controllers
                 {
                     return;
                 }
-                for (CNT = 0; CNT < nameStorage.Count; CNT++)
+                for (CNT = 0; CNT < OverRelations.Count; CNT++)
                 {
-                    if ((nameStorage[CNT].from.Equals(InputF)) && (nameStorage[CNT].to.Equals(InputT)) && (nameStorage[CNT].toArrow.Equals(InputR)))
+                    if ((OverRelations[CNT].fromName.Equals(InputF)) && (OverRelations[CNT].toName.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -2087,8 +2087,33 @@ namespace CLI.Controllers
             {
                 return;
             }
+            var OverRelCpy = OverRelations;
+            foreach(var item in OverRelCpy)
+            {
+                if (item.toArrow == "Aggregation")
+                {
+                    item.toArrow = "StretchedDiamond";
+                    item.fill = "#DAE4E4";
+                }
+                else if (item.toArrow == "Composition")
+                {
+                    item.toArrow = "StretchedDiamond";
+                    item.fill = "black";
+                }
+                else if (item.toArrow == "Inheritance")
+                {
+                    item.toArrow = "Triangle";
+                    item.fill = "#DAE4E4";
+                }
+                else if (item.toArrow == "Realization")
+                {
+                    item.toArrow = "Triangle";
+                    item.fill = "black";
+                }
+            }
 
-            var diagram = new DiagramModel { Name = input, UserID = GLOBALuserModel._id, screen = OverScreen.ToArray(), relations = OverRelations.ToArray() };
+
+            var diagram = new DiagramModel { Name = input, UserID = GLOBALuserModel._id, screen = OverScreen.ToArray(), relations = OverRelations.ToArray()};
             collection.InsertOne(diagram);
 
         }
