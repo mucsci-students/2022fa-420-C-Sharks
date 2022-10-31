@@ -3,5 +3,6 @@ ignore:
   - "UML/Program.cs" 
   - "UML/Views" 
   - "UML/Controllers" 
+  - "UML/Models/SingleRelationsModel.cs" #will test
 
 
