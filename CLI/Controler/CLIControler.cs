@@ -1527,7 +1527,18 @@ namespace CLI.Controllers
 
             }
             //trace trough each item in count add to the export model
-            var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = OverRelations.ToArray() };
+            List<ExportRelation> ExpR = new List<ExportRelation> { };
+            for (int Cnt = 0; Cnt < OverRelations.Count(); Cnt++)
+            {
+                ExpR.Add(new ExportRelation
+                {
+                    fromName = OverRelations[Cnt].fromName,
+                    toName = OverRelations[Cnt].toName,
+                    toArrow = OverRelations[Cnt].toArrow
+                });
+            }
+
+                var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = ExpR.ToArray() };
             string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
             Console.WriteLine(json);
         }
@@ -1704,7 +1715,7 @@ namespace CLI.Controllers
                 {
 
 
-                    List<ExportScreenModel> ExpSM = new List<ExportScreenModel>();
+                    List<ExportScreenModel> ExpSM = new List<ExportScreenModel> { };
                     for (int Cnt = 0; Cnt < OverScreen.Count(); Cnt++)
                     {
                         ExpSM.Add(new ExportScreenModel
@@ -1715,7 +1726,19 @@ namespace CLI.Controllers
                         });
 
                     }
-                    var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = OverRelations.ToArray() };
+
+                    List<ExportRelation> ExpR = new List<ExportRelation> { };
+                    for (int Cnt = 0; Cnt < OverRelations.Count(); Cnt++)
+                    {
+                        ExpR.Add(new ExportRelation
+                        {
+                            fromName = OverRelations[Cnt].fromName,
+                            toName = OverRelations[Cnt].toName,
+                            toArrow = OverRelations[Cnt].toArrow
+                        });
+                    }
+
+                    var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = ExpR.ToArray() };
                     string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
                     JsonSerializer.SerializeAsync(fs, Exp);
                 }
@@ -2119,6 +2142,11 @@ namespace CLI.Controllers
         }
         public static void load()
         {
+            undoIndex = 0;
+            undoCounter = 0;
+            OverScreen = new List<ScreenModel> { };
+            OverRelations = new List<SingleRelationsModel> { };
+
 
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
             var databaseName = "uml_db";
