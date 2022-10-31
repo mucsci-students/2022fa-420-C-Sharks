@@ -36,6 +36,7 @@ namespace CLI.Controllers
     {
         static List<ScreenModel> OverScreen = new List<ScreenModel> { };
         static List<SingleRelationsModel> OverRelations = new List<SingleRelationsModel> { };
+        static List<SingleRelationsModel> nameStorage = new List<SingleRelationsModel> { };
         DiagramModel LastUndone = new DiagramModel { };
         static List<DiagramModel> MomentoSave = new List<DiagramModel> { };
         static int undoCounter = 0;
@@ -350,6 +351,13 @@ namespace CLI.Controllers
             }
 
             Console.WriteLine("Relation added:");
+            nameStorage.Add(new SingleRelationsModel
+            {
+                from = InputRF,
+                to = InputRT,
+                toArrow = relationType,
+                fill = relationFill,
+            });
             OverRelations.Add(new SingleRelationsModel { from = fromK, to = toK, toArrow = relationType, fill = relationFill });
             addSave();
         }
@@ -1439,10 +1447,10 @@ namespace CLI.Controllers
             string InputY = "";
             int CNT;
             int Hold = 0;
-            for (CNT = 0; CNT < OverRelations.Count; CNT++)
+            for (CNT = 0; CNT < nameStorage.Count; CNT++)
             {
                 //check to see if proper input
-                if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
+                if ((nameStorage[CNT].from.Equals(InputF)) && (nameStorage[CNT].to.Equals(InputT)) && (nameStorage[CNT].toArrow.Equals(InputR)))
                 {
                     Err = true;
                     Hold = CNT;
@@ -1477,9 +1485,9 @@ namespace CLI.Controllers
                 {
                     return;
                 }
-                for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                for (CNT = 0; CNT < nameStorage.Count; CNT++)
                 {
-                    if ((OverRelations[CNT].from.Equals(InputF)) && (OverRelations[CNT].to.Equals(InputT)) && (OverRelations[CNT].toArrow.Equals(InputR)))
+                    if ((nameStorage[CNT].from.Equals(InputF)) && (nameStorage[CNT].to.Equals(InputT)) && (nameStorage[CNT].toArrow.Equals(InputR)))
                     {
                         Err = true;
                         Hold = CNT;
@@ -1918,12 +1926,11 @@ namespace CLI.Controllers
 
             for (int i = 0; i < OverRelations.Count; i++)
             {
-                MomentoSave[undoIndex].relations[i] = new SingleRelationsModel
-                {
-                    from = OverRelations[i].from,
-                    to = OverRelations[i].to,
-                    toArrow = OverRelations[i].toArrow
-                };
+                SingleRelationsModel relation = new SingleRelationsModel();
+                relation.to = OverRelations[i].to;
+                relation.from = OverRelations[i].from;
+                relation.toArrow = OverRelations[i].toArrow;
+                MomentoSave[undoIndex].relations[i] = relation;
             }
 
             undoCounter++;
