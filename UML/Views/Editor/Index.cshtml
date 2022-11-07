@@ -32,36 +32,34 @@ Start Toolbar code -->
         <ul class="navbar-nav mr-auto" id="toolbar">
             <!--End of collapse code-->
             <!--Begin Toolbar buttons-->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a>
+            <li class="nav-item"><span title="Home">
+                <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a></span>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a>
+            <li class="nav-item"><span title="Add Class">
+                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a></span>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="download()"><i class="fa fa-arrow-down"></i></a>
+            <li class="nav-item"><span title="Save Diagram">
+                    <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a>
+                </span>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a>
+            <li class="nav-item"><span title="Load Diagram">
+                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a></span>
             </li>
-            <!-- Edit function (pencil - not yet ready)
-            <li class="nav-item">
-                 <a class="nav-link" href="#" onclick="edit()"><i class="fa fa-pencil"></i></a>
+            <li class="nav-item"><span title="Clear Diagram">
+                <a class="nav-link" href="#" onclick="clearDiagram()"><i class="fa fa-trash"></i></a></span>
             </li>
-            -->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a>
-            </li>
-            <!-- Attribute functions (not yet ready)
-            <li class="nav-item">
-            <a class="nav-link" href="#" onclick="addAttribute()"><i class="fa fa-plus-circle"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="removeAttribute()"><i class="fa fa-times-circle"></i></a>
-            </li>
-                -->
-
         </ul>
+        <i class="fa fa"></i>
+            <ul class="navbar-nav mr-auto" id="LocalSaveLoadButtons">
+                <!-- Local export and import  -->
+                <li class="nav-item"><span title="Download Diagram">
+                    <a class="nav-link" href="#" onclick="download()"><i class="fa fa-download"></i></a></span>
+                </li>
+                <li class="nav-item"><span title="Upload Diagram">
+                    <input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
+                    <a class="nav-link" href="#" onclick="upload()"><i class="fa fa-upload"></i></a></span>
+                </li>
+            </ul>
     </div>
 </nav>
 <!--End of Toolbar buttons-->
@@ -76,9 +74,6 @@ Start Toolbar code -->
 
 <!--Save Text Area
 <textarea id="mySavedModel" style="width:100%;height:200px">{ "class": "go.GraphLinksModel",</textarea>-->
-
-<!--Choose file button-->
-<input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
 
 <!--<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>-->
 
@@ -459,7 +454,7 @@ Start Toolbar code -->
             )
         );
 
-    //add data here if you want nodes to be loaded on default
+    // add data here if you want nodes to be loaded on default
     // deserialize json
     myDiagram.model = go.Model.fromJson(JSON.parse(document.getElementById("mySavedModel").value));
     //myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
@@ -470,8 +465,7 @@ Start Toolbar code -->
     });
 
 
-
-    //Add new class
+    //Add new class onto diagram
     function addClass() {
         //initial prompt name
         let promptName = "Enter a Class Name...";
@@ -483,16 +477,10 @@ Start Toolbar code -->
         var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 200), Math.floor(Math.random() * 200)));
         //alert(loc);
         myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: true });
-
         classNames.push(String(promptName));
-
     }
 
-    function downloadFile() {
-        download();
-    }
-
-
+    //Saves current state of diagram
     function save() {
         let save = myDiagram.model.toJson();
         document.getElementById("mySavedModel").value = save;
@@ -501,31 +489,10 @@ Start Toolbar code -->
         updateClassNames();
     }
 
+    //Load state from given json data
     function load() {
         myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
     }
-
-    function helpMenuDropdown() {
-        var x = document.getElementById("helpMenu");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-    }
-    /* Attribute functions (not ready yet)
-    //Add new attribute
-    function addAttribute() {
-        let attribute = prompt("Please enter a new attribute:");
-        myDiagram.model.addNodeData({ list1: attribute });
-    }
-
-    //Remove attribute
-    function removeAttribute() {
-        let attribute = prompt("Please enter the attribute you want to remove:");
-        myDiagram.model.removeNodeData({ list1: attribute });
-    }
-    */
 
     //Iterates through nodes and adds their classNames data to an array
     function updateClassNames() {
@@ -542,7 +509,6 @@ Start Toolbar code -->
     function checkDuplicates(textblock, oldstr, newstr) {
         isDuplicate = classNames.includes(newstr);
         return !isDuplicate
-
     }
 
     //allows for save to be downloaded
@@ -556,6 +522,7 @@ Start Toolbar code -->
         document.body.removeChild(element);
     }
 
+    //Local export 
     function download() {
         let save = myDiagram.model.toJson();
         myDiagram.isModified = false;
@@ -593,7 +560,6 @@ Start Toolbar code -->
             let paramType = prompt("Please type " + methodParam + "'s type");
             methodParams.push({ name: methodParam, type: paramType });
         }
-
         return { methodName: methodName, return_type: returnType, methodParams: methodParams };
     }
 
