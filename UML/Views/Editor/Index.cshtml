@@ -15,7 +15,7 @@
     // uncomment type to hide text box
     @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /*type = "hidden",*/ id = "mySavedModel",style = "width:100%;height:100px" })
     <label for="projectName">Project name:</label>
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.DiagramName, new { style = "width:25%", placeholder = "Enter Project Name Here" })
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.DiagramName, new { style = "width:25%", placeholder = "Enter a Project Name..." })
     <input type="submit" value="saveToServer" />
 }
 <!-- Start project name field code
@@ -29,8 +29,16 @@ Start Toolbar code -->
         <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto" id="toolbar">
-            <!--End of collapse code-->
+        <!--End of collapse code-->
+
+        <!--Start Color Picker-->
+        <div id="colorPicker">
+            <label for="color">Color Picker:</label>
+            <input type="color" id="color" name="color" value="#ffffff">
+        </div>
+        <!--End Color Picker-->
+
+        <ul class="navbar-nav mr-auto" id="toolbar">           
             <!--Begin Toolbar buttons-->
             <li class="nav-item"><span title="Home">
                 <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a></span>
@@ -46,31 +54,29 @@ Start Toolbar code -->
                 <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a></span>
             </li>
             <li class="nav-item"><span title="Clear Diagram">
-                <a class="nav-link" href="#" onclick="clearDiagram()"><i class="fa fa-trash"></i></a></span>
+                <a class="nav-link" href="#" onclick="clear()"><i class="fa fa-eraser"></i></a></span>
             </li>
         </ul>
-        <i class="fa fa"></i>
-            <ul class="navbar-nav mr-auto" id="LocalSaveLoadButtons">
-                <!-- Local export and import  -->
+            <!-- Local export and import  -->
+            <ul class="navbar-nav mr-auto" id="local-buttons">   
                 <li class="nav-item"><span title="Download Diagram">
                     <a class="nav-link" href="#" onclick="download()"><i class="fa fa-download"></i></a></span>
                 </li>
                 <li class="nav-item"><span title="Upload Diagram">
-                    <input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
-                    <a class="nav-link" href="#" onclick="upload()"><i class="fa fa-upload"></i></a></span>
+                    <a class="nav-link" i class="fa fa-upload" input type="file" href="#" id="file-selector" onchange="openFromFile()" accept=".json" /></i>
+                </span>
                 </li>
             </ul>
     </div>
 </nav>
+
 <!--End of Toolbar buttons-->
-<!--Start Color Picker-->
-<div id="colorPicker">
-    <label for="color">Select a color:</label>
-    <input type="color" id="color" name="color" value="#ff0000">
-</div>
-<!--End Color Picker-->
+
 <!-- Start Interface code -->
-<div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>
+<div class="diagram-wrapper">
+    <div id="myDiagramDiv"></div>
+</div>
+
 
 <!--Save Text Area
 <textarea id="mySavedModel" style="width:100%;height:200px">{ "class": "go.GraphLinksModel",</textarea>-->
@@ -479,6 +485,18 @@ Start Toolbar code -->
         myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: true });
         classNames.push(String(promptName));
     }
+
+    //Clear diagram
+    function clear() {
+        const response = confirm("Are you sure you want to clear the diagram?");
+        if (response) {
+            myDiagram.model = new go.GraphLinksModel();
+            classNames = [];
+            fields = [];
+            methods = [];
+        }
+    }
+
 
     //Saves current state of diagram
     function save() {
