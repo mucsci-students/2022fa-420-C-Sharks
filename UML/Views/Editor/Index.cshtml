@@ -22,8 +22,8 @@
     <input type="submit" value="saveToServer" />
 
     // JSON text box - uncomment type to hide
-    <label for="jsonData" style = "padding:10px /* type = "hidden", */">JSON Data:</label>
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /* type = "hidden", */ id = "mySavedModel", style = "width:40%; height:50px font-size:8px; margin: 5px" })
+    <label for="jsonData" style = "padding-left:20px">JSON Data:</label>
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /* type = "hidden", */ id = "mySavedModel", style = "width:40%" })
     
 }
 
