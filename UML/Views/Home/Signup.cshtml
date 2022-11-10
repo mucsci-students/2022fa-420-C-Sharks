@@ -5,12 +5,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Signup</h1>
-
-<h4>UserModel</h4>
-<hr />
 <div class="row">
     <div class="col-md-4">
+        <h1>Sign up</h1>
+        <h7>Create an account with the C-Sharks UML Editor below.</h7>
+        <hr />
         <!-- to pass messages from controller to user-->
         @if (TempData["Message"] != null)
         {
@@ -23,25 +22,22 @@
                 <input type="hidden" asp-for="_id" class="form-control" />
             </div>
             <div class="form-group">
-                <label asp-for="Username" class="control-label"></label>
-                <input asp-for="Username" class="form-control " />
+                <input asp-for="Username" class="form-control" placeholder="Username" />
                 <span asp-validation-for="Username" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Password" class="control-label"></label>
-                <input type="password" asp-for="Password" class="form-control" />
+                <input type="password" asp-for="Password" class="form-control" placeholder="Password" />
                 <span asp-validation-for="Password" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
+        </br>
+        <a asp-action="Index">Back to Login</a>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to Login</a>
-</div>
 
 @section Scripts {
     @{

@@ -14,25 +14,30 @@ ViewData["Title"] = "Help";
     <div class="collapsible-container">
         <button type="button" class="collapsible">Starting a Project</button>
         <div class="content">
-            <p>
-                By default, a new project will be created when you open the editor. <br />
+            By default, a new project will be created when you open the editor. <br /><br />
                 <ul>
                     <li>
-                        <b>Set Project Name:</b> To change the name of the project, click on the project name in the top left corner of the editor.
+                        <b>Set Project Name:</b> To change the name of the project, click on the project name in the top left corner of the editor. 
+                        You must be logged in to save your project to the C-Sharks server.
                     </li>
-                </ul>
-                If your project does not have a set name, it can still be saved and loaded, but it will be saved as "My Project" along with a timestamp.
-                It is recommended to give your project a name before saving it, especially if you plan to make multiple diagrams using the editor.
-            </p>
+                    <li>
+                        <b>Undo/Redo:</b> Pressing Ctrl+Z will undo an action and Ctrl+Y will redo an action.
+                    </li>
+                    <li>
+                        <b>Window controls:</b> Click on a blank area and drag to navigate move across the window, and hold Ctrl while scrolling to 
+                        zoom in and out of your diagram. 
+                    </li>
+            </ul><br />
+                If your project does not have a set name, it can still be saved and loaded locally, but it will be saved as "My Project" along with a timestamp.
+                It is recommended that you create an account to give your project a name before saving it, especially if you plan to make multiple diagrams using the editor.
         </div>
     </div>
 
     <div class="collapsible-container">
         <button type="button" class="collapsible">Classes</button>
         <div class="content">
-            <p>
                 Classes are managed through blocks, which are resizable, draggable, and have dropdowns for their
-                attributes and methods. <br />
+            attributes and methods. <br /><br />
                 <ul>
                     <li>
                         <b>Add Class:</b> you can add a class to your diagram by clicking on the (+) button. By default, the
@@ -57,19 +62,18 @@ ViewData["Title"] = "Help";
                         NOTE: You cannot have duplicate class names, so you will be prompted to rename the class.
                     </li>
                     <li>
-                        <b>Change Class Color:</b> after choosing a color from the <i>Color Picker</i> on the left of the toolbar, right-click any class and choose "Change Color" to set that class to your chosen color.
+                        <b>Change Class Color:</b> after choosing a color from the <i>Color Picker</i> on the left of the toolbar, 
+                        right-click any class and choose "Change Color" to set that class to your chosen color.
                     </li>
                 </ul>
-            </p>
         </div>
     </div>
 
     <div class="collapsible-container">
         <button type="button" class="collapsible">Relationships</button>
         <div class="content">
-            <p>
                 Once you've created more than one class, you can apply relationships between them and modify their
-                properties. <br />
+            properties. <br /><br />
                 <ul>
                     <li>
                         <b>Create Relationship:</b> by dragging a line from the endpoint of one class to another, you can create
@@ -84,25 +88,22 @@ ViewData["Title"] = "Help";
                         Type". You can choose a type from one of the following: Aggregation, Composition, Inheritance, and Realization.
                     </li>
                 </ul>
-            </p>
         </div>
     </div>
 
     <div class="collapsible-container">
         <button type="button" class="collapsible">Saving and Loading Diagrams</button>
         <div class="content">
-            <p>
                 Once you've created a UML diagram, you can save and load it for later. This can be done locally as a
-                file, or through the C-Sharks database. <br />
-
+            file, or through the C-Sharks database. <br /><br />
                 <ul>
                     <li>
-                        <b>Save Diagram:</b> you can save your diagram by clicking on the Save button, designated with a
-                        check-mark icon (✓) in the editor toolbar. This will generate a .JSON schema in the text-box below the editor.
+                        <b>Save to JSON:</b> you can save your diagram by clicking on the Save button, designated with a square
+                    check-mark icon (☑) in the editor toolbar. This will generate a .JSON schema in the text-box above the editor.
                     </li>
                     <li>
-                        <b>Load Diagram:</b> you can load a diagram by copying the .JSON schema into the text-box below the
-                        editor and clicking on the Load button, designated with a folder icon (🗀) in the editor toolbar.
+                    <b>Load from JSON:</b> By clicking on on the Load button, designated with a folder icon (🗀) in the editor toolbar, 
+                    you can load a diagram based on the JSON data in the text box above the editor. 
                     </li>
                     <li>
                         <b>Local Export:</b> selecting the <i>Download</i> icon (⭳) from the right side of the toolbar will save your diagram to a local .JSON file.
@@ -110,8 +111,10 @@ ViewData["Title"] = "Help";
                     <li>
                         <b>Local Import:</b> selecting <i>Upload</i> icon (⤒) from the right side of the toolbar will save your diagram to a local .JSON file.
                     </li>
+                <li>
+                    <b>Saving an Image:</b> selecting the Image icon (🏞️) from the toolbar will save your current diagram as an image.
+                </li>
                 </ul>
-            </p>
         </div>
     </div>
     <!-- End collapsible help tabs -->

@@ -22,8 +22,8 @@
     <input type="submit" value="saveToServer" />
 
     // JSON text box - uncomment type to hide
-    <label for="jsonData" style = "padding:10px /* type = "hidden", */">JSON Data:</label>
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /* type = "hidden", */ id = "mySavedModel", style = "width:40%; height:50px font-size:8px; margin: 5px" })
+    <label for="jsonData" style = "padding-left:20px">JSON Data:</label>
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /* type = "hidden", */ id = "mySavedModel", style = "width:40%" })
     
 }
 
@@ -39,20 +39,21 @@
 
         <!--Begin Toolbar buttons-->
         <ul class="navbar-nav mr-auto" id="toolbar">           
-            <li class="nav-item"><span title="Home">
-                <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a></span>
-            </li>
             <li class="nav-item"><span title="Add Class">
-                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a></span>
+                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus-square""></i></a></span>
             </li>
-            <li class="nav-item"><span title="Quicksave Diagram">
-                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a></span>
+            <li class="nav-item"><span title="Save to JSON">
+                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check-square"></i></a></span>
             </li>
-            <li class="nav-item"><span title="Load Diagram">
+            <li class="nav-item"><span title="Load from JSON">
                 <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a></span>
             </li>
             <li class="nav-item"><span title="Clear Diagram">
                 <a class="nav-link" href="#" onclick="clearDiagram()"><i class="fa fa-eraser"></i></a></span>
+            </li>
+             <li class="nav-item"><span title="Save Image">
+                <a class="nav-link" href="#" onclick="makeBlob()"><i class="fa fa-image"></i></a>
+            </span>
             </li>
         </ul>
 
@@ -65,6 +66,7 @@
                 <a class="nav-link" href="#" onclick="openFromFile()" input type="file" accept=".json"><i class="fa fa-upload"></i></a>
             </span>
             </li>
+
         </ul>
 </nav>
 <!--End of Toolbar buttons-->
