@@ -11,25 +11,24 @@
 @model EditorViewModel
 @using (Html.BeginForm())
 {
+
     @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { type = "hidden" })
-    // uncomment type to hide text box
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /*type = "hidden",*/ id = "mySavedModel",style = "width:100%;height:100px" })
-    <label for="projectName">Project name:</label>
+
+    //Project Name box
+    <label for="projectName" style = "padding:5px; margin-bottom: 10px">Project name:</label>
     @Html.TextBoxFor(EditorViewModel => EditorViewModel.DiagramName, new { style = "width:25%", placeholder = "Enter a Project Name..." })
+
+    //Save to Server button
     <input type="submit" value="saveToServer" />
+
+    // JSON text box - uncomment type to hide
+    <label for="jsonData" style = "padding:10px /* type = "hidden", */">JSON Data:</label>
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /* type = "hidden", */ id = "mySavedModel", style = "width:40%; height:50px font-size:8px; margin: 5px" })
+    
 }
-<!-- Start project name field code
-<label for="projectName">Project name:</label>
-<input type="text" id="projectName" name="projectName" placeholder="Enter Project Name Here">
-Start Toolbar code -->
+
+<!-- Start Toolbar code -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="toolbar">
-    <!--Toolbar collapse code (when the window is small, toolbar turns into button) -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <!--End of collapse code-->
 
         <!--Start Color Picker-->
         <div id="colorPicker">
@@ -38,38 +37,36 @@ Start Toolbar code -->
         </div>
         <!--End Color Picker-->
 
+        <!--Begin Toolbar buttons-->
         <ul class="navbar-nav mr-auto" id="toolbar">           
-            <!--Begin Toolbar buttons-->
             <li class="nav-item"><span title="Home">
                 <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a></span>
             </li>
             <li class="nav-item"><span title="Add Class">
                 <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a></span>
             </li>
-            <li class="nav-item"><span title="Save Diagram">
-                    <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a>
-                </span>
+            <li class="nav-item"><span title="Quicksave Diagram">
+                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a></span>
             </li>
             <li class="nav-item"><span title="Load Diagram">
                 <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a></span>
             </li>
             <li class="nav-item"><span title="Clear Diagram">
-                <a class="nav-link" href="#" onclick="clear()"><i class="fa fa-eraser"></i></a></span>
+                <a class="nav-link" href="#" onclick="clearDiagram()"><i class="fa fa-eraser"></i></a></span>
             </li>
         </ul>
-            <!-- Local export and import  -->
-            <ul class="navbar-nav mr-auto" id="local-buttons">   
-                <li class="nav-item"><span title="Download Diagram">
-                    <a class="nav-link" href="#" onclick="download()"><i class="fa fa-download"></i></a></span>
-                </li>
-                <li class="nav-item"><span title="Upload Diagram">
-                    <a class="nav-link" i class="fa fa-upload" input type="file" href="#" id="file-selector" onchange="openFromFile()" accept=".json" /></i>
-                </span>
-                </li>
-            </ul>
-    </div>
-</nav>
 
+        <!-- Local export and import  -->
+        <ul class="navbar-nav mr-auto" id="local-buttons">   
+            <li class="nav-item"><span title="Download Diagram">
+                <a class="nav-link" href="#" onclick="download()"><i class="fa fa-download"></i></a></span>
+            </li>
+            <li class="nav-item"><span title="Upload Diagram">
+                <a class="nav-link" href="#" onclick="openFromFile()" input type="file" accept=".json"><i class="fa fa-upload"></i></a>
+            </span>
+            </li>
+        </ul>
+</nav>
 <!--End of Toolbar buttons-->
 
 <!-- Start Interface code -->
@@ -313,7 +310,6 @@ Start Toolbar code -->
     myDiagram.nodeTemplate =
         $(go.Node, "Auto",
             {
-
                 fromSpot: go.Spot.AllSides,
                 toSpot: go.Spot.AllSides
             },
@@ -487,7 +483,7 @@ Start Toolbar code -->
     }
 
     //Clear diagram
-    function clear() {
+    function clearDiagram() {
         const response = confirm("Are you sure you want to clear the diagram?");
         if (response) {
             myDiagram.model = new go.GraphLinksModel();
