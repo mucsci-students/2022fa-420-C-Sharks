@@ -60,10 +60,10 @@
         <!-- Local export and import  -->
         <ul class="navbar-nav mr-auto" id="local-buttons">   
             <li class="nav-item"><span title="Download Diagram">
-                <a class="nav-link" href="#" onclick="download()"><i class="fa fa-download"></i></a></span>
+                <a class="nav-link" href="#" onclick="downloadFile()"><i class="fa fa-download"></i></a></span>
             </li>
             <li class="nav-item"><span title="Upload Diagram">
-                <a class="nav-link" href="#" onclick="openFromFile()" input type="file" accept=".json"><i class="fa fa-upload"></i></a>
+                <a class="nav-link" href="#" onclick="uploadFile()" input type="file" accept=".json"><i class="fa fa-upload"></i></a>
             </span>
             </li>
 
@@ -85,6 +85,10 @@
 <script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
 
 <script>
+    //warning to save before leaving
+    window.onbeforeunload = function unload(e) {
+        return "";
+    };
 
     //keeps track of class names
     var classNames = new Array();
@@ -538,11 +542,19 @@
         document.body.removeChild(element);
     }
 
+    function downloadFile(){
+        download();
+    }
+
     //Local export 
     function download() {
         let save = myDiagram.model.toJson();
         myDiagram.isModified = false;
         createFile("save.json", save);
+    }
+
+    function uploadFile(){
+        openFromFile();
     }
 
     //grabs the first file uploaded to the 'file' html element and once succesfully uploaded, the callback function onload is invoked
