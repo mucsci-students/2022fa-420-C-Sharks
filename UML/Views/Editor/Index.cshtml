@@ -33,16 +33,16 @@ Start Toolbar code -->
             <!--End of collapse code-->
             <!--Begin Toolbar buttons-->
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a>
+                <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i>Home</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a>
+                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i>Add Class</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="download()"><i class="fa fa-arrow-down"></i></a>
+                <a class="nav-link" href="#" onclick="download()"><i class="fa fa-arrow-down"></i>Download</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a>
+                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i>Save to File</a>
             </li>
             <!-- Edit function (pencil - not yet ready)
             <li class="nav-item">
@@ -50,7 +50,7 @@ Start Toolbar code -->
             </li>
             -->
             <li class="nav-item">
-                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a>
+                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i>Open</a>
             </li>
             <!-- Attribute functions (not yet ready)
             <li class="nav-item">
@@ -70,6 +70,7 @@ Start Toolbar code -->
     <label for="color">Select a color:</label>
     <input type="color" id="color" name="color" value="#ff0000">
 </div>
+
 <!--End Color Picker-->
 <!-- Start Interface code -->
 <div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>
@@ -78,8 +79,12 @@ Start Toolbar code -->
 <textarea id="mySavedModel" style="width:100%;height:200px">{ "class": "go.GraphLinksModel",</textarea>-->
 
 <!--Choose file button-->
-<input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
 
+<div class="navbar navbar-expand-lg navbar-dark bg-dark"  id="saveImage" align="left">
+    <input type="file" class="label" id="file-selector" onchange="openFromFile()" accept=".json">
+    <label class="label" for="downloadImage">Save Diagram as Image:</label>
+    <a class="label" href="#" onclick="makeBlob()"><i class="fa fa-image"></i> Download</a>
+</div>
 <!--<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>-->
 
 <script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
@@ -491,7 +496,35 @@ Start Toolbar code -->
     function downloadFile() {
         download();
     }
+    
+function myCallback(blob) {
+      var url = window.URL.createObjectURL(blob);
+      var currentTime = new Date();
+        var filename = ("Diagram " + currentTime.toDateString() + "_" + currentTime.getSeconds() + "_" + currentTime.getMilliseconds() + ".png").replace(/\s+/g, '');
 
+      var a = document.createElement("a");
+      a.style = "display: none";
+      a.href = url;
+      a.download = filename;
+
+      // IE 11
+      if (window.navigator.msSaveBlob !== undefined) {
+        window.navigator.msSaveBlob(blob, filename);
+        return;
+      }
+
+      document.body.appendChild(a);
+      requestAnimationFrame(() => {
+        a.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
+      });
+    }
+
+    function makeBlob() {
+      var blob = myDiagram.makeImageData({ background: "white", returnType: "blob", callback: myCallback });
+    } 
+    
 
     function save() {
         let save = myDiagram.model.toJson();
