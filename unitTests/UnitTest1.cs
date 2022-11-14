@@ -45,8 +45,10 @@ namespace unitTests
         public void testErrorViewModel()
         {
             //View Model
-            ErrorViewModel ervm = new UML.Models.ErrorViewModel() { RequestId = "id" };
+            ErrorViewModel ervm = new ErrorViewModel() { RequestId = "id"};
+
             Assert.AreEqual(ervm.RequestId, "id");
+            Assert.AreNotEqual(ervm.ShowRequestId, null);
         }
 
         [TestMethod]
