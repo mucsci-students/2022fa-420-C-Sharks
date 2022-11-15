@@ -49,7 +49,8 @@
                 <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a></span>
             </li>
             <li class="nav-item"><span title="Clear Diagram">
-                <a class="nav-link" href="#" onclick="clearDiagram()"><i class="fa fa-eraser"></i></a></span>
+                <a class="nav-link" href="#" onclick="clearDiagram()"><i class="fa fa-trash-o"></i></a>
+            </span>
             </li>
              <li class="nav-item"><span title="Save Image">
                 <a class="nav-link" href="#" onclick="makeBlob()"><i class="fa fa-image"></i></a>
@@ -63,10 +64,11 @@
                 <a class="nav-link" href="#" onclick="downloadFile()"><i class="fa fa-download"></i></a></span>
             </li>
             <li class="nav-item"><span title="Upload Diagram">
-                <a class="nav-link" href="#" onclick="uploadFile()" input type="file" accept=".json"><i class="fa fa-upload"></i></a>
+                <a class="nav-link" href="#">
+                <input type="file" class="label" id="file-selector" onchange="openFromFile()" accept=".json" style="max-width: 80%">
+                <label for="file-selector"><i class="fa fa-upload"></i></label></a>
             </span>
             </li>
-
         </ul>
 </nav>
 <!--End of Toolbar buttons-->
@@ -551,10 +553,6 @@
         let save = myDiagram.model.toJson();
         myDiagram.isModified = false;
         createFile("save.json", save);
-    }
-
-    function uploadFile(){
-        openFromFile();
     }
 
     //grabs the first file uploaded to the 'file' html element and once succesfully uploaded, the callback function onload is invoked

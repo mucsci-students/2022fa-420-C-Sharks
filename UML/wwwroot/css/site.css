@@ -55,6 +55,10 @@ ul {
 
 }
 
+input[type="file"] {
+	display: none;
+} 
+
 #myDiagramDiv {
 	margin-top: 10px;
 	width: 100%;
