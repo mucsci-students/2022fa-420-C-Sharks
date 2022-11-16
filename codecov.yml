@@ -5,4 +5,5 @@ ignore:
   - "UML/Controllers" 
   - "UML/Models/SingleRelationsModel.cs" #will test
 
-
+codecov: 
+ token: f579a7a9-0a13-40be-a60d-475806b7482f
