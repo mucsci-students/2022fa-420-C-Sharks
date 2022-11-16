@@ -1,0 +1,67 @@
+{
+  "format": 1,
+  "restore": {
+    "/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/CLI/build/Build.csproj": {}
+  },
+  "projects": {
+    "/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/CLI/build/Build.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/CLI/build/Build.csproj",
+        "projectName": "Build",
+        "projectPath": "/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/CLI/build/Build.csproj",
+        "packagesPath": "/home/alfather/.nuget/packages/",
+        "outputPath": "/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/CLI/build/obj/",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "/home/alfather/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "dependencies": {
+            "Cake.Frosting": {
+              "target": "Package",
+              "version": "[3.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.403/RuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}
