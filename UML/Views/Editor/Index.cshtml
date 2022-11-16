@@ -11,85 +11,99 @@
 @model EditorViewModel
 @using (Html.BeginForm())
 {
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { type = "hidden" })
-    // uncomment type to hide text box
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /*type = "hidden",*/ id = "mySavedModel",style = "width:100%;height:100px" })
-    <label for="projectName">Project name:</label>
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.DiagramName, new { style = "width:25%", placeholder = "Enter Project Name Here" })
-    <input type="submit" value="saveToServer" />
-}
-<!-- Start project name field code
-<label for="projectName">Project name:</label>
-<input type="text" id="projectName" name="projectName" placeholder="Enter Project Name Here">
-Start Toolbar code -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="toolbar">
-    <!--Toolbar collapse code (when the window is small, toolbar turns into button) -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto" id="toolbar">
-            <!--End of collapse code-->
-            <!--Begin Toolbar buttons-->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i>Home</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i>Add Class</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="download()"><i class="fa fa-arrow-down"></i>Download</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i>Save to File</a>
-            </li>
-            <!-- Edit function (pencil - not yet ready)
-            <li class="nav-item">
-                 <a class="nav-link" href="#" onclick="edit()"><i class="fa fa-pencil"></i></a>
-            </li>
-            -->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i>Open</a>
-            </li>
-            <!-- Attribute functions (not yet ready)
-            <li class="nav-item">
-            <a class="nav-link" href="#" onclick="addAttribute()"><i class="fa fa-plus-circle"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="removeAttribute()"><i class="fa fa-times-circle"></i></a>
-            </li>
-                -->
 
-        </ul>
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { type = "hidden" })
+
+    //Project Name box
+    <label for="projectName" style="padding:5px; margin-bottom: 10px">Project name:</label>
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.DiagramName, new { style = "width:25%", placeholder = "Enter a Project Name..." })
+
+    //Save to Server button
+    <input type="submit" value="saveToServer" />
+
+    // JSON text box - uncomment type to hide
+    <label for="jsonData" style="padding-left:20px">JSON Data:</label>
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /* type = "hidden", */ id = "mySavedModel", style = "width:40%" })
+
+}
+
+<!-- Start Toolbar code -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="toolbar">
+
+    <!--Start Color Picker-->
+    <div id="colorPicker">
+        <label for="color">Color Picker:</label>
+        <input type="color" id="color" name="color" value="#ffffff">
     </div>
+    <!--End Color Picker-->
+    <div id="selector">
+        <input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
+    </div>
+    <!--Begin Toolbar buttons-->
+    <ul class="navbar-nav mr-auto" id="toolbar">
+        <li class="nav-item">
+            <span title="Add Class">
+                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus-square" "></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Save to JSON">
+                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check-square"></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Load from JSON">
+                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Clear Diagram">
+                <a class="nav-link" href="#" onclick="clearDiagram()"><i class="fa fa-trash-o"></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Save Image">
+                <a class="nav-link" href="#" onclick="makeBlob()"><i class="fa fa-image"></i></a>
+            </span>
+        </li>
+    </ul>
+
+    <!-- Local export and import  -->
+    <ul class="navbar-nav mr-auto" id="local-buttons">
+        <li class="nav-item">
+            <span title="Download Diagram">
+                <a class="nav-link" href="#" onclick="downloadFile()"><i class="fa fa-download"></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Upload Diagram">
+                <a class="nav-link" href="#">
+                    <label for="file-selector"><i class="fa fa-upload"></i></label>
+                </a>
+            </span>
+        </li>
+    </ul>
 </nav>
 <!--End of Toolbar buttons-->
-<!--Start Color Picker-->
-<div id="colorPicker">
-    <label for="color">Select a color:</label>
-    <input type="color" id="color" name="color" value="#ff0000">
+<!-- Start Interface code -->
+<div class="diagram-wrapper">
+    <div id="myDiagramDiv"></div>
 </div>
 
-<!--End Color Picker-->
-<!-- Start Interface code -->
-<div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>
+
 
 <!--Save Text Area
 <textarea id="mySavedModel" style="width:100%;height:200px">{ "class": "go.GraphLinksModel",</textarea>-->
-
-<!--Choose file button-->
-
-<div class="navbar navbar-expand-lg navbar-dark bg-dark"  id="saveImage" align="left">
-    <input type="file" class="label" id="file-selector" onchange="openFromFile()" accept=".json">
-    <label class="label" for="downloadImage">Save Diagram as Image:</label>
-    <a class="label" href="#" onclick="makeBlob()"><i class="fa fa-image"></i> Download</a>
-</div>
 <!--<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>-->
 
 <script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
 
 <script>
+    //warning to save before leaving
+    window.onbeforeunload = function unload(e) {
+        return "";
+    };
 
     //keeps track of class names
     var classNames = new Array();
@@ -317,7 +331,6 @@ Start Toolbar code -->
     myDiagram.nodeTemplate =
         $(go.Node, "Auto",
             {
-
                 fromSpot: go.Spot.AllSides,
                 toSpot: go.Spot.AllSides
             },
@@ -464,7 +477,7 @@ Start Toolbar code -->
             )
         );
 
-    //add data here if you want nodes to be loaded on default
+    // add data here if you want nodes to be loaded on default
     // deserialize json
     myDiagram.model = go.Model.fromJson(JSON.parse(document.getElementById("mySavedModel").value));
     //myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
@@ -475,8 +488,7 @@ Start Toolbar code -->
     });
 
 
-
-    //Add new class
+    //Add new class onto diagram
     function addClass() {
         //initial prompt name
         let promptName = "Enter a Class Name...";
@@ -488,44 +500,22 @@ Start Toolbar code -->
         var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 200), Math.floor(Math.random() * 200)));
         //alert(loc);
         myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: true });
-
         classNames.push(String(promptName));
-
     }
 
-    function downloadFile() {
-        download();
-    }
-    
-function myCallback(blob) {
-      var url = window.URL.createObjectURL(blob);
-      var currentTime = new Date();
-        var filename = ("Diagram " + currentTime.toDateString() + "_" + currentTime.getSeconds() + "_" + currentTime.getMilliseconds() + ".png").replace(/\s+/g, '');
-
-      var a = document.createElement("a");
-      a.style = "display: none";
-      a.href = url;
-      a.download = filename;
-
-      // IE 11
-      if (window.navigator.msSaveBlob !== undefined) {
-        window.navigator.msSaveBlob(blob, filename);
-        return;
-      }
-
-      document.body.appendChild(a);
-      requestAnimationFrame(() => {
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      });
+    //Clear diagram
+    function clearDiagram() {
+        const response = confirm("Are you sure you want to clear the diagram?");
+        if (response) {
+            myDiagram.model = new go.GraphLinksModel();
+            classNames = [];
+            fields = [];
+            methods = [];
+        }
     }
 
-    function makeBlob() {
-      var blob = myDiagram.makeImageData({ background: "white", returnType: "blob", callback: myCallback });
-    } 
-    
 
+    //Saves current state of diagram
     function save() {
         let save = myDiagram.model.toJson();
         document.getElementById("mySavedModel").value = save;
@@ -534,31 +524,14 @@ function myCallback(blob) {
         updateClassNames();
     }
 
+    //Load state from given json data
     function load() {
         myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+        myDiagram.startTransaction();
+        myDiagram.updateAllRelationshipsFromData();
+        myDiagram.updateAllTargetBindings();
+        myDiagram.commitTransaction("update");
     }
-
-    function helpMenuDropdown() {
-        var x = document.getElementById("helpMenu");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
-    }
-    /* Attribute functions (not ready yet)
-    //Add new attribute
-    function addAttribute() {
-        let attribute = prompt("Please enter a new attribute:");
-        myDiagram.model.addNodeData({ list1: attribute });
-    }
-
-    //Remove attribute
-    function removeAttribute() {
-        let attribute = prompt("Please enter the attribute you want to remove:");
-        myDiagram.model.removeNodeData({ list1: attribute });
-    }
-    */
 
     //Iterates through nodes and adds their classNames data to an array
     function updateClassNames() {
@@ -575,7 +548,6 @@ function myCallback(blob) {
     function checkDuplicates(textblock, oldstr, newstr) {
         isDuplicate = classNames.includes(newstr);
         return !isDuplicate
-
     }
 
     //allows for save to be downloaded
@@ -589,6 +561,11 @@ function myCallback(blob) {
         document.body.removeChild(element);
     }
 
+    function downloadFile() {
+        download();
+    }
+
+    //Local export
     function download() {
         let save = myDiagram.model.toJson();
         myDiagram.isModified = false;
@@ -626,8 +603,33 @@ function myCallback(blob) {
             let paramType = prompt("Please type " + methodParam + "'s type");
             methodParams.push({ name: methodParam, type: paramType });
         }
-
         return { methodName: methodName, return_type: returnType, methodParams: methodParams };
     }
+    function myCallback(blob) {
+        var url = window.URL.createObjectURL(blob);
+        var currentTime = new Date();
+        var filename = ("Diagram " + currentTime.toDateString() + "_" + currentTime.getSeconds() + "_" + currentTime.getMilliseconds() + ".png").replace(/\s+/g, '');
 
+        var a = document.createElement("a");
+        a.style = "display: none";
+        a.href = url;
+        a.download = filename;
+
+        // IE 11
+        if (window.navigator.msSaveBlob !== undefined) {
+            window.navigator.msSaveBlob(blob, filename);
+            return;
+        }
+
+        document.body.appendChild(a);
+        requestAnimationFrame(() => {
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        });
+    }
+
+    function makeBlob() {
+        var blob = myDiagram.makeImageData({ background: "white", returnType: "blob", callback: myCallback });
+    }
 </script>
