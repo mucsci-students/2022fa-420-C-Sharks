@@ -199,7 +199,7 @@ namespace CLI.Controllers
 
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Add a new empty class of a given name to the model
         /// </summary>
         public static void addCLSS()
         {
@@ -246,7 +246,7 @@ namespace CLI.Controllers
             UpdateClassList();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// add a relation between one or two existing classes
         /// </summary>
         public static void addRel()
         {
@@ -457,7 +457,7 @@ namespace CLI.Controllers
             addSave();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// add a field to an existing class
         /// </summary>
         public static void addfield()
         {
@@ -599,7 +599,7 @@ namespace CLI.Controllers
             }
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Add a new method to an existing class
         /// </summary>
         public static void addmeth()
         {
@@ -764,7 +764,7 @@ namespace CLI.Controllers
             }
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Remove an existing class in its entirety
         /// </summary>
         public static void remClass()
         {
@@ -846,7 +846,7 @@ namespace CLI.Controllers
             UpdateClassList();
         }
         ///<summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Remove a specified field from an existing class
         /// </summary>
         public static void remField()
         {
@@ -1010,7 +1010,7 @@ namespace CLI.Controllers
             addSave();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Remove an exisitng relation that exists of a given type between to given classes
         /// </summary>
         public static void remRel()
         {
@@ -1179,7 +1179,7 @@ namespace CLI.Controllers
             addSave();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Remove a specified method from an existing class
         /// </summary>
         public static void remMeth()
         {
@@ -1342,7 +1342,7 @@ namespace CLI.Controllers
             addSave();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Modify an existing class to have a new name
         /// </summary>
         public static void Modclass()
         {
@@ -2307,6 +2307,7 @@ namespace CLI.Controllers
 
 
         //Updates list of possible names for autocomplete classes from those currently in the model
+        //probably many better ways to do this
         public static void UpdateClassList()
         {
             ClassList.Clear();
@@ -2315,7 +2316,7 @@ namespace CLI.Controllers
                 //for every object in the screen
                 //write its name
                 ClassList.Add(OverScreen[Cnt].className);
-                Console.WriteLine(ClassList[Cnt]);
+                //Console.WriteLine(ClassList[Cnt]);
             }
         }
 
@@ -2430,7 +2431,7 @@ namespace CLI.Controllers
          * Local Disk (C:)
          *     UML-Saves
          *         C-Sharks-Editor
-         * 
+         *  Never got ben to do this testing on MAC (my fault) L.E.
          * 
          */
         public static void exportJson()
@@ -2517,6 +2518,7 @@ namespace CLI.Controllers
          *      UML-Saves
          *          C-Sharks-Editor
          * 
+         * never got ben to do testing of this method on mac, (my fault) L.E.
          */
         public static void importJson()
         {
@@ -2627,6 +2629,9 @@ namespace CLI.Controllers
             }
         }
 
+        /// <summary>
+        /// adds items stored in the model to a new object which is added to the list of previous states
+        /// </summary>
         public static void addSave()
         {
 
@@ -2722,6 +2727,9 @@ namespace CLI.Controllers
             //Console.WriteLine("{0} Index", undoIndex);
         }
 
+        /// <summary>
+        /// loads older state of the model, utilizes a global counter for undo-able states, a list of previous states, and a counter in this list of states
+        /// </summary>
         public static void undo()
         {
 
@@ -2763,6 +2771,11 @@ namespace CLI.Controllers
         }
 
 
+        /// <summary>
+        /// loads more recent change if possible to do so,
+        /// typically only possible after at least one undo.
+        /// if a change is made after an undo, a redo is no longer possible
+        /// </summary>
         static void redo()
         {
             if (undoIndex == undoCounter)
@@ -2858,6 +2871,10 @@ namespace CLI.Controllers
             }
 
         }
+
+        /// <summary>
+        /// saves the local model to the mongoDB
+        /// </summary>
         public static void save()
         {
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
@@ -2901,6 +2918,10 @@ namespace CLI.Controllers
             collection.InsertOne(diagram);
 
         }
+
+        /// <summary>
+        /// load pulls saves from the mongo server with the same username and allows the user to choose the model to load
+        /// </summary>
         public static void load()
         {
             undoIndex = 0;
