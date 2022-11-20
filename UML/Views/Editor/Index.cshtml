@@ -526,7 +526,8 @@
 
     //Load state from given json data
     function load() {
-        myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
+
+        myDiagram.model = go.Model.fromJson(jsonAdapterFrom(JSON.parse(document.getElementById("mySavedModel").value)));
         myDiagram.startTransaction();
         myDiagram.updateAllRelationshipsFromData();
         myDiagram.updateAllTargetBindings();
@@ -567,7 +568,7 @@
 
     //Local export
     function download() {
-        let save = myDiagram.model.toJson();
+        let save = JSON.stringify(jsonAdapterTo(JSON.parse(myDiagram.model.toJson())));
         myDiagram.isModified = false;
         createFile("save.json", save);
     }
@@ -632,4 +633,149 @@
     function makeBlob() {
         var blob = myDiagram.makeImageData({ background: "white", returnType: "blob", callback: myCallback });
     }
+    function renameKey(obj, oldKey, newKey) {
+        obj[newKey] = obj[oldKey];
+        delete obj[oldKey];
+    }
+    //converts universal data to the gojs format
+    function jsonAdapterFrom(data) {
+        let gojsData = {
+            class: "GraphLinksModel",
+            nodeDataArray: [],
+            linkDataArray: [],
+        };
+
+        for (let i = 0; i < data.classes.length; i++) {
+            gojsData.nodeDataArray[i] = {
+                color: "white",
+                className: data.classes[i].name,
+                fields: [],
+                methodBinding: [],
+            };
+
+            for (let field = 0; field < data.classes[i].fields.length; field++) {
+                gojsData.nodeDataArray[i].fields.push(data.classes[i].fields[field]);
+                renameKey(gojsData.nodeDataArray[i].fields[field], "name", "fieldName");
+                renameKey(gojsData.nodeDataArray[i].fields[field], "type", "fieldType");
+            }
+            for (let method = 0; method < data.classes[i].methods.length; method++) {
+                gojsData.nodeDataArray[i].methodBinding.push(
+                    data.classes[i].methods[method]
+                );
+                renameKey(
+                    gojsData.nodeDataArray[i].methodBinding[method],
+                    "name",
+                    "methodName"
+                );
+                renameKey(
+                    gojsData.nodeDataArray[i].methodBinding[method],
+                    "params",
+                    "methodParams"
+                );
+            }
+        }
+        let uniqueCounter = -1;
+        let uniqueArray = {};
+        let previousChecked = [];
+        let relationDict = {
+            aggregation: ["StretchedDiamond", "#DAE4E4"],
+            composition: ["StretchedDiamond", "Black"],
+            inheritance: ["Triangle", "#DAE4E4"],
+            realization: ["Triangle", "Black"],
+        };
+        for (let link = 0; link < data.relationships.length; link++) {
+            gojsData.linkDataArray.push(data.relationships[link]);
+            renameKey(gojsData.linkDataArray[link], "source", "from");
+            renameKey(gojsData.linkDataArray[link], "destination", "to");
+            renameKey(gojsData.linkDataArray[link], "type", "toArrow");
+
+            let relationType = data.relationships[link].toArrow;
+            gojsData.linkDataArray[link]["fill"] = relationDict[relationType][1];
+            gojsData.linkDataArray[link].toArrow = relationDict[relationType][0];
+
+            let keyFrom = gojsData.linkDataArray[link].from;
+            let keyTo = gojsData.linkDataArray[link].to;
+
+            if (previousChecked.indexOf(keyFrom) === -1) {
+                previousChecked.push(keyFrom);
+                uniqueArray[keyFrom] = uniqueCounter--;
+            }
+
+            if (previousChecked.indexOf(keyTo) === -1) {
+                previousChecked.push(keyTo);
+                uniqueArray[keyTo] = uniqueCounter--;
+            }
+            gojsData.linkDataArray[link].from = uniqueArray[keyFrom];
+            gojsData.linkDataArray[link].to = uniqueArray[keyTo];
+        }
+
+        return gojsData;
+    }
+
+    //converts gojs data to universal format
+    function jsonAdapterTo(gojsData) {
+        let data = {
+            classes: [],
+            relationships: [],
+        };
+        for (let i = 0; i < gojsData.nodeDataArray.length; i++) {
+            data.classes[i] = {
+                name: gojsData.nodeDataArray[i].className,
+                fields: [],
+                methods: [],
+            };
+
+            for (
+                let field = 0;
+                field < gojsData.nodeDataArray[i].fields.length;
+                field++
+            ) {
+                data.classes[i].fields.push(gojsData.nodeDataArray[i].fields[field]);
+                renameKey(data.classes[i].fields[field], "fieldName", "name");
+                renameKey(data.classes[i].fields[field], "fieldType", "type");
+            }
+            for (
+                let method = 0;
+                method < gojsData.nodeDataArray[i].methodBinding.length;
+                method++
+            ) {
+                data.classes[i].methods.push(
+                    gojsData.nodeDataArray[i].methodBinding[method]
+                );
+                renameKey(data.classes[i].methods[method], "methodName", "name");
+                renameKey(data.classes[i].methods[method], "methodParams", "params");
+            }
+        }
+        let previousChecked = [];
+        let relationDict = {
+            "StretchedDiamond": { "#DAE4E4": "aggregation", "Black": "composition" },
+            "Triangle": { "#DAE4E4": "inheritance", "Black": "realization" }
+        };
+        let relationNameDict = {};
+        for (var it = myDiagram.nodes; it.next();) {
+            var n = it.value;  // n is now a Node or a Group
+            relationNameDict[n.data.key] = n.data.className;
+        }
+
+
+        for (let link = 0; link < gojsData.linkDataArray.length; link++) {
+            data.relationships.push(gojsData.linkDataArray[link]);
+            renameKey(data.relationships[link], "from", "source");
+            renameKey(data.relationships[link], "to", "destination");
+            renameKey(data.relationships[link], "toArrow", "type");
+
+            let arrow = gojsData.linkDataArray[link].toArrow;
+            let color =  gojsData.linkDataArray[link].fill;
+
+            data.relationships[link].type = relationDict["StretchedDiamond"][String(color)];
+            delete data.relationships[link].fill;
+
+            data.relationships[link].source = relationNameDict[gojsData.linkDataArray[link].source];
+            data.relationships[link].destination = relationNameDict[gojsData.linkDataArray[link].destination];
+        }
+
+        return data;
+    }
+
+    
 </script>
