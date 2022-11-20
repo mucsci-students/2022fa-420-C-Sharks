@@ -100,6 +100,7 @@
 <script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
 
 <script>
+
     //warning to save before leaving
     window.onbeforeunload = function unload(e) {
         return "";
@@ -110,7 +111,9 @@
     const $ = go.GraphObject.make;
     const myDiagram =
         $(go.Diagram, "myDiagramDiv",
-            { "undoManager.isEnabled": true });
+            {
+                "undoManager.isEnabled": true, layout: new go.ForceDirectedLayout()
+            });
     //Context Menu for Nodes
     var nodeMenu =
         $("ContextMenu",
@@ -461,7 +464,12 @@
         $(go.Link,
             {
                 // allow the user to reconnnect existing links:
-                relinkableFrom: true, relinkableTo: true,
+                relinkableFrom: true, relinkableTo: true, 
+                routing: go.Link.AvoidsNodes,
+                fromEndSegmentLength: 30,
+                toEndSegmentLength: 30,
+                curve: go.Link.JumpOver,
+
                 // draw the link path shorter than normal,
                 // so that it does not interfere with the appearance of the arrowhead
                 toShortLength: 2,
