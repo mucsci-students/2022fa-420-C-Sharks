@@ -687,9 +687,9 @@
         let previousChecked = [];
         let relationDict = {
             aggregation: ["StretchedDiamond", "#DAE4E4"],
-            composition: ["StretchedDiamond", "Black"],
+            composition: ["StretchedDiamond", "black"],
             inheritance: ["Triangle", "#DAE4E4"],
-            realization: ["Triangle", "Black"],
+            realization: ["Triangle", "black"],
         };
         for (let link = 0; link < data.relationships.length; link++) {
             gojsData.linkDataArray.push(data.relationships[link]);
@@ -697,7 +697,13 @@
             renameKey(gojsData.linkDataArray[link], "destination", "to");
             renameKey(gojsData.linkDataArray[link], "type", "toArrow");
 
-            let relationType = data.relationships[link].toArrow;
+            let relationType = "realization";
+            
+            if (typeof data.relationships[link].toArrow !== 'undefined') {
+                alert(data.relationships[link].toArrow);
+                relationType = data.relationships[link].toArrow;
+            }
+
             gojsData.linkDataArray[link]["fill"] = relationDict[relationType][1];
             gojsData.linkDataArray[link].toArrow = relationDict[relationType][0];
 
@@ -756,8 +762,8 @@
         }
         let previousChecked = [];
         let relationDict = {
-            "StretchedDiamond": { "#DAE4E4": "aggregation", "Black": "composition" },
-            "Triangle": { "#DAE4E4": "inheritance", "Black": "realization" }
+            "StretchedDiamond": { "#DAE4E4": "aggregation", "black": "composition" },
+            "Triangle": { "#DAE4E4": "inheritance", "black": "realization" }
         };
         let relationNameDict = {};
         for (var it = myDiagram.nodes; it.next();) {
@@ -765,17 +771,21 @@
             relationNameDict[n.data.key] = n.data.className;
         }
 
-
         for (let link = 0; link < gojsData.linkDataArray.length; link++) {
             data.relationships.push(gojsData.linkDataArray[link]);
             renameKey(data.relationships[link], "from", "source");
             renameKey(data.relationships[link], "to", "destination");
             renameKey(data.relationships[link], "toArrow", "type");
+            
+            let arrow = "Triangle";
+            let color = "black";
+            if("type" in gojsData.linkDataArray[link])
+            {
+                arrow = gojsData.linkDataArray[link].type;
+                color =  gojsData.linkDataArray[link].fill;
+            }
 
-            let arrow = gojsData.linkDataArray[link].toArrow;
-            let color =  gojsData.linkDataArray[link].fill;
-
-            data.relationships[link].type = relationDict["StretchedDiamond"][String(color)];
+            data.relationships[link].type = relationDict[arrow][color];
             delete data.relationships[link].fill;
 
             data.relationships[link].source = relationNameDict[gojsData.linkDataArray[link].source];
