@@ -11,87 +11,109 @@
 @model EditorViewModel
 @using (Html.BeginForm())
 {
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { type = "hidden" })
-    // uncomment type to hide text box
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /*type = "hidden",*/ id = "mySavedModel",style = "width:100%;height:100px" })
-    <label for="projectName">Project name:</label>
-    @Html.TextBoxFor(EditorViewModel => EditorViewModel.DiagramName, new { style = "width:25%", placeholder = "Enter Project Name Here" })
-    <input type="submit" value="saveToServer" />
-}
-<!-- Start project name field code
-<label for="projectName">Project name:</label>
-<input type="text" id="projectName" name="projectName" placeholder="Enter Project Name Here">
-Start Toolbar code -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="toolbar">
-    <!--Toolbar collapse code (when the window is small, toolbar turns into button) -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto" id="toolbar">
-            <!--End of collapse code-->
-            <!--Begin Toolbar buttons-->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick=""><i class="fa fa-home"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="download()"><i class="fa fa-arrow-down"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check"></i></a>
-            </li>
-            <!-- Edit function (pencil - not yet ready)
-            <li class="nav-item">
-                 <a class="nav-link" href="#" onclick="edit()"><i class="fa fa-pencil"></i></a>
-            </li>
-            -->
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a>
-            </li>
-            <!-- Attribute functions (not yet ready)
-            <li class="nav-item">
-            <a class="nav-link" href="#" onclick="addAttribute()"><i class="fa fa-plus-circle"></i></a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#" onclick="removeAttribute()"><i class="fa fa-times-circle"></i></a>
-            </li>
-                -->
 
-        </ul>
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { type = "hidden" })
+
+    //Project Name box
+    <label for="projectName" style="padding:5px; margin-bottom: 10px">Project name:</label>
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.DiagramName, new { style = "width:25%", placeholder = "Enter a Project Name..." })
+
+    //Save to Server button
+    <input type="submit" value="saveToServer" />
+
+    // JSON text box - uncomment type to hide
+    <label for="jsonData" style="padding-left:20px">JSON Data:</label>
+    @Html.TextBoxFor(EditorViewModel => EditorViewModel.mySavedModel, new { /* type = "hidden", */ id = "mySavedModel", style = "width:40%" })
+
+}
+
+<!-- Start Toolbar code -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="toolbar">
+
+    <!--Start Color Picker-->
+    <div id="colorPicker">
+        <label for="color">Color Picker:</label>
+        <input type="color" id="color" name="color" value="#ffffff">
     </div>
+    <!--End Color Picker-->
+    <div id="selector">
+        <input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
+    </div>
+    <!--Begin Toolbar buttons-->
+    <ul class="navbar-nav mr-auto" id="toolbar">
+        <li class="nav-item">
+            <span title="Add Class">
+                <a class="nav-link" href="#" onclick="addClass()"><i class="fa fa-plus-square" "></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Save to JSON">
+                <a class="nav-link" href="#" onclick="save()"><i class="fa fa-check-square"></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Load from JSON">
+                <a class="nav-link" href="#" onclick="load()"><i class="fa fa-folder-open"></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Clear Diagram">
+                <a class="nav-link" href="#" onclick="clearDiagram()"><i class="fa fa-trash-o"></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Save Image">
+                <a class="nav-link" href="#" onclick="makeBlob()"><i class="fa fa-image"></i></a>
+            </span>
+        </li>
+    </ul>
+
+    <!-- Local export and import  -->
+    <ul class="navbar-nav mr-auto" id="local-buttons">
+        <li class="nav-item">
+            <span title="Download Diagram">
+                <a class="nav-link" href="#" onclick="downloadFile()"><i class="fa fa-download"></i></a>
+            </span>
+        </li>
+        <li class="nav-item">
+            <span title="Upload Diagram">
+                <a class="nav-link" href="#">
+                    <label for="file-selector"><i class="fa fa-upload"></i></label>
+                </a>
+            </span>
+        </li>
+    </ul>
 </nav>
 <!--End of Toolbar buttons-->
-<!--Start Color Picker-->
-<div id="colorPicker">
-    <label for="color">Select a color:</label>
-    <input type="color" id="color" name="color" value="#ff0000">
-</div>
-<!--End Color Picker-->
 <!-- Start Interface code -->
-<div id="myDiagramDiv" style="width:100%; height:500px; background-color: #DAE4E4;"></div>
+<div class="diagram-wrapper">
+    <div id="myDiagramDiv"></div>
+</div>
+
+
 
 <!--Save Text Area
 <textarea id="mySavedModel" style="width:100%;height:200px">{ "class": "go.GraphLinksModel",</textarea>-->
-
-<!--Choose file button-->
-<input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
-
 <!--<textarea id="mySavedModel" style="width:100%;height:300px">{ "class": "go.GraphLinksModel",</textarea>-->
 
 <script src="https://unpkg.com/gojs@2.2.15/release/go.js"></script>
 
 <script>
 
+    //warning to save before leaving
+    window.onbeforeunload = function unload(e) {
+        return "";
+    };
+
     //keeps track of class names
     var classNames = new Array();
     const $ = go.GraphObject.make;
     const myDiagram =
         $(go.Diagram, "myDiagramDiv",
-            { "undoManager.isEnabled": true });
+            {
+                "undoManager.isEnabled": true, layout: new go.ForceDirectedLayout()
+            });
     //Context Menu for Nodes
     var nodeMenu =
         $("ContextMenu",
@@ -312,7 +334,6 @@ Start Toolbar code -->
     myDiagram.nodeTemplate =
         $(go.Node, "Auto",
             {
-
                 fromSpot: go.Spot.AllSides,
                 toSpot: go.Spot.AllSides
             },
@@ -443,7 +464,12 @@ Start Toolbar code -->
         $(go.Link,
             {
                 // allow the user to reconnnect existing links:
-                relinkableFrom: true, relinkableTo: true,
+                relinkableFrom: true, relinkableTo: true, 
+                routing: go.Link.AvoidsNodes,
+                fromEndSegmentLength: 30,
+                toEndSegmentLength: 30,
+                curve: go.Link.JumpOver,
+
                 // draw the link path shorter than normal,
                 // so that it does not interfere with the appearance of the arrowhead
                 toShortLength: 2,
@@ -459,7 +485,7 @@ Start Toolbar code -->
             )
         );
 
-    //add data here if you want nodes to be loaded on default
+    // add data here if you want nodes to be loaded on default
     // deserialize json
     myDiagram.model = go.Model.fromJson(JSON.parse(document.getElementById("mySavedModel").value));
     //myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
@@ -470,8 +496,7 @@ Start Toolbar code -->
     });
 
 
-
-    //Add new class
+    //Add new class onto diagram
     function addClass() {
         //initial prompt name
         let promptName = "Enter a Class Name...";
@@ -483,16 +508,22 @@ Start Toolbar code -->
         var loc = go.Point.stringify(myDiagram.viewportBounds.center.offset(Math.floor(Math.random() * 200), Math.floor(Math.random() * 200)));
         //alert(loc);
         myDiagram.model.addNodeData({ text: "new node", loc: loc, color: defaultColor, fields: fields, methodBinding: methods, className: promptName, visible: true });
-
         classNames.push(String(promptName));
-
     }
 
-    function downloadFile() {
-        download();
+    //Clear diagram
+    function clearDiagram() {
+        const response = confirm("Are you sure you want to clear the diagram?");
+        if (response) {
+            myDiagram.model = new go.GraphLinksModel();
+            classNames = [];
+            fields = [];
+            methods = [];
+        }
     }
 
 
+    //Saves current state of diagram
     function save() {
         let save = myDiagram.model.toJson();
         document.getElementById("mySavedModel").value = save;
@@ -501,31 +532,15 @@ Start Toolbar code -->
         updateClassNames();
     }
 
+    //Load state from given json data
     function load() {
-        myDiagram.model = go.Model.fromJson(document.getElementById("mySavedModel").value);
-    }
 
-    function helpMenuDropdown() {
-        var x = document.getElementById("helpMenu");
-        if (x.style.display === "none") {
-            x.style.display = "block";
-        } else {
-            x.style.display = "none";
-        }
+        myDiagram.model = go.Model.fromJson(jsonAdapterFrom(JSON.parse(document.getElementById("mySavedModel").value)));
+        myDiagram.startTransaction();
+        myDiagram.updateAllRelationshipsFromData();
+        myDiagram.updateAllTargetBindings();
+        myDiagram.commitTransaction("update");
     }
-    /* Attribute functions (not ready yet)
-    //Add new attribute
-    function addAttribute() {
-        let attribute = prompt("Please enter a new attribute:");
-        myDiagram.model.addNodeData({ list1: attribute });
-    }
-
-    //Remove attribute
-    function removeAttribute() {
-        let attribute = prompt("Please enter the attribute you want to remove:");
-        myDiagram.model.removeNodeData({ list1: attribute });
-    }
-    */
 
     //Iterates through nodes and adds their classNames data to an array
     function updateClassNames() {
@@ -542,7 +557,6 @@ Start Toolbar code -->
     function checkDuplicates(textblock, oldstr, newstr) {
         isDuplicate = classNames.includes(newstr);
         return !isDuplicate
-
     }
 
     //allows for save to be downloaded
@@ -556,8 +570,13 @@ Start Toolbar code -->
         document.body.removeChild(element);
     }
 
+    function downloadFile() {
+        download();
+    }
+
+    //Local export
     function download() {
-        let save = myDiagram.model.toJson();
+        let save = JSON.stringify(jsonAdapterTo(JSON.parse(myDiagram.model.toJson())));
         myDiagram.isModified = false;
         createFile("save.json", save);
     }
@@ -593,8 +612,188 @@ Start Toolbar code -->
             let paramType = prompt("Please type " + methodParam + "'s type");
             methodParams.push({ name: methodParam, type: paramType });
         }
-
         return { methodName: methodName, return_type: returnType, methodParams: methodParams };
     }
+    function myCallback(blob) {
+        var url = window.URL.createObjectURL(blob);
+        var currentTime = new Date();
+        var filename = ("Diagram " + currentTime.toDateString() + "_" + currentTime.getSeconds() + "_" + currentTime.getMilliseconds() + ".png").replace(/\s+/g, '');
 
+        var a = document.createElement("a");
+        a.style = "display: none";
+        a.href = url;
+        a.download = filename;
+
+        // IE 11
+        if (window.navigator.msSaveBlob !== undefined) {
+            window.navigator.msSaveBlob(blob, filename);
+            return;
+        }
+
+        document.body.appendChild(a);
+        requestAnimationFrame(() => {
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+        });
+    }
+
+    function makeBlob() {
+        var blob = myDiagram.makeImageData({ background: "white", returnType: "blob", callback: myCallback });
+    }
+    function renameKey(obj, oldKey, newKey) {
+        obj[newKey] = obj[oldKey];
+        delete obj[oldKey];
+    }
+    //converts universal data to the gojs format
+    function jsonAdapterFrom(data) {
+        let gojsData = {
+            class: "GraphLinksModel",
+            nodeDataArray: [],
+            linkDataArray: [],
+        };
+
+        for (let i = 0; i < data.classes.length; i++) {
+            gojsData.nodeDataArray[i] = {
+                color: "white",
+                className: data.classes[i].name,
+                fields: [],
+                methodBinding: [],
+            };
+
+            for (let field = 0; field < data.classes[i].fields.length; field++) {
+                gojsData.nodeDataArray[i].fields.push(data.classes[i].fields[field]);
+                renameKey(gojsData.nodeDataArray[i].fields[field], "name", "fieldName");
+                renameKey(gojsData.nodeDataArray[i].fields[field], "type", "fieldType");
+            }
+            for (let method = 0; method < data.classes[i].methods.length; method++) {
+                gojsData.nodeDataArray[i].methodBinding.push(
+                    data.classes[i].methods[method]
+                );
+                renameKey(
+                    gojsData.nodeDataArray[i].methodBinding[method],
+                    "name",
+                    "methodName"
+                );
+                renameKey(
+                    gojsData.nodeDataArray[i].methodBinding[method],
+                    "params",
+                    "methodParams"
+                );
+            }
+        }
+        let uniqueCounter = -1;
+        let uniqueArray = {};
+        let previousChecked = [];
+        let relationDict = {
+            aggregation: ["StretchedDiamond", "#DAE4E4"],
+            composition: ["StretchedDiamond", "black"],
+            inheritance: ["Triangle", "#DAE4E4"],
+            realization: ["Triangle", "black"],
+        };
+        for (let link = 0; link < data.relationships.length; link++) {
+            gojsData.linkDataArray.push(data.relationships[link]);
+            renameKey(gojsData.linkDataArray[link], "source", "from");
+            renameKey(gojsData.linkDataArray[link], "destination", "to");
+            renameKey(gojsData.linkDataArray[link], "type", "toArrow");
+
+            let relationType = "realization";
+            
+            if (typeof data.relationships[link].toArrow !== 'undefined') {
+                alert(data.relationships[link].toArrow);
+                relationType = data.relationships[link].toArrow;
+            }
+
+            gojsData.linkDataArray[link]["fill"] = relationDict[relationType][1];
+            gojsData.linkDataArray[link].toArrow = relationDict[relationType][0];
+
+            let keyFrom = gojsData.linkDataArray[link].from;
+            let keyTo = gojsData.linkDataArray[link].to;
+
+            if (previousChecked.indexOf(keyFrom) === -1) {
+                previousChecked.push(keyFrom);
+                uniqueArray[keyFrom] = uniqueCounter--;
+            }
+
+            if (previousChecked.indexOf(keyTo) === -1) {
+                previousChecked.push(keyTo);
+                uniqueArray[keyTo] = uniqueCounter--;
+            }
+            gojsData.linkDataArray[link].from = uniqueArray[keyFrom];
+            gojsData.linkDataArray[link].to = uniqueArray[keyTo];
+        }
+
+        return gojsData;
+    }
+
+    //converts gojs data to universal format
+    function jsonAdapterTo(gojsData) {
+        let data = {
+            classes: [],
+            relationships: [],
+        };
+        for (let i = 0; i < gojsData.nodeDataArray.length; i++) {
+            data.classes[i] = {
+                name: gojsData.nodeDataArray[i].className,
+                fields: [],
+                methods: [],
+            };
+
+            for (
+                let field = 0;
+                field < gojsData.nodeDataArray[i].fields.length;
+                field++
+            ) {
+                data.classes[i].fields.push(gojsData.nodeDataArray[i].fields[field]);
+                renameKey(data.classes[i].fields[field], "fieldName", "name");
+                renameKey(data.classes[i].fields[field], "fieldType", "type");
+            }
+            for (
+                let method = 0;
+                method < gojsData.nodeDataArray[i].methodBinding.length;
+                method++
+            ) {
+                data.classes[i].methods.push(
+                    gojsData.nodeDataArray[i].methodBinding[method]
+                );
+                renameKey(data.classes[i].methods[method], "methodName", "name");
+                renameKey(data.classes[i].methods[method], "methodParams", "params");
+            }
+        }
+        let previousChecked = [];
+        let relationDict = {
+            "StretchedDiamond": { "#DAE4E4": "aggregation", "black": "composition" },
+            "Triangle": { "#DAE4E4": "inheritance", "black": "realization" }
+        };
+        let relationNameDict = {};
+        for (var it = myDiagram.nodes; it.next();) {
+            var n = it.value;  // n is now a Node or a Group
+            relationNameDict[n.data.key] = n.data.className;
+        }
+
+        for (let link = 0; link < gojsData.linkDataArray.length; link++) {
+            data.relationships.push(gojsData.linkDataArray[link]);
+            renameKey(data.relationships[link], "from", "source");
+            renameKey(data.relationships[link], "to", "destination");
+            renameKey(data.relationships[link], "toArrow", "type");
+            
+            let arrow = "Triangle";
+            let color = "black";
+            if("type" in gojsData.linkDataArray[link])
+            {
+                arrow = gojsData.linkDataArray[link].type;
+                color =  gojsData.linkDataArray[link].fill;
+            }
+
+            data.relationships[link].type = relationDict[arrow][color];
+            delete data.relationships[link].fill;
+
+            data.relationships[link].source = relationNameDict[gojsData.linkDataArray[link].source];
+            data.relationships[link].destination = relationNameDict[gojsData.linkDataArray[link].destination];
+        }
+
+        return data;
+    }
+
+    
 </script>

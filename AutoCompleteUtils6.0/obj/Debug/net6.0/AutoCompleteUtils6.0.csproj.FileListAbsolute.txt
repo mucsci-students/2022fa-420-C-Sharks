@@ -1,0 +1,12 @@
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/bin/Debug/net6.0/AutoCompleteUtils6.0.deps.json
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/bin/Debug/net6.0/AutoCompleteUtils6.0.dll
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/bin/Debug/net6.0/AutoCompleteUtils6.0.pdb
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/obj/Debug/net6.0/AutoCompleteUtils6.0.csproj.AssemblyReference.cache
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/obj/Debug/net6.0/AutoCompleteUtils6.0.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/obj/Debug/net6.0/AutoCompleteUtils6.0.AssemblyInfoInputs.cache
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/obj/Debug/net6.0/AutoCompleteUtils6.0.AssemblyInfo.cs
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/obj/Debug/net6.0/AutoCompleteUtils6.0.csproj.CoreCompileInputs.cache
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/obj/Debug/net6.0/AutoCompleteUtils6.0.dll
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/obj/Debug/net6.0/refint/AutoCompleteUtils6.0.dll
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/obj/Debug/net6.0/AutoCompleteUtils6.0.pdb
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/AutoCompleteUtils6.0/obj/Debug/net6.0/ref/AutoCompleteUtils6.0.dll

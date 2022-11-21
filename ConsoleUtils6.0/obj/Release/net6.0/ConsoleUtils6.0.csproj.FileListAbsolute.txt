@@ -1,0 +1,12 @@
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/bin/Release/net6.0/ConsoleUtils6.0.deps.json
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/bin/Release/net6.0/ConsoleUtils6.0.dll
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/bin/Release/net6.0/ConsoleUtils6.0.pdb
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/obj/Release/net6.0/ConsoleUtils6.0.csproj.AssemblyReference.cache
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/obj/Release/net6.0/ConsoleUtils6.0.GeneratedMSBuildEditorConfig.editorconfig
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/obj/Release/net6.0/ConsoleUtils6.0.AssemblyInfoInputs.cache
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/obj/Release/net6.0/ConsoleUtils6.0.AssemblyInfo.cs
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/obj/Release/net6.0/ConsoleUtils6.0.csproj.CoreCompileInputs.cache
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/obj/Release/net6.0/ConsoleUtils6.0.dll
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/obj/Release/net6.0/refint/ConsoleUtils6.0.dll
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/obj/Release/net6.0/ConsoleUtils6.0.pdb
+/mnt/c/Users/Hahng/source/repos/2022fa-420-C-Sharks/Sprint4/CLI-Build-Test/ConsoleUtils6.0/obj/Release/net6.0/ref/ConsoleUtils6.0.dll

@@ -28,6 +28,10 @@ using JsonSerializer = System.Text.Json.JsonSerializer;
 using System.Transactions;
 using System.Diagnostics;
 using CLI.Models.ViewModels;
+using AutoCompleteUtils;
+using ConsoleUtils;
+using System.Xml.Linq;
+using System.Xml;
 
 namespace CLI.Controllers
 {
@@ -35,6 +39,10 @@ namespace CLI.Controllers
     public class CLIController : Controller
     {
         static List<ScreenModel> OverScreen = new List<ScreenModel> { };
+        static List<String> ClassList = new List<String> { };
+        static List<String> RelType = new List<string> {
+                "Aggregation","Composition","Inheritance","Realization"
+            };
         static List<SingleRelationsModel> OverRelations = new List<SingleRelationsModel> { };
         static List<SingleRelationsModel> nameStorage = new List<SingleRelationsModel> { };
         DiagramModel LastUndone = new DiagramModel { };
@@ -42,6 +50,9 @@ namespace CLI.Controllers
         static int undoCounter = 0;
         static int undoIndex = 0;
         static int keyForClass = -1;
+        static string autocom = "";
+        static string UsrIpt = "";
+        static bool Ent = false;
         static UserModel GLOBALuserModel = new UserModel();
         public static void interpet(Commands input)
         {
@@ -188,7 +199,7 @@ namespace CLI.Controllers
 
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Add a new empty class of a given name to the model
         /// </summary>
         public static void addCLSS()
         {
@@ -232,9 +243,10 @@ namespace CLI.Controllers
             OverScreen.Add(new ScreenModel { className = Input, color = "white", key = keyForClass.ToString(), loc = "0 0", text = "new node", visible = "true" });
             addSave();
             keyForClass--;
+            UpdateClassList();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// add a relation between one or two existing classes
         /// </summary>
         public static void addRel()
         {
@@ -242,7 +254,25 @@ namespace CLI.Controllers
             string toK = "";
             string fromK = "";
             Console.WriteLine("Enter Name of from class:");
-            string InputRF = Console.ReadLine();
+
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string InputRF = UsrIpt;
             if (InputRF == "esc")
             {
                 return;
@@ -254,14 +284,31 @@ namespace CLI.Controllers
                 {
                     Err = false;
                     fromK = OverScreen[CNT].key;
-                    
+
                 }
             }
             while (Err)
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
-                InputRF = Console.ReadLine();
+
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                InputRF = UsrIpt;
                 if (InputRF == "esc")
                 {
                     return;
@@ -281,7 +328,23 @@ namespace CLI.Controllers
             }
             Err = true;
             Console.WriteLine("Enter Name of to class:");
-            string InputRT = Console.ReadLine();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string InputRT = UsrIpt;
             if (InputRT == "esc")
             {
                 return;
@@ -298,7 +361,23 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
-                InputRT = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                InputRT = UsrIpt;
                 if (InputRT == "esc")
                 {
                     return;
@@ -318,9 +397,25 @@ namespace CLI.Controllers
             }
             string relationType;
             string relationFill;
-            Relation:
-            Console.WriteLine("Enter type of relation:");
-            string InputRR = Console.ReadLine();
+        Relation:
+            Console.WriteLine("Enter type of relation: Aggregation, Inheritance, Composition, or Realization");
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, RelType);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string InputRR = UsrIpt;
             if (InputRR == "esc")
             {
                 return;
@@ -362,13 +457,30 @@ namespace CLI.Controllers
             addSave();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// add a field to an existing class
         /// </summary>
         public static void addfield()
         {
             bool Err = true;
             Console.WriteLine("Enter Name of class to add a field to:");
-            string Input = Console.ReadLine();
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string Input = UsrIpt;
             if (Input == "esc")
             {
                 return;
@@ -387,7 +499,23 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
@@ -407,7 +535,7 @@ namespace CLI.Controllers
                 }
             }
             Err = false;
-            Console.WriteLine("Enter field name:");
+            Console.WriteLine("Enter new field name:");
             string InputN = Console.ReadLine();
             if (InputN == "esc")
             {
@@ -446,7 +574,7 @@ namespace CLI.Controllers
                     }
                 }
             }
-            Console.WriteLine("Enter type name:");
+            Console.WriteLine("Enter field type");
             string InputT = Console.ReadLine();
             if (InputT == "esc")
             {
@@ -471,13 +599,30 @@ namespace CLI.Controllers
             }
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Add a new method to an existing class
         /// </summary>
         public static void addmeth()
         {
             bool Err = true;
             Console.WriteLine("Enter Name of class to add a method to:");
-            string Input = Console.ReadLine();
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string Input = UsrIpt;
             if (Input == "esc")
             {
                 return;
@@ -496,7 +641,23 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
@@ -515,7 +676,7 @@ namespace CLI.Controllers
                 }
             }
             //Err = false;
-            Console.WriteLine("Enter method name:");
+            Console.WriteLine("Enter new method name:");
             string InputM = Console.ReadLine();
             if (InputM == "esc")
             {
@@ -555,7 +716,7 @@ namespace CLI.Controllers
                     }
                 }
             }
-            Console.WriteLine("Enter return type name:");
+            Console.WriteLine("Enter method return type:");
             string InputR = Console.ReadLine();
             if (Input == "esc")
             {
@@ -568,7 +729,7 @@ namespace CLI.Controllers
             string InputT;
             while (InputN != "N")
             {
-                Console.WriteLine("Enter Parameter name, or 'N' if none or no more:");
+                Console.WriteLine("Enter Parameter name, or 'N' if no more or not applicable");
                 InputN = Console.ReadLine();
                 if (InputN == "esc")
                 {
@@ -576,7 +737,7 @@ namespace CLI.Controllers
                 }
                 if (InputN != "N")
                 {
-                    Console.WriteLine("Enter type name:");
+                    Console.WriteLine("Enter parameter type:");
                     InputT = Console.ReadLine();
                     if (InputT == "esc")
                     {
@@ -603,13 +764,30 @@ namespace CLI.Controllers
             }
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Remove an existing class in its entirety
         /// </summary>
         public static void remClass()
         {
             bool Err = false;
             Console.WriteLine("Enter Name of class:");
-            string Input = Console.ReadLine();
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string Input = UsrIpt;
             if (Input == "esc")
             {
                 return;
@@ -628,7 +806,23 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
@@ -649,34 +843,73 @@ namespace CLI.Controllers
             Console.WriteLine("Class Removed:");
             OverScreen.RemoveAt(Hold);
             addSave();
+            UpdateClassList();
         }
         ///<summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Remove a specified field from an existing class
         /// </summary>
         public static void remField()
         {
             bool Err = false;
             Console.WriteLine("Enter Name of class:");
-            string Input = Console.ReadLine();
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string Input = UsrIpt;
             if (Input == "esc")
             {
                 return;
             }
             int CNT;
             int Hold = 0;
+            List<String> HoldField = new List<String> { };
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
                 if (OverScreen[CNT].className.Equals(Input))
                 {
                     Err = true;
                     Hold = CNT;
+                    for (int i = 0; i < OverScreen[CNT].fields.Length; i++)
+                    {
+                        HoldField.Add(OverScreen[CNT].fields[i].fieldName);
+                    }
                 }
             }
             while (!Err)
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a unique class name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
@@ -687,6 +920,10 @@ namespace CLI.Controllers
                     {
                         Err = true;
                         Hold = CNT;
+                        for (int i = 0; i < OverScreen[CNT].fields.Length; i++)
+                        {
+                            HoldField.Add(OverScreen[CNT].fields[i].fieldName);
+                        }
                     }
                     else
                     {
@@ -695,8 +932,25 @@ namespace CLI.Controllers
                 }
             }
             Err = false;
+
             Console.WriteLine("Enter Name of Field:");
-            Input = Console.ReadLine();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, HoldField);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            Input = UsrIpt;
             if (Input == "esc")
             {
                 return;
@@ -714,7 +968,23 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid field name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, HoldField);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
@@ -740,25 +1010,74 @@ namespace CLI.Controllers
             addSave();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Remove an exisitng relation that exists of a given type between to given classes
         /// </summary>
         public static void remRel()
         {
             bool Err = false;
             Console.WriteLine("Enter Name of to class:");
-            string InputT = Console.ReadLine();
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string InputT = UsrIpt;
             if (InputT == "esc")
             {
                 return;
             }
             Console.WriteLine("Enter Name of from class:");
-            string InputF = Console.ReadLine();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string InputF = UsrIpt;
             if (InputT == "esc")
             {
                 return;
             }
-            Console.WriteLine("Enter type of relation:");
-            string InputR = Console.ReadLine();
+            Console.WriteLine("Enter type of relation. Aggregation, Composition, Inheritance, or Realization :");
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, RelType);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string InputR = UsrIpt;
             if (InputR == "esc")
             {
                 return;
@@ -777,19 +1096,67 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter Valid Name of to class:");
-                InputT = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                InputT = UsrIpt;
                 if (InputT == "esc")
                 {
                     return;
                 }
                 Console.WriteLine("Enter Valid Name of from class:");
-                InputF = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                InputF = UsrIpt;
                 if (InputT == "esc")
                 {
                     return;
                 }
                 Console.WriteLine("Enter Valid type of relation:");
-                InputR = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, RelType);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                InputR = UsrIpt;
                 if (InputT == "esc")
                 {
                     return;
@@ -812,13 +1179,30 @@ namespace CLI.Controllers
             addSave();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Remove a specified method from an existing class
         /// </summary>
         public static void remMeth()
         {
             bool Err = false;
             Console.WriteLine("Enter Name of class:");
-            string Input = Console.ReadLine();
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string Input = UsrIpt;
             if (Input == "esc")
             {
                 return;
@@ -837,7 +1221,23 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a unique class name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
@@ -856,8 +1256,29 @@ namespace CLI.Controllers
                 }
             }
             Err = false;
+            List<string> MethStore = new List<string>();
+            for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
+            {
+                MethStore.Add(OverScreen[Hold].methodBinding[CNT].methodName);
+            }
             Console.WriteLine("Enter Name of Method:");
-            Input = Console.ReadLine();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, MethStore);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            Input = UsrIpt;
             if (Input == "esc")
             {
                 return;
@@ -869,13 +1290,33 @@ namespace CLI.Controllers
                 {
                     Err = true;
                     HoldF = CNT;
+                    for (int i = 0; i < OverScreen[Hold].methodBinding.Length; i++)
+                    {
+                        MethStore.Add(OverScreen[Hold].methodBinding[CNT].methodName);
+                    }
                 }
             }
             while (!Err)
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid meth name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, MethStore);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
@@ -901,13 +1342,30 @@ namespace CLI.Controllers
             addSave();
         }
         /// <summary>
-        /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// Modify an existing class to have a new name
         /// </summary>
         public static void Modclass()
         {
             bool Err = false;
             Console.WriteLine("Enter Name of class:");
-            string Input = Console.ReadLine();
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string Input = UsrIpt;
             int CNT;
             int Hold = 0;
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
@@ -951,7 +1409,23 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid class name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].className.Equals(Input))
@@ -963,7 +1437,7 @@ namespace CLI.Controllers
                         Input = Console.ReadLine();
                         for (CNT = 0; CNT < OverScreen.Count; CNT++)
                         {
-                            if ((OverScreen[CNT].className.Equals(Input))&&(CNT!=Hold))
+                            if ((OverScreen[CNT].className.Equals(Input)) && (CNT != Hold))
                             {
                                 Err2 = true;
                             }
@@ -995,6 +1469,7 @@ namespace CLI.Controllers
             Console.WriteLine("Class modified:");
             OverScreen[Hold].className = Input;
             addSave();
+            UpdateClassList();
         }
         /// <summary>
         /// Modify a given field in a given class
@@ -1005,26 +1480,64 @@ namespace CLI.Controllers
             string InputN = "";
             string InputT = "";
             Console.WriteLine("Enter Name of class:");
-            string Input = Console.ReadLine();
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string Input = UsrIpt;
             if (Input == "esc")
             {
                 return;
             }
             int CNT;
             int Hold = 0;
+            List<String> HoldField = new List<String> { };
             for (CNT = 0; CNT < OverScreen.Count; CNT++)
             {
                 if (OverScreen[CNT].className.Equals(Input))
                 {
                     Err = true;
                     Hold = CNT;
+                    for (int i = 0; i < OverScreen[CNT].fields.Length; i++)
+                    {
+                        HoldField.Add(OverScreen[CNT].fields[i].fieldName);
+                    }
                 }
             }
             while (!Err)
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a unique class name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
@@ -1045,7 +1558,23 @@ namespace CLI.Controllers
             }
             Err = false;
             Console.WriteLine("Enter Name of Field:");
-            InputN = Console.ReadLine();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, HoldField);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            InputN = UsrIpt;
             if (InputN == "esc")
             {
                 return;
@@ -1055,43 +1584,43 @@ namespace CLI.Controllers
             {
                 if (OverScreen[Hold].fields[CNT].fieldName.Equals(InputN))
                 {
-                        bool Err2 = false;
-                        Err = true;
-                        HoldF = CNT;
-                        Console.WriteLine("Enter new name of field:");
-                        InputN = Console.ReadLine();
+                    bool Err2 = false;
+                    Err = true;
+                    HoldF = CNT;
+                    Console.WriteLine("Enter new name of field:");
+                    InputN = Console.ReadLine();
                     if (InputN == "esc")
                     {
                         return;
                     }
                     for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                    {
+                        if ((OverScreen[Hold].fields[CNT].fieldName.Equals(InputN)) && (CNT != HoldF))
                         {
-                            if ((OverScreen[Hold].fields[CNT].fieldName.Equals(InputN)) && (CNT != HoldF))
-                            {
-                                Err2 = true;
-                            }
+                            Err2 = true;
                         }
-                        while (Err2)
-                        {
-                            Console.WriteLine("ERROR");
-                            Console.WriteLine("Enter a unique class name:");
-                            InputN = Console.ReadLine();
+                    }
+                    while (Err2)
+                    {
+                        Console.WriteLine("ERROR");
+                        Console.WriteLine("Enter a unique class name:");
+                        InputN = Console.ReadLine();
                         if (InputN == "esc")
                         {
                             return;
                         }
                         for (CNT = 0; CNT < OverScreen[Hold].fields.Length; CNT++)
+                        {
+                            if ((OverScreen[Hold].fields[CNT].fieldName.Equals(InputN)) && (CNT != HoldF))
                             {
-                                if ((OverScreen[Hold].fields[CNT].fieldName.Equals(InputN)) && (CNT != HoldF))
-                                {
-                                    Err2 = true;
-                                }
-                                else
-                                {
-                                    Err2 = false;
-                                }
+                                Err2 = true;
+                            }
+                            else
+                            {
+                                Err2 = false;
                             }
                         }
+                    }
                     Console.WriteLine("Enter new type name:");
                     InputT = Console.ReadLine();
                     if (InputT == "esc")
@@ -1105,7 +1634,23 @@ namespace CLI.Controllers
             {
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter a valid field name:");
-                Input = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, HoldField);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
@@ -1134,7 +1679,23 @@ namespace CLI.Controllers
                         {
                             Console.WriteLine("ERROR");
                             Console.WriteLine("Enter a unique class name:");
-                            InputN = Console.ReadLine();
+                            Ent = false;
+                            while (Ent == false)
+                            {
+                                var result = ConsoleExt.ReadKey();
+                                switch (result.Key)
+                                {
+                                    case ConsoleKey.Enter:
+                                        UsrIpt = result.LineBeforeKeyPress.Line;
+                                        Ent = true;
+                                        break;
+                                    case ConsoleKey.Tab:
+                                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                                        ConsoleExt.SetLine(autocom);
+                                        break;
+                                }
+                            }
+                            InputN = UsrIpt;
                             if (InputN == "esc")
                             {
                                 return;
@@ -1174,20 +1735,69 @@ namespace CLI.Controllers
         /// </summary>
         public static void ModMeth()
         {
-                bool Err = false;
-                List<Fields> tempF = new List<Fields> { };
-                List<Parameters> tempP = new List<Parameters> { };
-                Console.WriteLine("Enter Name of class:");
-                string Input = Console.ReadLine();
+            bool Err = false;
+            List<Fields> tempF = new List<Fields> { };
+            List<Parameters> tempP = new List<Parameters> { };
+            Console.WriteLine("Enter Name of class:");
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string Input = UsrIpt;
+            if (Input == "esc")
+            {
+                return;
+            }
+            string InputM = "";
+            string InputR = "";
+            int CNT;
+            int Hold = 0;
+            for (CNT = 0; CNT < OverScreen.Count; CNT++)
+            {
+                if (OverScreen[CNT].className.Equals(Input))
+                {
+                    Err = true;
+                    Hold = CNT;
+                }
+            }
+            while (!Err)
+            {
+                Console.WriteLine("ERROR");
+                Console.WriteLine("Enter a unique class name:");
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
                 }
-                string InputM = "";
-                string InputR = "";
-
-                int CNT;
-                int Hold = 0;
                 for (CNT = 0; CNT < OverScreen.Count; CNT++)
                 {
                     if (OverScreen[CNT].className.Equals(Input))
@@ -1195,131 +1805,151 @@ namespace CLI.Controllers
                         Err = true;
                         Hold = CNT;
                     }
+                    else
+                    {
+                        Err = false;
+                    }
                 }
-                while (!Err)
+            }
+            List<String> MethStore = new List<String> { };
+            for (int i = 0; i < OverScreen[CNT].methodBinding.Length; i++)
+            {
+                MethStore.Add(OverScreen[CNT].methodBinding[i].methodName);
+            }
+            Err = false;
+            Console.WriteLine("Enter Name of Method:");
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
                 {
-                    Console.WriteLine("ERROR");
-                    Console.WriteLine("Enter a unique class name:");
-                    Input = Console.ReadLine();
-                    if (Input == "esc")
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, MethStore);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            Input = UsrIpt;
+            if (Input == "esc")
+            {
+                return;
+            }
+            int HoldF = 0;
+            for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
+            {
+                if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(Input))
+                {
+                    Err = true;
+                    HoldF = CNT;
+                    bool Err2 = false;
+                    Console.WriteLine("Enter new method name:");
+                    InputM = Console.ReadLine();
+                    if (InputM == "esc")
                     {
                         return;
                     }
-                    for (CNT = 0; CNT < OverScreen.Count; CNT++)
+                    if (OverScreen[Hold].methodBinding != null)
                     {
-                        if (OverScreen[CNT].className.Equals(Input))
+                        for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                         {
-                            Err = true;
-                            Hold = CNT;
-                        }
-                        else
-                        {
-                            Err = false;
+                            if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM) && (CNT != HoldF))
+                            {
+                                Err2 = true;
+                                HoldF = CNT;
+                            }
                         }
                     }
+                    while (Err2)
+                    {
+                        Console.WriteLine("ERROR");
+                        Console.WriteLine("Enter a valid method name:");
+                        InputM = Console.ReadLine();
+                        if (InputM == "esc")
+                        {
+                            return;
+                        }
+                        for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
+                        {
+                            //Console.WriteLine("ERROR");
+                            if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM) && (CNT != HoldF))
+                            {
+                                Err2 = true;
+                                HoldF = CNT;
+                            }
+                            else
+                            {
+                                Err2 = false;
+                            }
+                        }
+                    }
+                    Console.WriteLine("Enter return type name:");
+                    InputR = Console.ReadLine();
+                    if (InputR == "esc")
+                    {
+                        return;
+                    }
+                    //List<Methods> tempM = new List<Methods> { };
+                    string InputN = "";
+                    string InputT;
+                    while (InputN != "N")
+                    {
+                        Console.WriteLine("Enter Parameter name, or 'N' if no more or not applicable:");
+                        InputN = Console.ReadLine();
+                        if (InputN == "esc")
+                        {
+                            return;
+                        }
+                        if (InputN != "N")
+                        {
+                            Console.WriteLine("Enter type name:");
+                            InputT = Console.ReadLine();
+                            if (InputT == "esc")
+                            {
+                                return;
+                            }
+                            tempP.Add(new Parameters { name = InputN, type = InputT });
+                        }
+                        //Console.WriteLine(" ");
+                    }
+
                 }
-                Err = false;
-                Console.WriteLine("Enter Name of Method:");
-                Input = Console.ReadLine();
+            }
+            while (!Err)
+            {
+                Console.WriteLine("ERROR");
+                Console.WriteLine("Enter a valid meth name:");
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, MethStore);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                Input = UsrIpt;
                 if (Input == "esc")
                 {
                     return;
                 }
-                int HoldF = 0;
                 for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
                 {
                     if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(Input))
                     {
                         Err = true;
                         HoldF = CNT;
-                        bool Err2 = false;
-                        Console.WriteLine("Enter new method name:");
-                        InputM = Console.ReadLine();
-                        if (InputM == "esc")
-                        {
-                            return;
-                        }
-                        if (OverScreen[Hold].methodBinding != null)
-                        {
-                            for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
-                            {
-                                if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM) && (CNT != HoldF))
-                                {
-                                    Err2 = true;
-                                    HoldF = CNT;
-                                }
-                            }
-                        }
-                        while (Err2)
-                        {
-                            Console.WriteLine("ERROR");
-                            Console.WriteLine("Enter a valid method name:");
-                            InputM = Console.ReadLine();
-                            if (InputM == "esc")
-                            {
-                                return;
-                            }
-                            for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
-                            {
-                                //Console.WriteLine("ERROR");
-                                if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(InputM) && (CNT != HoldF))
-                                {
-                                    Err2 = true;
-                                    HoldF = CNT;
-                                }
-                                else
-                                {
-                                    Err2 = false;
-                                }
-                            }
-                        }
-                        Console.WriteLine("Enter return type name:");
-                        InputR = Console.ReadLine();
-                        if (InputR == "esc")
-                        {
-                            return;
-                        }
-                    //List<Methods> tempM = new List<Methods> { };
-                    string InputN = "";
-                        string InputT;
-                        while (InputN != "N")
-                        {
-                            Console.WriteLine("Enter Parameter name, or 'N' if done or no more:");
-                            InputN = Console.ReadLine();
-                            if (InputN == "esc")
-                            {
-                                return;
-                            }
-                            if (InputN != "N")
-                            {
-                                Console.WriteLine("Enter type name:");
-                                InputT = Console.ReadLine();
-                                if (InputT == "esc")
-                                {
-                                    return;
-                                }
-                                tempP.Add(new Parameters { name = InputN, type = InputT });
-                            }
-                            //Console.WriteLine(" ");
-                        }
-
-                    }
-                }
-                while (!Err)
-                {
-                    Console.WriteLine("ERROR");
-                    Console.WriteLine("Enter a valid meth name:");
-                    Input = Console.ReadLine();
-                    if (Input == "esc")
-                    {
-                        return;
-                    }
-                    for (CNT = 0; CNT < OverScreen[Hold].methodBinding.Length; CNT++)
-                    {
-                        if (OverScreen[Hold].methodBinding[CNT].methodName.Equals(Input))
-                        {
-                            Err = true;
-                            HoldF = CNT;
                         bool Err2 = false;
                         Console.WriteLine("Enter new method name:");
                         InputM = Console.ReadLine();
@@ -1344,7 +1974,23 @@ namespace CLI.Controllers
                         {
                             Console.WriteLine("ERROR");
                             Console.WriteLine("Enter a valid method name:");
-                            InputM = Console.ReadLine();
+                            Ent = false;
+                            while (Ent == false)
+                            {
+                                var result = ConsoleExt.ReadKey();
+                                switch (result.Key)
+                                {
+                                    case ConsoleKey.Enter:
+                                        UsrIpt = result.LineBeforeKeyPress.Line;
+                                        Ent = true;
+                                        break;
+                                    case ConsoleKey.Tab:
+                                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, MethStore);
+                                        ConsoleExt.SetLine(autocom);
+                                        break;
+                                }
+                            }
+                            InputM = UsrIpt;
                             if (InputM == "esc")
                             {
                                 return;
@@ -1375,7 +2021,7 @@ namespace CLI.Controllers
                         //if activated loop until N is input
                         while (InputN != "N")
                         {
-                            Console.WriteLine("Enter Parameter name, or 'N' if done or no more:");
+                            Console.WriteLine("Enter Parameter name, or 'N' if no more or not applicable:");
                             InputN = Console.ReadLine();
                             if (InputN == "esc")
                             {
@@ -1394,29 +2040,29 @@ namespace CLI.Controllers
                             //Console.WriteLine(" ");
                         }
                     }
-                        else
-                        {
-                            Err = false;
-                        }
+                    else
+                    {
+                        Err = false;
                     }
                 }
-                Console.WriteLine("Field Modified:");
-                //check if empty
-                if (!tempP.Any())
-                {
-                    
-                    OverScreen[Hold].methodBinding[HoldF].methodName = InputM;
-                    OverScreen[Hold].methodBinding[HoldF].return_type = InputR;
-                    addSave();
-                }
-                else
-                {
-                    
-                    OverScreen[Hold].methodBinding[HoldF].methodName = InputM;
-                    OverScreen[Hold].methodBinding[HoldF].return_type = InputR;
-                    OverScreen[Hold].methodBinding[HoldF].methodParams = tempP.ToArray();
-                    addSave();
-                }
+            }
+            Console.WriteLine("Field Modified:");
+            //check if empty
+            if (!tempP.Any())
+            {
+
+                OverScreen[Hold].methodBinding[HoldF].methodName = InputM;
+                OverScreen[Hold].methodBinding[HoldF].return_type = InputR;
+                addSave();
+            }
+            else
+            {
+
+                OverScreen[Hold].methodBinding[HoldF].methodName = InputM;
+                OverScreen[Hold].methodBinding[HoldF].return_type = InputR;
+                OverScreen[Hold].methodBinding[HoldF].methodParams = tempP.ToArray();
+                addSave();
+            }
         }
         /// <summary>
         /// Modify a given relation type between two given classes
@@ -1427,19 +2073,68 @@ namespace CLI.Controllers
             bool Err = false;
             //ask for input
             Console.WriteLine("Enter Name of to class:");
-            string InputT = Console.ReadLine();
+            var cyclingAutoComplete = new CyclingAutoComplete();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string InputT = UsrIpt;
             if (InputT == "esc")
             {
                 return;
             }
             Console.WriteLine("Enter Name of from class:");
-            string InputF = Console.ReadLine();
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string InputF = UsrIpt;
             if (InputF == "esc")
             {
                 return;
             }
-            Console.WriteLine("Enter type of relation:");
-            string InputR = Console.ReadLine();
+            Console.WriteLine("Enter type of relation, Aggregation, Composition, Inheritance, or Realization:");
+            Ent = false;
+            while (Ent == false)
+            {
+                var result = ConsoleExt.ReadKey();
+                switch (result.Key)
+                {
+                    case ConsoleKey.Enter:
+                        UsrIpt = result.LineBeforeKeyPress.Line;
+                        Ent = true;
+                        break;
+                    case ConsoleKey.Tab:
+                        autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, RelType);
+                        ConsoleExt.SetLine(autocom);
+                        break;
+                }
+            }
+            string InputR = UsrIpt;
             if (InputR == "esc")
             {
                 return;
@@ -1454,8 +2149,24 @@ namespace CLI.Controllers
                 {
                     Err = true;
                     Hold = CNT;
-                    Console.WriteLine("Enter new type of relation:");
-                    InputY = Console.ReadLine();
+                    Console.WriteLine("Enter new type of relation, Aggregation, Composition, Inheritance, or Realization:");
+                    Ent = false;
+                    while (Ent == false)
+                    {
+                        var result = ConsoleExt.ReadKey();
+                        switch (result.Key)
+                        {
+                            case ConsoleKey.Enter:
+                                UsrIpt = result.LineBeforeKeyPress.Line;
+                                Ent = true;
+                                break;
+                            case ConsoleKey.Tab:
+                                autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, RelType);
+                                ConsoleExt.SetLine(autocom);
+                                break;
+                        }
+                    }
+                    InputY = UsrIpt;
                     if (InputY == "esc")
                     {
                         return;
@@ -1465,16 +2176,48 @@ namespace CLI.Controllers
             //if activated loop until proper inout is validated
             while (!Err)
             {
-                
+
                 Console.WriteLine("ERROR");
                 Console.WriteLine("Enter Valid Name of to class:");
-                InputT = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                InputT = UsrIpt;
                 if (InputT == "esc")
                 {
                     return;
                 }
                 Console.WriteLine("Enter Valid Name of from class:");
-                InputF = Console.ReadLine();
+                Ent = false;
+                while (Ent == false)
+                {
+                    var result = ConsoleExt.ReadKey();
+                    switch (result.Key)
+                    {
+                        case ConsoleKey.Enter:
+                            UsrIpt = result.LineBeforeKeyPress.Line;
+                            Ent = true;
+                            break;
+                        case ConsoleKey.Tab:
+                            autocom = cyclingAutoComplete.AutoComplete(result.LineBeforeKeyPress.LineBeforeCursor, ClassList);
+                            ConsoleExt.SetLine(autocom);
+                            break;
+                    }
+                }
+                InputF = UsrIpt;
                 if (InputF == "esc")
                 {
                     return;
@@ -1538,8 +2281,8 @@ namespace CLI.Controllers
                 });
             }
 
-                var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = ExpR.ToArray() };
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
+            var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = ExpR.ToArray() };
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Newtonsoft.Json.Formatting.Indented);
             Console.WriteLine(json);
         }
 
@@ -1560,6 +2303,21 @@ namespace CLI.Controllers
             }
             Console.WriteLine("");
 
+        }
+
+
+        //Updates list of possible names for autocomplete classes from those currently in the model
+        //probably many better ways to do this
+        public static void UpdateClassList()
+        {
+            ClassList.Clear();
+            for (int Cnt = 0; Cnt < OverScreen.Count(); Cnt++)
+            {
+                //for every object in the screen
+                //write its name
+                ClassList.Add(OverScreen[Cnt].className);
+                //Console.WriteLine(ClassList[Cnt]);
+            }
         }
 
 
@@ -1584,7 +2342,7 @@ namespace CLI.Controllers
 
             }
             //json convert them and print them after adding to the relations model list
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(display, Formatting.Indented);
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(display, Newtonsoft.Json.Formatting.Indented);
             Console.WriteLine(json);
             Console.WriteLine("");
 
@@ -1596,7 +2354,8 @@ namespace CLI.Controllers
          */
         public static void ListClass()
         {
-            if (OverScreen.Count() > 0){
+            if (OverScreen.Count() > 0)
+            {
                 bool Err = false;
                 Console.WriteLine("Enter Name of class:");
                 string Input = Console.ReadLine();
@@ -1651,7 +2410,7 @@ namespace CLI.Controllers
                     methods = OverScreen[Hold].methodBinding
                 });
                 //then convert to string and print
-                string json = Newtonsoft.Json.JsonConvert.SerializeObject(ExpSM, Formatting.Indented);
+                string json = Newtonsoft.Json.JsonConvert.SerializeObject(ExpSM, Newtonsoft.Json.Formatting.Indented);
                 Console.WriteLine(json);
                 Console.WriteLine("");
             }
@@ -1672,7 +2431,7 @@ namespace CLI.Controllers
          * Local Disk (C:)
          *     UML-Saves
          *         C-Sharks-Editor
-         * 
+         *  Never got ben to do this testing on MAC (my fault) L.E.
          * 
          */
         public static void exportJson()
@@ -1739,7 +2498,7 @@ namespace CLI.Controllers
                     }
 
                     var Exp = new ExportModel { classes = ExpSM.ToArray(), relationships = ExpR.ToArray() };
-                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Formatting.Indented);
+                    string json = Newtonsoft.Json.JsonConvert.SerializeObject(Exp, Newtonsoft.Json.Formatting.Indented);
                     JsonSerializer.SerializeAsync(fs, Exp);
                 }
             }
@@ -1759,6 +2518,7 @@ namespace CLI.Controllers
          *      UML-Saves
          *          C-Sharks-Editor
          * 
+         * never got ben to do testing of this method on mac, (my fault) L.E.
          */
         public static void importJson()
         {
@@ -1859,6 +2619,7 @@ namespace CLI.Controllers
                 Console.WriteLine("{0} RELATIONSHIPS IMPORTED", relations.Count());
                 OverRelations = relations;
                 addSave();
+                UpdateClassList();
             }
 
             else
@@ -1868,6 +2629,9 @@ namespace CLI.Controllers
             }
         }
 
+        /// <summary>
+        /// adds items stored in the model to a new object which is added to the list of previous states
+        /// </summary>
         public static void addSave()
         {
 
@@ -1963,6 +2727,9 @@ namespace CLI.Controllers
             //Console.WriteLine("{0} Index", undoIndex);
         }
 
+        /// <summary>
+        /// loads older state of the model, utilizes a global counter for undo-able states, a list of previous states, and a counter in this list of states
+        /// </summary>
         public static void undo()
         {
 
@@ -1995,14 +2762,20 @@ namespace CLI.Controllers
                 Console.WriteLine("EMPTY STATE LOADED");
                 return;
             }
-            OverScreen = SaveArray[undoIndex-1].screen.ToList();
+            OverScreen = SaveArray[undoIndex - 1].screen.ToList();
             OverRelations = SaveArray[undoIndex].relations.ToList();
             Console.WriteLine("PREVIOUS STATE LOADED");
+            UpdateClassList();
             //Console.WriteLine("{0} Counter", undoCounter);
             //Console.WriteLine("{0} Index", undoIndex);
         }
 
 
+        /// <summary>
+        /// loads more recent change if possible to do so,
+        /// typically only possible after at least one undo.
+        /// if a change is made after an undo, a redo is no longer possible
+        /// </summary>
         static void redo()
         {
             if (undoIndex == undoCounter)
@@ -2013,9 +2786,10 @@ namespace CLI.Controllers
             undoIndex++;
             DiagramModel[] SaveArray;
             SaveArray = MomentoSave.ToArray();
-            OverScreen = SaveArray[undoIndex-1].screen.ToList();
-            OverRelations = SaveArray[undoIndex-1].relations.ToList();
+            OverScreen = SaveArray[undoIndex - 1].screen.ToList();
+            OverRelations = SaveArray[undoIndex - 1].relations.ToList();
             Console.WriteLine("SUBSEQUENT STATE LOADED");
+            UpdateClassList();
             //Console.WriteLine("{0} Counter", undoCounter);
             //Console.WriteLine("{0} Index", undoIndex);
         }
@@ -2036,7 +2810,7 @@ namespace CLI.Controllers
             // if no existing usernames exist the user can have that username and creates the user in db
             if (results.Count == 0)
             {
-                GLOBALuserModel = model; 
+                GLOBALuserModel = model;
                 collection.InsertOne(model);
 
                 return 0;
@@ -2097,6 +2871,10 @@ namespace CLI.Controllers
             }
 
         }
+
+        /// <summary>
+        /// saves the local model to the mongoDB
+        /// </summary>
         public static void save()
         {
             string connectionString = "mongodb+srv://CShark:5wulj7CrF1FTBpwi@umldb.7hgm9e0.mongodb.net/?retryWrites=true&w=majority";
@@ -2111,7 +2889,7 @@ namespace CLI.Controllers
                 return;
             }
             var OverRelCpy = OverRelations;
-            foreach(var item in OverRelCpy)
+            foreach (var item in OverRelCpy)
             {
                 if (item.toArrow == "Aggregation")
                 {
@@ -2136,10 +2914,14 @@ namespace CLI.Controllers
             }
 
 
-            var diagram = new DiagramModel { Name = input, UserID = GLOBALuserModel._id, screen = OverScreen.ToArray(), relations = OverRelations.ToArray()};
+            var diagram = new DiagramModel { Name = input, UserID = GLOBALuserModel._id, screen = OverScreen.ToArray(), relations = OverRelations.ToArray() };
             collection.InsertOne(diagram);
 
         }
+
+        /// <summary>
+        /// load pulls saves from the mongo server with the same username and allows the user to choose the model to load
+        /// </summary>
         public static void load()
         {
             undoIndex = 0;
@@ -2173,6 +2955,7 @@ namespace CLI.Controllers
                     {
                         OverRelations.Add(diagram.relations[i]);
                     }
+                    UpdateClassList();
                 }
             }
             else if (GLOBALuserModel._id == null)
@@ -2184,4 +2967,3 @@ namespace CLI.Controllers
         }
     }
 }
-    
