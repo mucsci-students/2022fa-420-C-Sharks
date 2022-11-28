@@ -4,12 +4,14 @@ Team C-Sharks' UML Editor is an application that allows the user to add, delete,
 
 **Prerequisites**
 [Visual Studio Community 2022](https://visualstudio.microsoft.com/vs/community/)
+Will need Dotnet 3, 5, 6 SDKs to build and run.
 
 ## Running the Application
 
 1. In Visual Studio, navigate to File > Clone Repository and enter the link: <br> (https://github.com/mucsci-students/2022fa-420-C-Sharks)
 2. After cloning the repository, open it as a project by expanding the UML folder and double clicking UML.sln
-3. Once the project is open you can click the green play button ("UML") to run the program.
+3. Once the project is open you can click the green play button ("UML") to run the webpage.
+4. To run just the CLI, scope into CLI folder after download and run dotnet run ./build.sh
 
 **Saving / Loading Files**
 To save or load a diagram, use the Save and Load icons on the toolbar to do so through the web server. Once you click the save button in the toolbar text is generated in the first text box reflecting your changes. To save your changes to the server you need to copy the output to the bottom text box then click the save to server button. Alternatively, if you'd like to save your diagram locally, use the "Export" option in the _Help_ menu, and "Import" option to load a local file.
@@ -22,8 +24,12 @@ The UML Editor uses the following design patterns:
 
 - **Memento**: For undo and redo functionality, each time an action is made, a state is created. Undo will go backwards to the previous state of the of the diagram in the UML Editor, and Redo will move forward to the next state after using Undo.
 
-
 - **Command/Parameterization**: In the CLI version of the UML Editor, the Command design pattern is used to parse user input. The Commands reads in the keywords given by the user and calls the appropriate function related to that command. This is done along with parameters, which are used to pass in the arguments given by the user to the function.
+
+- **Adapter**: The editor page uses a functions called jsonAdapterTo and jsonAdapterFrom to convert the editor's format to the universal format provided by the client. 
+
+- **Iterators**: All commands in the CLI (except for Save/Load and Import/Export) use iterators to traverse the overscreen and overrelation lists.
+
 
 ## Development Team
 
