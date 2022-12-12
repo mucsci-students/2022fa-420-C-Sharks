@@ -11,7 +11,6 @@
 @model EditorViewModel
 @using (Html.BeginForm())
 {
-
     @Html.TextBoxFor(EditorViewModel => EditorViewModel.userid, new { type = "hidden" })
 
     //Project Name box
@@ -28,7 +27,6 @@
 }
 
 <!-- Start Toolbar code -->
-
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="toolbar">
 
     <!--Start Color Picker-->
@@ -37,7 +35,7 @@
         <input type="color" id="color" name="color" value="#ffffff">
     </div>
     <!--End Color Picker-->
-    <div id="selector">
+    <div id="selector" style="z-index: -1;">
         <input type="file" id="file-selector" onchange="openFromFile()" accept=".json">
     </div>
     <!--Begin Toolbar buttons-->
@@ -90,7 +88,6 @@
 <div class="diagram-wrapper">
     <div id="myDiagramDiv"></div>
 </div>
-
 
 
 <!--Save Text Area
@@ -700,7 +697,6 @@
             let relationType = "realization";
             
             if (typeof data.relationships[link].toArrow !== 'undefined') {
-                alert(data.relationships[link].toArrow);
                 relationType = data.relationships[link].toArrow;
             }
 

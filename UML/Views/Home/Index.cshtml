@@ -5,17 +5,19 @@
 <div class="text-center">
     <img src="\media\C-Sharks_logo.jpg" width="500">
     <h1 class="display-4"><b>UML Editor</b></h1>
-    <p> 
+    <p>
         Team C-Sharks' <a asp-controller="Editor" asp-action="Index">UML Editor</a> is a web-based GUI application that allows users to create and edit UML diagrams.
         Users can add, edit, and delete UML classes and relationships between them. Classes can have attributes, methods, and fields, and relationships can be of different types.
         The editor can also save and load your diagrams to be worked on later, both locally, and through the online server.
         <br /><br />
-        Outside of the web GUI, a <i>command-line interface</i> version can be found <a asp-controller="Home" asp-action="CLIDownload">here.</a>
-        <br /><br />
-        For any help with how to use the editor, perform different functions, run the CLI, etc. - visit our <a asp-controller="Home" asp-action="Help">Help</a> page. 
+        <ul>
+            <li>
+                <b>Help:</b> For any help with how to use the editor, perform different functions, run the CLI, etc. - visit our <a asp-controller="Home" asp-action="Help">Help page</a>.
+            </li>
+        </ul>
     </p>
 </div>
-<div class="text-center">
+<div class="login-container">
     @if (TempData["Message"] != null)
     {
         <span>@TempData["Message"]</span>
@@ -23,10 +25,9 @@
     @model LoginViewModel
     @using (Html.BeginForm())
     {
-        @Html.TextBoxFor(UserModel=>UserModel.Username, new {placeholder="Username"})
-        @Html.TextBoxFor(UserModel=>UserModel.Password, new {placeholder="Password", type="password"})
+        @Html.TextBoxFor(UserModel=>UserModel.Username, new {placeholder="Username", style = "margin:5px"})
+        @Html.TextBoxFor(UserModel=>UserModel.Password, new {placeholder="Password", type="password",  style = "margin:5px"})
         <input type="Submit" value="Login" />
     }
-    <p> If you are new here please create a login <a asp-controller="Home" asp-action="Signup">Here</a>.</p>
+    <p> For new users, please create a login <a asp-controller="Home" asp-action="Signup">here</a>.</p>
 </div>
-

@@ -21,7 +21,7 @@ header {
 }
 
 	header nav {
-		width: 50vw;
+		width: 30vw;
 	}
 
 p {
@@ -53,11 +53,8 @@ ul {
 	font-weight: bold;
 }
 
-#selector {
-	justify-content: left;
-	padding: 15px;
-	color: white;
-	font-weight: bold;
+input[type="file"] {
+	display: none;
 }
 
 #myDiagramDiv {
@@ -144,9 +141,4 @@ nav {
 	margin-left: 20px;
 	margin-right: 10px;
 	justify-content: right;
-}
-
-.label {
-	color: white;
-	padding: 8px;
 }
